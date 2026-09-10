@@ -99,7 +99,10 @@ td.strong{color:var(--ink)}
 .field .tip2{color:var(--weak);font-size:12px;margin-top:4px}
 .acct-line{font-size:12px;color:var(--weak);margin-bottom:12px}
 .opt{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:10px;cursor:pointer}
-.opt input{margin-top:3px}
+.opt input{margin-top:3px;width:15px;height:15px;accent-color:var(--brand);flex:0 0 auto}
+.opt:has(input:checked){border-color:var(--brand);background:#fdf9f0;box-shadow:0 0 0 2px rgba(168,97,21,.10)}
+.opt:has(input:checked) .t{color:#7c4a03}
+.opt:has(input:disabled){cursor:not-allowed}
 .opt .t{font-weight:600;font-size:13.5px;color:var(--ink)}
 .opt .d{font-size:12px;color:var(--weak)}
 .opt-err{display:none;color:var(--danger);font-size:12px;margin:2px 0 6px}
@@ -118,7 +121,8 @@ td.strong{color:var(--ink)}
 .hosted-line{display:flex;align-items:center;gap:12px;padding:4px 0 12px}
 .hosted-line .hosted-label{font-weight:600;font-size:13.5px;color:var(--ink)}
 .opt.disabled{opacity:.45;pointer-events:none}
-.modal-box.hosted-off .opt{opacity:.45;pointer-events:none}
+.modal.hosted-off .opt{opacity:.45;pointer-events:none}
+.modal.hosted-off .opt input{cursor:not-allowed}
 
 /* AI conversation additions; existing console chrome remains unchanged. */
 
@@ -320,13 +324,14 @@ td.strong{color:var(--ink)}
       <div class="card">
         <div class="filter-bar">
           <span class="fitem"><label>账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
+          <span class="fitem"><label>账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
           <span class="fitem"><label>是否AI托管</label><select id="q-hosted"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
           <span class="fitem"><label>单聊AI托管</label><select id="q-single"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
           <span class="fitem"><label>群聊AI托管</label><select id="q-group"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
           <span class="fitem"><label>是否在线</label><select id="q-online"><option value="">全部</option><option value="1">在线</option><option value="0">离线</option></select></span>
           <span class="factions"><button class="btn primary" id="btn-query">查询</button><button class="btn" id="btn-reset">重置</button></span>
         </div>
-        <div class="toolbar"><div class="toolbar-actions"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步</button></div></div>
+        <div class="toolbar"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步账号</button></div>
       </div>
       <div class="table-card">
         <table style="min-width:1560px">
@@ -518,10 +523,11 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     {supplier:'艾客',uid:'wx_1008',name:'会员助理 小菲8',corp:'索菲亚家居',phone:'136****0008',contact:'周活动',count:9,device:'iPhone 15（挂机机D）',keeper:'会员服务-阿珍',hosted:true,modes:['群聊'],online:true,group:'会员服务组',time:'2026-09-03 08:00'},
     {supplier:'艾客',uid:'wx_1009',name:'会员助理 小菲9',corp:'索菲亚家居',phone:'136****0009',contact:'周活动',count:0,device:'iPhone 15（挂机机E）',keeper:'私域运营-小林',hosted:false,modes:[],online:false,group:'私域运营组',time:'2026-09-01 20:45'}
   ];
-  /* 由「客户会话管理」的「去配置」跳转：带 name 自动填入账号名称并查询，带 uid 精确定位到该账号记录。 */
+  /* 由「客户会话管理」的「去配置」跳转：按账号ID自动填入筛选并查询出该账号记录。 */
   var initUid=(AIDemo.params.get('uid')||'').trim();
   var initName=(AIDemo.params.get('name')||'').trim();
-  if(initName)document.getElementById('q-name').value=initName;
+  if(initUid)document.getElementById('q-uid').value=initUid;
+  else if(initName)document.getElementById('q-name').value=initName;
   rows.forEach(function(r){var a=AIDemo.account(r.uid);r.hosted=a.hosted;r.modes=[];if(a.single)r.modes.push('单聊');if(a.group)r.modes.push('群聊');});
   function persistAccount(){AIDemo.saveAccount(current.uid,{hosted:current.hosted,single:current.modes.indexOf('单聊')>=0,group:current.modes.indexOf('群聊')>=0});}
   var tbody=document.getElementById('tbody');
@@ -533,13 +539,14 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   function modeBadges(m){return m.map(function(x){return '<span class="tag mode">'+esc(x)+'</span>'}).join('')}
   function currentList(){
     var kw=(document.getElementById('q-name').value||'').trim();
+    var uidKw=(document.getElementById('q-uid').value||'').trim();
     var h=document.getElementById('q-hosted').value;
     var single=document.getElementById('q-single').value;
     var group=document.getElementById('q-group').value;
     var o=document.getElementById('q-online').value;
     var list=rows;
     if(kw)list=list.filter(function(r){return r.name.indexOf(kw)>=0});
-    if(initUid)list=list.filter(function(r){return r.uid===initUid});
+    if(uidKw)list=list.filter(function(r){return r.uid.indexOf(uidKw)>=0});
     if(h!=='')list=list.filter(function(r){return (r.hosted?'1':'0')===h});
     if(single!=='')list=list.filter(function(r){return (r.modes.indexOf('单聊')>=0?'1':'0')===single});
     if(group!=='')list=list.filter(function(r){return (r.modes.indexOf('群聊')>=0?'1':'0')===group});
@@ -612,6 +619,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   document.getElementById('btn-query').addEventListener('click',render);
   document.getElementById('btn-reset').addEventListener('click',function(){
     document.getElementById('q-name').value='';
+    document.getElementById('q-uid').value='';
     document.getElementById('q-hosted').value='';
     document.getElementById('q-single').value='';
     document.getElementById('q-group').value='';
@@ -648,7 +656,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     if(btn.disabled)return;
     btn.disabled=true;btn.textContent='同步中…';
     setTimeout(function(){
-      btn.disabled=false;btn.textContent='同步';
+      btn.disabled=false;btn.textContent='同步账号';
       render();
       showToast('已重新同步托管账号','ok');
     },800);
