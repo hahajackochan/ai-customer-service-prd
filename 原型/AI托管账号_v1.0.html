@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>原型 · AI托管账号 v1.0（中台后台样式）</title>
+<style>
+:root{--brand:#a86115;--amber:#f9ecc9;--amber-deep:#8a5a1e;--ink:#303133;--text:#4a4f55;--muted:#606266;--weak:#909399;--line:#ebeef4;--head:#f2f5f9;--page:#f0f1f2;--danger:#f56c6c;--ok:#67c23a;--blue:#6f8db5}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.topbar{height:64px;background:#fff;display:flex;align-items:center;padding:0 24px;position:relative;z-index:30}
+.logo{display:flex;align-items:center;gap:12px}
+.logo svg{width:34px;height:34px}
+.logo b{font-size:18px;font-weight:700;color:#3a3f45;letter-spacing:1px}
+.top-tabs{display:flex;align-items:center;gap:14px;margin-left:56px}
+.top-tab{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 18px;border-radius:4px;color:var(--text);font-size:14px;cursor:pointer;user-select:none}
+.top-tab svg{width:16px;height:16px}
+.top-tab.active{background:var(--amber);color:#5c4a1e;font-weight:600}
+.tenant-pill{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px;border-radius:4px;background:var(--amber);color:#5c4a1e;font-size:14px;font-weight:600;cursor:pointer;user-select:none}
+.tenant-pill .caret{font-size:10px;transform:scaleY(.9)}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:18px;color:var(--ink)}
+.avatar{width:30px;height:30px;border-radius:50%;background:#e8eaed;display:inline-flex;align-items:center;justify-content:center;color:#aeb4bc}
+.top-right .quit{color:var(--blue);cursor:pointer}
+.shell{display:flex;min-height:calc(100vh - 64px)}
+.sidebar{width:224px;background:#fff;border-right:1px solid var(--line);padding:10px 0;flex:0 0 auto;overflow-y:auto}
+.nav-item{height:44px;display:flex;align-items:center;gap:11px;padding:0 20px;color:#3f444a;font-size:14px;cursor:pointer;user-select:none;background:transparent}
+.nav-item svg{width:17px;height:17px;flex:0 0 auto;color:#5b6167}
+.nav-item .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-item .chev{color:#b9bec4;font-size:11px;transition:transform .15s}
+.nav-item.open .chev{transform:rotate(180deg)}
+.nav-item:hover{background:#f7f8f9}
+.nav-item.active{background:var(--amber);color:#6b4410;font-weight:600}
+.nav-item.active svg{color:#a86115}
+.nav-item.child{padding-left:42px}
+.nav-item.child .dot-ic{width:15px;height:15px;display:inline-flex;align-items:center;justify-content:center;color:#9aa0a6;flex:0 0 auto}
+.nav-item.child.active{background:var(--amber);color:#6b4410;font-weight:600}
+.nav-item.child.active .dot-ic{color:#a86115}
+.crumb-bar{height:48px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 20px}
+.crumb-bar .collapse-ic{display:inline-flex;color:#3f444a;cursor:pointer}
+.crumb-bar .crumb{color:#3f444a;font-size:14px}
+.crumb-bar .crumb b{color:#6b4410;font-weight:600}
+.tab-bar{height:46px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 14px;gap:8px}
+.tab-nav{color:#b9bec4;font-size:16px;cursor:pointer;user-select:none}
+.tab{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:4px;background:var(--amber);color:#6b4410;font-size:13px;font-weight:600}
+.tab .dot{width:7px;height:7px;border-radius:50%;background:#a86115;display:inline-block}
+.tab .x{cursor:pointer;opacity:.7;font-size:13px}
+.page-body{padding:18px 20px;flex:1;min-width:0}
+.card{background:#fff;border-radius:8px;padding:16px 20px;box-shadow:0 1px 3px rgba(31,41,55,.04);margin-bottom:14px}
+.filter-bar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.filter-bar .fitem{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.filter-bar .fitem input,.filter-bar .fitem select{height:32px;border:1px solid #dcdfe6;border-radius:4px;padding:0 10px;font-size:13px;color:var(--ink);outline:none}
+.filter-bar .fitem input{width:180px}
+.filter-bar .fitem select{min-width:110px;background:#fff}
+.filter-bar .fitem input:focus,.filter-bar .fitem select:focus{border-color:var(--brand)}
+.filter-bar .factions{display:inline-flex;gap:10px;margin-left:4px}
+.toolbar{display:flex;align-items:center;margin-top:2px}
+.toolbar-actions{margin-left:auto;display:flex;gap:12px}
+.btn{height:32px;padding:0 16px;border-radius:4px;border:1px solid #dcdfe6;background:#fff;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;gap:5px;line-height:30px;cursor:pointer;font-size:13px}
+.btn:hover{color:var(--brand);border-color:#e3c692}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:#8f5212;color:#fff}
+.table-card{background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(31,41,55,.04);overflow:auto}
+table{width:100%;border-collapse:collapse;table-layout:auto}
+td,th{min-width:110px}
+th{height:46px;background:var(--head);color:#5b6167;font-weight:600;border-bottom:1px solid var(--line);text-align:left;padding:0 14px;font-size:14px;white-space:nowrap}
+td{height:52px;border-bottom:1px solid var(--line);padding:0 14px;color:var(--muted);vertical-align:middle;font-size:14px;text-align:left;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:#fdf9f0}
+td.weak{color:var(--weak)}
+td.strong{color:var(--ink)}
+.empty-row td{color:var(--weak);text-align:center;height:84px}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:12px;font-size:12px;border:1px solid}
+.tag.yes{background:#f0f9eb;color:#529b2e;border-color:#e1f3d8}
+.tag.no{background:#f4f4f5;color:#909399;border-color:#e9e9eb}
+.tag.online{background:#fdf1e8;color:#a86115;border-color:#f3d5bc}
+.tag.offline{background:#f4f4f5;color:#909399;border-color:#e9e9eb}
+.tag.mode{background:#ecf5ff;color:#337ecc;border-color:#d9ecff;margin-left:4px}
+.pager{height:56px;display:flex;align-items:center;gap:10px;padding:0 16px;color:var(--muted)}
+.page-size{height:30px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;display:inline-flex;align-items:center;padding:0 12px;color:var(--muted);font-size:13px}
+.page-num{min-width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;color:var(--muted);border:1px solid transparent;cursor:pointer;background:#fff}
+.page-num.active{background:var(--brand);color:#fff}
+.note{margin-top:12px;font-size:12px;color:var(--weak)}
+.modal{position:fixed;inset:0;background:rgba(31,35,41,.45);display:none;align-items:center;justify-content:center;z-index:100}
+.modal.active{display:flex}
+.modal-box{width:440px;background:#fff;border-radius:8px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;font-weight:600;font-size:15px;border-bottom:1px solid var(--line);color:var(--ink)}
+.modal-close{border:0;background:transparent;font-size:18px;color:var(--weak);cursor:pointer;line-height:1}
+.modal-body{padding:18px}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:12px 18px;border-top:1px solid var(--line)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+.field label i{color:var(--danger);font-style:normal;margin-right:2px}
+.field input{width:100%;height:34px;border:1px solid #dcdfe6;border-radius:4px;padding:0 10px;font-size:13px;outline:none;color:var(--ink)}
+.field input:focus{border-color:var(--brand)}
+.field .err{display:none;color:var(--danger);font-size:12px;margin-top:4px}
+.field.invalid input{border-color:var(--danger)}
+.field.invalid .err{display:block}
+.field .tip2{color:var(--weak);font-size:12px;margin-top:4px}
+.acct-line{font-size:12px;color:var(--weak);margin-bottom:12px}
+.opt{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:10px;cursor:pointer}
+.opt input{margin-top:3px}
+.opt .t{font-weight:600;font-size:13.5px;color:var(--ink)}
+.opt .d{font-size:12px;color:var(--weak)}
+.opt-err{display:none;color:var(--danger);font-size:12px;margin:2px 0 6px}
+.opt-err.show{display:block}
+.warn-text{font-size:13.5px;line-height:1.9;color:var(--ink)}
+.switch{position:relative;display:inline-block;width:38px;height:20px;vertical-align:middle}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#c0c4cc;border-radius:20px;transition:.2s}
+.slider:before{content:"";position:absolute;height:16px;width:16px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+.slider{background:var(--brand)}
+.switch input:checked+.slider:before{transform:translateX(18px)}
+.toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:200;display:none;padding:9px 18px;border-radius:4px;color:#fff;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.toast.ok{background:var(--ok)}
+.toast.fail{background:var(--danger)}
+.toast.info{background:#7a8699}
+.hosted-line{display:flex;align-items:center;gap:12px;padding:4px 0 12px}
+.hosted-line .hosted-label{font-weight:600;font-size:13.5px;color:var(--ink)}
+.opt.disabled{opacity:.45;pointer-events:none}
+.modal-box.hosted-off .opt{opacity:.45;pointer-events:none}
+
+/* AI conversation additions; existing console chrome remains unchanged. */
+
+.sidebar{height:calc(100vh - 64px);position:sticky;top:0}
+.nav-item.ai-child{padding-left:38px;font-size:13px}
+.page-body{min-height:0}
+.form-grid{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center}
+.form-grid label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+.form-grid input,.form-grid select,.date-tools input,.pager select{height:32px;border:1px solid #dcdfe6;border-radius:4px;padding:0 10px;color:var(--ink);font:inherit;background:white;min-width:0}
+.form-grid input{width:158px}
+.form-grid input[type=date]{width:145px}
+.form-grid input[type=number]{width:106px}
+.form-grid select{min-width:104px}
+.form-grid input:focus{outline:1px solid var(--brand)}
+.form-actions{display:flex;gap:10px}
+.query-error{color:#c64d44;font-size:13px;margin-top:8px}
+.query-error:empty{display:none}
+.view-title{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);font-weight:600}
+.sample{font-size:12px;font-weight:400;color:var(--weak)}
+.table-scroll{overflow:auto;max-height:calc(100vh - 410px);min-height:180px}
+.wide-table th{position:sticky;top:0;z-index:2}
+.wide-table td{height:56px}
+.wide-table th,.wide-table td{min-width:92px;padding:10px 14px}
+.wide-table .cell-text{max-width:260px;min-width:230px;white-space:normal;line-height:1.65}
+.cell-long{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wide-table .action-col{position:sticky;right:0;min-width:112px;background:#fff;box-shadow:-3px 0 5px rgba(0,0,0,.035)}
+.wide-table th.action-col{z-index:3;background:var(--head)}
+.link-btn{border:0;background:none;color:var(--brand);cursor:pointer;padding:3px 0;font:inherit;text-decoration:none}
+.link-btn:hover{text-decoration:underline}
+.row-tools{display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.wide-table .time-col{min-width:175px;font-size:13px;font-variant-numeric:tabular-nums}
+.muted{color:var(--weak)}
+.switch:has(input:disabled){opacity:.5}
+.switch input:disabled+.slider{cursor:not-allowed}
+.switch input:focus-visible+.slider{outline:2px solid #c9974a;outline-offset:2px}
+.switch-label{display:inline-flex;align-items:center;gap:7px}
+.small-status{display:block;font-size:11px;color:var(--weak);margin-top:4px;max-width:158px;white-space:normal}
+.tag.error{background:#fff1f0;border-color:#ffccc7;color:#c0392b}
+.tag.transfer{background:#fff7e6;border-color:#ffe1a6;color:#a76705}
+.tag.waiting{background:#f4f4f5;border-color:#e9e9eb;color:#909399}
+.pager{border-top:1px solid var(--line)}
+.pager button:disabled{opacity:.35;cursor:not-allowed}
+.pager .pager-pages{display:flex;gap:5px}
+.drawer-mask{position:fixed;inset:0;z-index:90;display:none;background:rgba(31,35,41,.28)}
+.drawer-mask.open{display:flex;justify-content:flex-end}
+.drawer{height:100vh;width:min(680px,92vw);background:white;box-shadow:-10px 0 32px rgba(0,0,0,.12);display:flex;flex-direction:column}
+.drawer-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:600}
+.drawer-body{padding:20px 22px;overflow:auto;flex:1}
+.drawer-foot{padding:12px 22px;border-top:1px solid var(--line);display:flex;gap:18px;flex-wrap:wrap}
+.trace-summary{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding-bottom:16px}
+.trace-summary small{display:block;flex-basis:100%;font-size:12px;color:var(--weak);overflow-wrap:anywhere}
+.trace-step{border-top:1px solid var(--line);padding:12px 0}
+.trace-step h4{margin:3px 0 14px;color:#634314;font-size:14px}
+.trace-step h4 i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;margin-right:8px;border-radius:50%;background:var(--amber)}
+.trace-kv{display:grid;grid-template-columns:126px 1fr;gap:10px;margin:9px 0;font-size:13px;line-height:1.7}
+.trace-kv>span{color:var(--weak)}
+.trace-kv>div{overflow-wrap:anywhere;white-space:pre-wrap}
+.reason-box{background:#fff8ee;border:1px solid #f5dfb6;border-radius:6px;padding:7px 14px;margin-bottom:15px}
+.trace-step pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;padding:12px;border-radius:4px;font-size:12px;line-height:1.8;color:var(--muted)}
+.trace-step summary{cursor:pointer;font-size:13px;color:var(--brand)}
+.trace-results-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0;color:var(--muted);font-size:12px;flex-wrap:wrap}
+.trace-results-meta b{color:var(--ink);font-weight:600}
+.trace-result{border:1px solid var(--line);border-radius:6px;margin:8px 0;background:#fff;overflow:hidden}
+.trace-step .trace-result>summary{display:flex;align-items:center;gap:8px;padding:11px 10px;color:var(--ink);list-style:none;min-width:0}
+.trace-result>summary::-webkit-details-marker{display:none}
+.trace-result>summary:before{content:'›';flex:0 0 12px;font-size:17px;color:var(--weak);transition:transform .12s}
+.trace-result[open]>summary:before{transform:rotate(90deg)}
+.trace-result>summary:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
+.trace-result-copy{flex:1;min-width:0;overflow-wrap:anywhere;line-height:1.6}
+.trace-result-name{display:block;font-weight:600;font-size:13px}
+.trace-result-state{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
+.trace-result-score{flex:0 0 auto;text-align:right;max-width:38%;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.trace-result-score small{display:block;color:var(--weak);font-size:11px;margin-bottom:2px}
+.trace-result-score b{font-size:15px;color:var(--brand)}
+.trace-result-score.missing b{font-size:12px;color:var(--weak);font-weight:400}
+.trace-result-body{border-top:1px solid var(--line);padding:3px 12px 8px;background:#fafbfc}
+.trace-result-body .trace-kv{grid-template-columns:76px minmax(0,1fr);gap:8px;font-size:12px}
+.trace-result-empty{border:1px dashed var(--line);padding:16px 12px;border-radius:5px;color:var(--weak);font-size:12px;line-height:1.8}
+.trace-kv{grid-template-columns:104px minmax(0,1fr)}
+.chat-layout{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
+.chat-card,.trace-card{min-width:0}
+.empty-panel{color:var(--weak);text-align:center;padding:64px 14px;font-size:13px;line-height:1.9}
+.duration-hero{padding:14px;background:#fdf9f0;border-radius:6px;margin-bottom:16px}
+.duration-hero b{color:var(--brand);font-size:26px}
+.duration-hero p{margin:4px 0;font-size:12px;color:var(--muted)}
+.timeline-item{border-left:2px solid #efdfc5;margin-left:8px;padding:0 0 18px 20px;position:relative}
+.timeline-item:before{content:'';position:absolute;width:9px;height:9px;border-radius:50%;background:var(--brand);left:-5.5px;top:5px}
+.timeline-item .row{display:flex;justify-content:space-between;gap:8px}
+.timeline-item small{font-size:12px;color:var(--weak)}
+.time-track{height:5px;background:#f2f2f2;border-radius:3px;margin-top:8px}
+.time-track i{display:block;height:5px;background:#d3a25a;border-radius:3px}
+.history-top{height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--weak);font-size:12px;background:#fafbfc}
+.spinner{width:14px;height:14px;border:2px solid #e7e9ed;border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}
+}
+.chat-layout{display:grid;grid-template-columns:minmax(360px,1.45fr) minmax(360px,1fr);gap:14px;height:calc(100vh - 330px);min-height:380px}
+.chat-card,.trace-card{background:#fff;border-radius:8px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.chat-heading{height:46px;flex-shrink:0;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-weight:600}
+.chat-stream{overflow-y:auto;overscroll-behavior:contain;overflow-anchor:none;flex:1;min-height:0;padding:12px 20px 22px;background:#fafbfc}
+.trace-content{overflow:auto;flex:1;padding:16px;min-height:0}
+.conversation-meta{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;font-size:13px}
+.conversation-meta b{font-size:14px}
+.conversation-meta .return{margin-left:auto}
+.date-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px}
+.seg{display:inline-flex;border:1px solid #dcdfe6;border-radius:4px;overflow:hidden}
+.seg button{height:30px;padding:0 14px;border:0;background:white;color:var(--muted);border-right:1px solid #dcdfe6;cursor:pointer}
+.seg button:last-child{border:0}
+.seg button.on{background:var(--amber);color:#6b4410;font-weight:600}
+.custom-dates{display:none;align-items:center;gap:8px}
+.custom-dates.show{display:inline-flex}
+.message-row{display:flex;flex-direction:column;align-items:flex-start;margin:0 0 17px}
+.message-row.member{align-items:flex-end}
+.message-row.event{align-items:center}
+.message-row small{font-size:11px;color:var(--weak);margin-bottom:4px}
+.bubble{max-width:82%;padding:10px 13px;border-radius:8px;background:white;border:1px solid var(--line);line-height:1.8;font-size:13px;overflow-wrap:anywhere}
+.member .bubble{background:#f5f6f7}
+.message-row.ai .bubble{background:#fff9ee;border-color:#ecca96}
+.message-row.selected .bubble{outline:2px solid #cf9b50}
+.message-row.event .bubble{background:#fff7e6;color:#865508;font-size:12px;border-color:#f0d6a9;max-width:95%}
+.ai-badge{display:inline-flex;border:0;align-items:center;margin-top:6px;gap:5px;background:#d17b11;color:#fff;font-weight:700;font-size:12px;border-radius:12px;cursor:pointer;padding:4px 10px;box-shadow:0 2px 5px #dfb06b50}
+.ai-badge.transfer{background:#a46b19}
+.ai-badge.error{background:#c65747}
+.date-divider{text-align:center;margin:8px 0 18px;color:var(--weak);font-size:11px}
+.date-divider span{background:#eaecef;border-radius:10px;padding:3px 10px}
+.picture-preview{padding:0;border:0;background:transparent;color:var(--brand);cursor:pointer;text-align:left}
+.picture-preview svg{display:block;width:155px;height:90px;border-radius:4px}
+.preview-box{width:90vw;height:90vh;background:#fff;border-radius:8px;display:flex;flex-direction:column}
+.preview-stage{flex:1;overflow:hidden;background:#f4f5f7;touch-action:none;cursor:grab;display:grid;place-items:center}
+.preview-stage svg{width:650px;height:400px;max-width:85vw;transform-origin:center}
+.preview-box .modal-head{flex-shrink:0}
+.modal-body .status-warning{color:#9a641a;background:#fff8ea;padding:10px;border-radius:5px}
+.focus-target{outline:2px solid #e3a344;outline-offset:2px}
+@media(max-width:1100px){.chat-layout{grid-template-columns:minmax(310px,1fr) minmax(310px,1fr)}
+.top-tabs{margin-left:22px;gap:6px}
+.top-right{gap:10px}
+.table-scroll{max-height:510px}
+}
+
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="none" stroke="#a83f3f" stroke-width="3.2"/><g stroke="#a83f3f" stroke-width="2" fill="none"><path d="M18 6c4 2.4 4 7.6 0 10-4-2.4-4-7.6 0-10Z"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(60 18 18)"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(180 18 18)"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(300 18 18)"/></g></svg><b>消费者业务中台</b></div>
+    <nav class="top-tabs">
+      <span class="top-tab js-nothing"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>平台端</span>
+      <span class="top-tab active"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>租户端</span>
+      <span class="tenant-pill js-nothing">索菲亚会员小程序<span class="caret">▾</span></span>
+    </nav>
+    <div class="top-right">
+      <span class="avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.4" r="3.6" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.4c1.5-3.6 4-5.4 7-5.4s5.5 1.8 7 5.4" stroke="currentColor" stroke-width="1.8"/></svg></span>
+      <span>陈嘉豪，你好！</span>
+      <span class="quit">退出登录</span>
+    </div>
+  </header>
+  <div class="shell">
+  <aside class="sidebar">
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 7.4v4.8l3 1.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">首页</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="3.5" width="15" height="17" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">租户管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.2" r="3.5" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M5 19.6c1.4-3.5 4-5.2 7-5.2s5.6 1.7 7 5.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">用户管理</span><span class="chev">▾</span></div>
+      <div class="nav-item open" id="nav-agent"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M5 20c1.4-4 3.8-6 7-6s5.6 2 7 6M18.5 4.5l1 1m-15 0 1-1" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">智能体管理</span><span class="chev">▾</span></div>
+<div class="nav-item child agent-child js-nav" data-page="智能体管理"><span class="dot-ic">•</span><span class="lbl">智能体管理</span></div>
+<div class="nav-item child agent-child js-nav" data-page="工作流管理"><span class="dot-ic">•</span><span class="lbl">工作流管理</span></div>
+      <div class="nav-item open" id="nav-third"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.6" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="12" cy="17.6" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.4 7.6l2.6 8M15.6 7.6l-2.6 8M8.8 6.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">三方账号管理</span><span class="chev">▾</span></div>
+      <div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div>
+      <div class="nav-item child active js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div>
+      <div class="nav-item open" id="nav-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
+<div class="nav-item child ai-child js-nav" data-page="会话消息管理" title="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div>
+<div class="nav-item child ai-child js-nav" data-page="客户会话管理" title="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div>
+<div class="nav-item child ai-child js-nav" data-page="AI回复响应时长管理" title="AI回复响应时长管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应时长管理</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 10h16M10 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">京东模块</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.6 12.2l2.3 2.3 4.5-4.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">任务管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 4.6v2.8M12 16.6v2.8M4.6 12h2.8M16.6 12h2.8" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">页面管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.6 13a7.4 7.4 0 0 1 14.8 0" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="3.6" y="13" width="3.9" height="5.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="16.5" y="13" width="3.9" height="5.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">售后管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="6.8" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 9.8V13l2.3 1.5M10.2 3.6h3.6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">营销活动</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="5.6" width="16.8" height="12.8" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m4.6 7.4 7.4 5.8 7.4-5.8" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">短信管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="6" width="11.6" height="12" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m15.2 10.6 5.2-3v8.8l-5.2-3" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">直播管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.5 13 12M5 5l6.4 6.6M12.5 12.5 18 19" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="19.8" cy="4.6" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="4.4" cy="4.4" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="19.6" cy="19.6" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">异业合作</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 9.4h16M4 14.6h16M9.4 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">潜客管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.6" cy="6.6" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.4" cy="6.6" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="6.6" cy="17.4" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.4" cy="17.4" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.8 6.6h6.4M6.6 8.8v6.4M17.4 8.8v6.4M8.8 17.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">成品分销管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.4 5.4h7.4A1.6 1.6 0 0 1 19.4 7v10a1.6 1.6 0 0 1-1.6 1.6h-7.4" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="4" y="8.6" width="7" height="6.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">定制分销管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5.4" width="16.4" height="13.2" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 9h16.4M8 13h5" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">微信订阅消息管理</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.8 9.4c.6 2.8 1.4 4.4 3.2 5.2 1.8-.8 2.6-2.4 3.2-5.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">微信小程序</span><span class="chev">▾</span></div>
+      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.6 13.7 10 19 11.7 13.7 13.4 12 18.8 10.3 13.4 5 11.7 10.3 10Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M18.4 16.4l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7Z" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI图片工作流</span><span class="chev">▾</span></div>
+    </aside>
+    <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <div class="crumb-bar">
+      <span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="crumb">三方账号管理 / <b>AI托管账号</b></span>
+    </div>
+    <div class="tab-bar">
+      <span class="tab-nav">‹</span>
+      <span class="tab"><span class="dot"></span>AI托管账号<span class="x" title="关闭（演示）">×</span></span>
+      <span class="tab-nav" style="margin-left:auto">›</span>
+    </div>
+      <div class="page-body">
+      <div class="card">
+        <div class="filter-bar">
+          <span class="fitem"><label>账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
+          <span class="fitem"><label>是否AI托管</label><select id="q-hosted"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
+          <span class="fitem"><label>单聊AI托管</label><select id="q-single"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
+          <span class="fitem"><label>群聊AI托管</label><select id="q-group"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
+          <span class="fitem"><label>是否在线</label><select id="q-online"><option value="">全部</option><option value="1">在线</option><option value="0">离线</option></select></span>
+          <span class="factions"><button class="btn primary" id="btn-query">查询</button><button class="btn" id="btn-reset">重置</button></span>
+        </div>
+        <div class="toolbar"><div class="toolbar-actions"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步</button></div></div>
+      </div>
+      <div class="table-card">
+        <table style="min-width:1560px">
+          <thead><tr>
+            <th style="min-width:80px">供应商</th><th style="min-width:110px">账号ID</th><th style="min-width:170px">账号名称</th><th style="min-width:64px">头像</th><th style="min-width:130px">企业名称</th><th style="min-width:118px">手机号</th><th style="min-width:84px">联系人</th><th style="min-width:120px">开启AI接管联系人数</th><th style="min-width:160px">设备名称</th><th style="min-width:124px">设备保管者</th><th style="min-width:170px">是否AI托管</th><th style="min-width:84px">是否在线</th><th style="min-width:104px">所属组</th><th style="min-width:142px">更新时间</th><th style="min-width:80px">操作</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div class="pager"><span id="pager-info"></span><span class="page-size">10条/页</span><button class="page-num">‹</button><button class="page-num active">1</button><button class="page-num">›</button></div>
+      </div>
+      </div>
+    </main>
+  </div>
+</div>
+  <div class="modal" id="mode-modal">
+    <div class="modal-box" style="width:480px">
+      <div class="modal-head"><span>编辑AI托管配置</span><button type="button" class="modal-close" id="mode-close" aria-label="关闭">×</button></div>
+      <div class="modal-body">
+        <div class="acct-line">账号：<span id="mode-acct"></span></div>
+        <div class="hosted-line">
+          <span class="hosted-label">是否AI托管</span>
+          <label class="switch"><input type="checkbox" id="opt-hosted"><span class="slider"></span></label>
+        </div>
+        <label class="opt"><input type="checkbox" id="opt-single"><span><span class="t">单聊AI托管</span><br><span class="d">AI 自动承接该账号的单聊进线会话</span></span></label>
+        <label class="opt"><input type="checkbox" id="opt-group"><span><span class="t">群聊AI托管</span><br><span class="d">AI 自动承接该账号的客户群聊会话</span></span></label>
+        <div class="opt-err" id="opt-err">开启AI托管后，请至少勾选一种托管方式</div>
+      </div>
+      <div class="modal-foot"><button type="button" class="btn" id="mode-cancel">取消</button><button type="button" class="btn primary" id="mode-submit">保存</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="off-modal">
+    <div class="modal-box">
+      <div class="modal-head"><span>关闭AI托管确认</span><button type="button" class="modal-close" id="off-close" aria-label="关闭">×</button></div>
+      <div class="modal-body"><div class="warn-text">确认关闭账号 <b id="off-acct"></b> 的AI托管？<br>关闭后该账号进线会话恢复原有承接方式，单聊、群聊托管配置将被清除。（影响口径待确认）</div></div>
+      <div class="modal-foot"><button type="button" class="btn" id="off-cancel">取消</button><button type="button" class="btn primary" id="off-submit">确认关闭</button></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+<script>
+function showToast(msg,cls){
+  var t=document.getElementById('toast');
+  t.className='toast '+(cls||'ok');
+  t.textContent=msg;
+  t.style.display='block';
+  clearTimeout(showToast._t);
+  showToast._t=setTimeout(function(){t.style.display='none'},2400);
+}
+/* Inline, deterministic sample records. No production API or inference. */
+(function(){
+'use strict';
+const REASONS=['用户主动要求人工','意图未识别','意图误判','知识缺失','知识命中但未解决','流程未触发','流程无法完成','系统接口异常','业务规则要求人工','高风险问题兜底'];
+const CODES=['USER_REQUEST','INTENT_UNKNOWN','INTENT_WRONG','KNOWLEDGE_MISSING','KNOWLEDGE_UNRESOLVED','FLOW_NOT_TRIGGERED','FLOW_INCOMPLETE','INTERFACE_ERROR','BUSINESS_RULE','HIGH_RISK'];
+const reasonExamples=['用户明确提出“请帮我转人工”。','当前表达未匹配到可用业务意图。','原识别结果与客户澄清内容不一致，转人工核实。','现有知识库没有覆盖此问题。','已命中知识，但客户反馈仍未解决。','命中场景后未启动对应业务流程。','流程缺少必要资料，无法继续完成。','调用业务接口超时，未取得结果。','此业务按规则必须由人工核实。','涉及高风险诉求，停止自动答复并转人工。'];
+const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),hosted:[1,2,5,6,8].includes(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
+const NAMES=['王女士','李先生','张女士','赵先生','刘女士','陈先生','孙女士','周先生','吴女士','郑先生','冯女士','蒋先生'];
+const MIDS=[1,1,2,3,4,4,5,6,7,8,9,5];
+const TODAY=new Date(); TODAY.setHours(0,0,0,0);
+function day(offset){const d=new Date(TODAY);d.setDate(d.getDate()+offset);return d;}
+function pad(x,n=2){return String(x).padStart(n,'0');}
+function fmt(value,ms=false){if(value===null||value===undefined)return '—';const d=new Date(value);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())+(ms?'.'+pad(d.getMilliseconds(),3):'');}
+function date(value){return fmt(value).slice(0,10);}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const params=new URLSearchParams(location.search);
+let state={accounts:{},sessions:{}};
+try{const x=JSON.parse(params.get('demo')||localStorage.getItem('aic-v05')||'null');if(x&&typeof x==='object'){state.accounts=x.accounts||{};state.sessions=x.sessions||{};}}catch(_){}
+function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{hosted:raw.hosted===true,single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
+function save(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05',value);}catch(_){} params.set('demo',value);const current=new URL(location.href);current.searchParams.set('demo',value);try{history.replaceState(null,'',current.href);}catch(_){} }
+function saveAccount(id,config){state.accounts[id]={hosted:!!config.hosted,single:!!config.single,group:!!config.group};save();}
+function url(file,args={}){const u=new URL(file,location.href);u.search='';for(const k of ['embed','sandbox'])if(params.has(k))u.searchParams.set(k,params.get(k));if(Object.keys(state.accounts).length||Object.keys(state.sessions).length)u.searchParams.set('demo',JSON.stringify(state));for(const [k,v]of Object.entries(args))if(v!==null&&v!==undefined&&v!=='')u.searchParams.set(k,String(v));return u.href;}
+const sessions=NAMES.map((name,i)=>({id:'S_'+pad(i+1,4),cid:'C_'+(88001+i),cname:name,mid:'wx_100'+MIDS[i],mname:'会员助理 小菲'+MIDS[i],supplier:'艾客',corp:MIDS[i]%2?'索菲亚家居':'索菲亚精选',configured:i%3!==1,records:[]}));
+const templates=[
+ ['想了解会员权益。','您可以在会员中心查看当前等级对应的权益。','会员权益咨询','会员权益说明','会员中心 → 我的权益'],
+ ['积分在哪里查看？','请进入会员中心的“我的积分”查看余额和明细。','积分查询','积分查询指南','会员中心 → 我的积分'],
+ ['我想预约到店看看柜体颜色。','可以，请提供希望到店的日期，会员助理会为您确认。','到店预约','到店预约说明','收集预约日期后确认'],
+ ['订单的安装进度在哪里看？','可以从订单详情进入“安装进度”查看最新状态。','安装进度查询','安装服务查询指南','订单详情 → 安装进度'],
+ ['积分过期规则是什么？','不同活动的积分有效期可能不同，请以积分明细显示的到期日为准。','积分有效期','积分有效期说明','核对积分明细到期日'],
+ ['我能修改预约时间吗？','可以，请提供预约单号和希望变更的时间，以便为您核实。','预约修改','预约变更说明','核实预约单号后办理']
+];
+const STAGES=['意图识别','知识检索','匹配决策','回复生成','回复后处理','回复发送'];
+for(let sidx=0;sidx<sessions.length;sidx++){
+ const s=sessions[sidx], count=sidx===0?44:4+(sidx%3);
+ for(let j=0;j<count;j++){
+  const seq=j+1, tmpl=templates[j%templates.length];let kind;
+  if(sidx===0)kind=j===43?'pending':j%4===1?'human':'ai';
+  else if([2,3,8,10].includes(sidx))kind=j===count-1?'pending':'human';
+  else kind=j===count-1?'pending':j%3===1?'transfer':'ai';
+  let reasonIndex=-1;
+  if(sidx===0&&j>=6&&j<=15){reasonIndex=j-6;kind=reasonIndex===7?'error':'transfer';}
+  else if(kind==='transfer')reasonIndex=(sidx+j)%10;
+  const off=sidx===0?(j<14?-2:j<28?-1:0):-(sidx%3);
+  const base=day(off);base.setHours(9+Math.floor((j%14)/4),10+(j%4)*10,(j*7)%50,0);
+  const sentAt=base.getTime(), receivedAt=sentAt+120+(j%5)*30;
+  const durations=[180+(j%4)*70,260+(j%5)*160,90+(j%3)*40,640+(j%7)*340,100+(j%3)*80,80+(j%4)*50];
+  let at=receivedAt;const stages=durations.map((duration,i)=>({name:STAGES[i],duration,at:(at+=duration)}));
+  const r={id:'CM_'+pad(sidx+1,2)+'_'+pad(seq,3),sid:s.id,cid:s.cid,cname:s.cname,mid:s.mid,mname:s.mname,supplier:s.supplier,corp:s.corp,kind,sentAt,receivedAt,question:tmpl[0],type:'文本',replyType:'文本',intent:tmpl[2],knowledge:tmpl[3],strategy:tmpl[4],reason:reasonIndex>=0?{code:CODES[reasonIndex],label:REASONS[reasonIndex],detail:reasonExamples[reasonIndex],stage:reasonIndex===7?'知识检索':'匹配决策',type:kind==='error'?'异常':'转人工'}:null,traceId:'TR_'+pad(sidx+1,2)+'_'+pad(seq,3),stages,replyId:null,reply:null,replyAt:null,ai:false,total:null,trace:kind!=='human'&&kind!=='pending'};
+  if(kind==='ai'||kind==='human'){
+   r.replyId='RM_'+pad(sidx+1,2)+'_'+pad(seq,3);r.reply=kind==='ai'?tmpl[1]:'您好，我是'+s.mname+'，已收到您的问题，我为您进一步核实。';r.replyAt=kind==='ai'?at:receivedAt+85000;r.ai=kind==='ai';r.total=r.ai?at-receivedAt:null;
+  }
+  if(r.reason){
+   const messagesByReason=['我想找人工客服，请帮我转人工。','嗯那个就是之前那个，怎么弄？','不是查积分余额，我是想问积分到期日。','这款新上市的配色有没有维护手册？','我按你给的积分查询方法操作了，还是查不到。','我已提交预约，为什么预约流程没有开始？','预约修改做到一半，缺少资料，无法继续。','请帮我查一下订单接口返回的进度。','我想办理一项需要人工身份核实的业务。','我的账户疑似被盗用，请帮我处理安全问题。'];
+   const intents=['人工客服诉求','未识别','积分查询（本次误判，实际为积分有效期咨询）','配色维护咨询','积分查询','到店预约','预约修改','安装进度查询','身份核实业务','账户安全'];
+   r.question=messagesByReason[reasonIndex];r.intent=intents[reasonIndex];
+   r.strategy=kind==='error'?'记录接口异常，停止本次自动答复':'转人工核实并处理';
+   r.eventAt=stages[reasonIndex===7?1:2].at;r.stages=stages.slice(0,reasonIndex===7?2:3);
+   if(reasonIndex===7)r.knowledge='订单进度接口';
+   if(reasonIndex===0)r.knowledge='未检索（用户直接要求人工）';
+  }
+  if(kind==='human'||kind==='pending')r.stages=[];
+  if(sidx===0&&j===40){r.type='图片';r.question='[图片] 柜体颜色参考图';r.intent='配色咨询';r.knowledge='柜体配色说明';r.strategy='参考色以实物样板为准，建议到店查看';r.reply='已收到您的配色参考图。图片颜色可能与实物存在差异，建议您到店查看样板后确认。';}
+  // Recorded candidate arrays for this deterministic prototype, not live inference.
+  r.intentResults=[];r.knowledgeResults=[];
+  r.intentSummary='暂无意图识别记录';r.knowledgeSummary='暂无知识匹配记录';
+  if(r.trace){
+   const code=r.reason?.code, multi=r.ai&&j%2===0;
+   r.intentSummary=code==='INTENT_UNKNOWN'?'已执行识别，未获得可用意图结果。':'以下为当次日志中的识别结果，按记录顺序展示。';
+   if(code!=='INTENT_UNKNOWN'){
+    r.intentResults.push({result:r.intent,score:r.ai?'0.92':code==='INTERFACE_ERROR'?null:'0.46',reason:r.ai?'问题表达与该意图的适用范围一致。':r.reason.detail,scene:r.intent,strategy:r.strategy,status:r.ai?'已采用':'已记录'});
+    if(multi){const other=templates[(j+1)%templates.length];r.intentResults.push({result:other[2],score:'0.61',reason:'包含相近业务词，但没有该意图所需的明确诉求。',scene:other[2],strategy:other[4],status:'未采用'},{result:'其他会员服务咨询',score:j%4===0?0:null,reason:j%4===0?'未发现支持该候选的业务信息。':'原始日志未记录该候选的评分，保留结果供核对。',scene:'会员服务',strategy:null,status:'未采用'});}
+   }
+   r.knowledgeSummary=r.ai?'已记录候选及过滤结果，是否采用以当次日志为准。':code==='USER_REQUEST'?'用户直接要求人工，未执行知识检索。':code==='INTERFACE_ERROR'?'接口异常，未获得有效检索结果。':code==='KNOWLEDGE_UNRESOLVED'?'命中知识并尝试提供方案，但客户反馈仍未解决。':'已执行检索，未获得可直接解决问题的有效匹配。';
+   if(r.ai||code==='KNOWLEDGE_UNRESOLVED'){
+    r.knowledgeResults.push({result:r.knowledge,score:r.ai?'0.89':'0.82',reason:r.ai?'内容适用于本次问题，版本有效。':'条目内容相关，但已有方案未解决客户问题。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v1',filter:'有效版本，适用范围一致',status:r.ai?'已采用':'已命中·未解决'});
+    if(multi)r.knowledgeResults.push({result:r.knowledge+'（历史版本）',score:'0.86',reason:'内容相关，但该版本已过期，不能用于本次答复。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v0',filter:'版本已过期，已排除',status:'未采用'},{result:'会员服务通用说明',score:j%4===0?null:'0.37',reason:j%4===0?'仅记录了召回内容，匹配评分未采集。':'内容较宽泛，不能直接回答本次具体问题。',source:'会员服务知识库 / 通用说明 / 示例快照 v1',filter:'有效版本，但不满足当前问句范围',status:'未采用'});
+   }
+  }
+  s.records.push(r);
+ }
+}
+function messages(s){return s.records.flatMap(r=>{
+ const items=[{id:r.id,role:'customer',text:r.question,type:r.type,at:r.sentAt,record:r}];
+ if(r.reply)items.push({id:r.replyId,role:'member',text:r.reply,type:r.replyType,at:r.replyAt,ai:r.ai,record:r});
+ if(r.reason)items.push({id:r.traceId,role:'event',text:r.kind==='error'?'AI处理异常':'AI转人工',at:r.eventAt,record:r});return items;
+}).sort((a,b)=>a.at-b.at||a.id.localeCompare(b.id));}
+function enabled(s){const a=account(s.mid);return a.hosted&&a.single&&(state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured);}
+function eligible(s){const a=account(s.mid);return a.hosted&&a.single;}
+function setSession(id,value){const s=sessions.find(x=>x.id===id);if(!s||value&&!eligible(s))return false;state.sessions[id]=!!value;save();return true;}
+const records=sessions.flatMap(s=>s.records).sort((a,b)=>b.sentAt-a.sentAt||a.id.localeCompare(b.id));
+function summary(s){const msgs=messages(s).filter(m=>m.role!=='event');return{count:msgs.length,created:Math.min(...msgs.map(m=>m.at)),last:Math.max(...msgs.map(m=>m.at)),ai:s.records.some(r=>r.ai)};}
+function reasonOptions(){return REASONS.map((r,i)=>'<option value="'+CODES[i]+'">'+r+'</option>').join('');}
+function traceHTML(r){
+ if(!r||!r.trace)return '<div class="empty-panel">暂无AI决策追溯记录</div>';
+ const s=sessions.find(s=>s.id===r.sid),history=messages(s).filter(x=>x.role!=='event'&&x.at<r.sentAt).slice(-6);
+ const recorded=v=>v===null||v===undefined||v===''?'未记录':v;
+ const kv=(k,v)=>'<div class="trace-kv"><span>'+esc(k)+'</span><div>'+esc(recorded(v))+'</div></div>';
+ const section=(n,title,body)=>'<section class="trace-step"><h4><i>'+n+'</i>'+title+'</h4>'+body+'</section>';
+ const results=(type,items,empty)=>{
+  const known=Array.isArray(items),list=known?items:[],intent=type==='intent';
+  if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
+  return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b><span>记录顺序 · 点击逐条展开</span></div>'+(list.length?list.map((item,i)=>{
+   const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
+   return '<details class="trace-result" data-result-index="'+i+'"'+(list.length===1?' open':'')+'><summary><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b>'+(item.scoreScale!==null&&item.scoreScale!==undefined&&item.scoreScale!==''?'<small>尺度：'+esc(item.scoreScale)+'</small>':'')+'</span></summary><div class="trace-result-body">'+kv('评分原因',item.reason)+(intent?kv('业务场景',item.scene)+kv('解决策略',item.strategy):kv('知识来源',item.source)+kv('过滤结果',item.filter))+'</div></details>';
+  }).join(''):'<div class="trace-result-empty">'+esc(empty)+'</div>')+'</div>';
+ };
+ const success=r.ai,failed=r.kind==='error',transfer=r.kind==='transfer';
+ const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
+ const prompt='系统：仅依据当次有效知识答复，不确定时转人工。\n知识：'+(success?r.knowledge+'（示例快照 v1）':'未取得可直接回复的有效知识。')+'\n上下文：\n'+context+'\n问句：'+r.question;
+ return '<div class="trace-summary"><span class="tag online">示例快照</span><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b><small>追溯ID '+esc(r.traceId)+'</small><small>客户消息ID '+esc(r.id)+' · 会话 '+esc(r.sid)+'</small></div>'
+ + (r.reason?'<div class="reason-box">'+kv('归因类型',r.reason.type)+kv('原因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
+ +section('1','输入 · 模型与触发消息',kv('模型','客服模型-示例 v1')+kv('客户消息原文',r.question)+kv('触发时间',fmt(r.receivedAt,true))+kv('触发消息ID',r.id)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
+ +section('2','理解 · 意图识别',kv('识别结果说明',r.intentSummary)+results('intent',r.intentResults,'暂无意图结果；识别状态见上方记录。'))
+ +section('3','判断与决策 · 知识匹配',kv('检索及过滤说明',r.knowledgeSummary)+results('knowledge',r.knowledgeResults,'暂无知识结果；未检索、无匹配或异常以日志说明为准。')+kv('是否转人工',transfer?'是':failed?'未执行；当前记录为异常':'否'))
+ +section('4','输出 · 回复生成与后处理','<details><summary>记录的Prompt（系统＋知识＋上下文＋问句）</summary><pre>'+esc(success?prompt:'本次未进入回复生成；未形成生成Prompt。')+'</pre></details>'+kv('LLM生成结果',success?r.reply:'未生成回复')+kv('格式化 / 合规过滤结果',success?'通过；保留原回复内容，无额外修改。':'未执行')+kv('最终输出回复',success?r.reply:'未发送AI回复')+kv('发送成功时间',success?fmt(r.replyAt,true):'—'));
+}
+window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,sessions,records,account,saveAccount,enabled,eligible,setSession,messages,summary,traceHTML,reasonOptions,fmt,date,day,esc,url,params};
+})();
+
+(function(){
+'use strict';const D=window.AIDemo;
+window.showToast=function(msg,cls){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='toast '+(cls||'ok');t.style.display='block';clearTimeout(window.showToast.timer);window.showToast.timer=setTimeout(()=>t.style.display='none',2300);};
+const PAGES={'供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI回复响应时长管理':'AI回复响应时长管理_v1.0.html','智能体管理':'智能体管理_v1.0.html','工作流管理':'工作流管理_v1.0.html'};
+document.querySelectorAll('.js-nav').forEach(el=>{el.tabIndex=0;el.setAttribute('role','link');const go=()=>{const file=PAGES[el.dataset.page];if(file)location.href=D.url(file);};el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go();}});});
+for(const [id,selector]of [['nav-third','.nav-item.child:not(.ai-child):not(.agent-child)'],['nav-ai','.nav-item.ai-child'],['nav-agent','.nav-item.agent-child']]){const el=document.getElementById(id);if(el){el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-expanded','true');const toggle=()=>{const open=el.classList.toggle('open');el.setAttribute('aria-expanded',String(open));document.querySelectorAll(selector).forEach(c=>c.style.display=open?'flex':'none');};el.addEventListener('click',toggle);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});}}
+document.querySelectorAll('.js-nothing').forEach(el=>el.addEventListener('click',()=>showToast('本次原型仅包含三方账号管理、AI会话管理与智能体管理相关页面。','info')));
+if(D.params.get('focus'))document.getElementById(D.params.get('focus'))?.classList.add('focus-target');
+let lastFocus;window.openDrawer=(title,html,foot='')=>{const mask=document.getElementById('drawer-mask');lastFocus=document.activeElement;mask.querySelector('#drawer-title').textContent=title;mask.querySelector('#drawer-body').innerHTML=html;mask.querySelector('#drawer-foot').innerHTML=foot;mask.classList.add('open');mask.querySelector('#drawer-close').focus();mask.querySelector('#drawer-body').scrollTop=0;};
+const close=()=>{document.getElementById('drawer-mask')?.classList.remove('open');lastFocus?.focus();};document.getElementById('drawer-close')?.addEventListener('click',close);
+document.addEventListener('keydown',e=>{const drawer=document.getElementById('drawer-mask');if(!drawer?.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='Tab'){const f=[...drawer.querySelectorAll('button,a,summary,input,select')].filter(x=>x.offsetParent!==null);if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f.at(-1).focus();}else if(!e.shiftKey&&document.activeElement===f.at(-1)){e.preventDefault();f[0].focus();}}});
+})();
+(function(){
+  var rows=[
+    {supplier:'艾客',uid:'wx_1001',name:'会员助理 小菲1',corp:'索菲亚家居',phone:'138****0001',contact:'王店长',count:36,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',hosted:true,modes:['单聊','群聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1002',name:'会员助理 小菲2',corp:'索菲亚家居',phone:'138****0002',contact:'王店长',count:12,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',hosted:true,modes:['单聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1003',name:'会员助理 小菲3',corp:'索菲亚家居',phone:'138****0003',contact:'王店长',count:5,device:'iPhone 13（挂机机B）',keeper:'私域运营-小林',hosted:false,modes:[],online:true,group:'售前二组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1004',name:'会员助理 小菲4',corp:'索菲亚家居',phone:'139****0004',contact:'李会员',count:0,device:'iPhone 14（挂机机B）',keeper:'会员服务-阿珍',hosted:false,modes:[],online:false,group:'会员服务组',time:'2026-09-02 21:30'},
+    {supplier:'艾客',uid:'wx_1005',name:'会员助理 小菲5',corp:'索菲亚家居',phone:'139****0005',contact:'李会员',count:48,device:'iPhone 14（挂机机C）',keeper:'售前-大伟',hosted:true,modes:['单聊'],online:true,group:'售前二组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1006',name:'会员助理 小菲6',corp:'索菲亚家居',phone:'137****0006',contact:'张售后',count:21,device:'iPhone 14（挂机机C）',keeper:'售后-琪琪',hosted:true,modes:['单聊','群聊'],online:false,group:'售后一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1007',name:'会员助理 小菲7',corp:'索菲亚家居',phone:'137****0007',contact:'张售后',count:0,device:'iPhone 15（挂机机D）',keeper:'直播-阿凯',hosted:false,modes:[],online:true,group:'直播运营组',time:'2026-09-02 18:10'},
+    {supplier:'艾客',uid:'wx_1008',name:'会员助理 小菲8',corp:'索菲亚家居',phone:'136****0008',contact:'周活动',count:9,device:'iPhone 15（挂机机D）',keeper:'会员服务-阿珍',hosted:true,modes:['群聊'],online:true,group:'会员服务组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1009',name:'会员助理 小菲9',corp:'索菲亚家居',phone:'136****0009',contact:'周活动',count:0,device:'iPhone 15（挂机机E）',keeper:'私域运营-小林',hosted:false,modes:[],online:false,group:'私域运营组',time:'2026-09-01 20:45'}
+  ];
+  /* 由「客户会话管理」的「去配置」跳转：带 name 自动填入账号名称并查询，带 uid 精确定位到该账号记录。 */
+  var initUid=(AIDemo.params.get('uid')||'').trim();
+  var initName=(AIDemo.params.get('name')||'').trim();
+  if(initName)document.getElementById('q-name').value=initName;
+  rows.forEach(function(r){var a=AIDemo.account(r.uid);r.hosted=a.hosted;r.modes=[];if(a.single)r.modes.push('单聊');if(a.group)r.modes.push('群聊');});
+  function persistAccount(){AIDemo.saveAccount(current.uid,{hosted:current.hosted,single:current.modes.indexOf('单聊')>=0,group:current.modes.indexOf('群聊')>=0});}
+  var tbody=document.getElementById('tbody');
+  var pager=document.getElementById('pager-info');
+  var toastEl=document.getElementById('toast');
+  var toastTimer=null;
+  var current=null;
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function modeBadges(m){return m.map(function(x){return '<span class="tag mode">'+esc(x)+'</span>'}).join('')}
+  function currentList(){
+    var kw=(document.getElementById('q-name').value||'').trim();
+    var h=document.getElementById('q-hosted').value;
+    var single=document.getElementById('q-single').value;
+    var group=document.getElementById('q-group').value;
+    var o=document.getElementById('q-online').value;
+    var list=rows;
+    if(kw)list=list.filter(function(r){return r.name.indexOf(kw)>=0});
+    if(initUid)list=list.filter(function(r){return r.uid===initUid});
+    if(h!=='')list=list.filter(function(r){return (r.hosted?'1':'0')===h});
+    if(single!=='')list=list.filter(function(r){return (r.modes.indexOf('单聊')>=0?'1':'0')===single});
+    if(group!=='')list=list.filter(function(r){return (r.modes.indexOf('群聊')>=0?'1':'0')===group});
+    if(o!=='')list=list.filter(function(r){return (r.online?'1':'0')===o});
+    return list.slice().sort(function(a,b){return String(b.time).localeCompare(String(a.time))||String(b.uid).localeCompare(String(a.uid))});
+  }
+  function render(){
+    var list=currentList();
+    if(!list.length){tbody.innerHTML='<tr class="empty-row"><td colspan="15">暂无数据</td></tr>';pager.textContent='共 0 条';return}
+    tbody.innerHTML=list.map(function(r,i){
+      var idx=rows.indexOf(r);
+      return '<tr'+(initUid&&r.uid===initUid?' class="focus-target"':'')+'>'
+        +'<td class="strong">'+esc(r.supplier)+'</td><td class="weak">'+esc(r.uid)+'</td><td class="strong">'+esc(r.name)+'</td>'
+        +'<td><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--amber);color:var(--amber-deep);align-items:center;justify-content:center;font-size:12px;font-weight:700">菲</span></td>'
+        +'<td>'+esc(r.corp)+'</td><td>'+esc(r.phone)+'</td><td>'+esc(r.contact)+'</td>'
+        +'<td class="weak">'+r.count+'</td>'
+        +'<td>'+esc(r.device)+'</td><td>'+esc(r.keeper)+'</td>'
+        +'<td><label class="switch"><input type="checkbox" data-i="'+idx+'" '+(r.hosted?'checked':'')+'><span class="slider"></span></label>'+modeBadges(r.modes)+'</td>'
+        +'<td>'+(r.online?'<span class="tag online">在线</span>':'<span class="tag offline">离线</span>')+'</td>'
+        +'<td>'+esc(r.group)+'</td><td class="weak">'+esc(r.time)+'</td>'
+        +'<td><a href="javascript:void(0)" style="color:var(--brand);cursor:pointer" class="lnk-edit" data-i="'+idx+'">编辑</a></td>'
+      +'</tr>';
+    }).join('');
+    pager.textContent='共 '+list.length+' 条';
+    Array.prototype.forEach.call(tbody.querySelectorAll('input[data-i]'),function(input){
+      input.addEventListener('click',function(e){e.preventDefault();toggleHost(parseInt(input.getAttribute('data-i'),10))});
+    });
+    Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-edit'),function(a){
+      a.addEventListener('click',function(){openConfig(parseInt(a.getAttribute('data-i'),10))});
+    });
+  }
+  var modeModal=document.getElementById('mode-modal');
+  var offModal=document.getElementById('off-modal');
+  function openConfig(i){
+    current=rows[i];
+    document.getElementById('mode-acct').textContent=current.name+'（'+current.uid+'）';
+    document.getElementById('opt-single').checked=current.modes.indexOf('单聊')>=0;
+    document.getElementById('opt-group').checked=current.modes.indexOf('群聊')>=0;
+    document.getElementById('opt-hosted').checked=current.hosted;
+    syncHostedView();
+    document.getElementById('opt-err').classList.remove('show');
+    modeModal.classList.add('active');
+  }
+  function syncHostedView(){
+    var on=document.getElementById('opt-hosted').checked;
+    document.getElementById('opt-single').disabled=!on;
+    document.getElementById('opt-group').disabled=!on;
+    document.getElementById('mode-modal').classList[on?'remove':'add']('hosted-off');
+  }
+  document.getElementById('opt-hosted').addEventListener('change',function(){
+    syncHostedView();
+    document.getElementById('opt-err').classList.remove('show');
+  });
+  function toggleHost(i){
+    current=rows[i];
+    if(!current.hosted){
+      openConfig(i);
+    }else{
+      document.getElementById('off-acct').textContent=current.name+'（'+current.uid+'）';
+      offModal.classList.add('active');
+    }
+    render();
+  }
+  function closeModals(){modeModal.classList.remove('active');offModal.classList.remove('active');render()}
+  document.getElementById('mode-close').addEventListener('click',closeModals);
+  document.getElementById('mode-cancel').addEventListener('click',closeModals);
+  document.getElementById('off-close').addEventListener('click',closeModals);
+  document.getElementById('off-cancel').addEventListener('click',closeModals);
+  Array.prototype.forEach.call(document.getElementById('tbody'),function(){});
+  document.getElementById('btn-query').addEventListener('click',render);
+  document.getElementById('btn-reset').addEventListener('click',function(){
+    document.getElementById('q-name').value='';
+    document.getElementById('q-hosted').value='';
+    document.getElementById('q-single').value='';
+    document.getElementById('q-group').value='';
+    document.getElementById('q-online').value='';
+    render();
+  });
+  document.getElementById('mode-submit').addEventListener('click',function(){
+    var hosted=document.getElementById('opt-hosted').checked;
+    var single=document.getElementById('opt-single').checked;
+    var group=document.getElementById('opt-group').checked;
+    var err=document.getElementById('opt-err');
+    if(hosted&&!single&&!group){err.classList.add('show');return}
+    err.classList.remove('show');
+    var wasHosted=current.hosted;
+    current.hosted=hosted;
+    current.modes=[];
+    if(hosted&&single)current.modes.push('单聊');
+    if(hosted&&group)current.modes.push('群聊');
+    current.time=AIDemo.fmt(Date.now()).slice(0,16);
+    persistAccount();
+    closeModals();
+    showToast(hosted?(wasHosted?'保存成功':'AI托管已开启'):'AI托管已关闭','ok');
+  });
+  document.getElementById('off-submit').addEventListener('click',function(){
+    current.hosted=false;
+    current.modes=[];
+    current.time=AIDemo.fmt(Date.now()).slice(0,16);
+    persistAccount();
+    closeModals();
+    showToast('AI托管已关闭','ok');
+  });
+  document.getElementById('btn-sync').addEventListener('click',function(){
+    var btn=document.getElementById('btn-sync');
+    if(btn.disabled)return;
+    btn.disabled=true;btn.textContent='同步中…';
+    setTimeout(function(){
+      btn.disabled=false;btn.textContent='同步';
+      render();
+      showToast('已重新同步托管账号','ok');
+    },800);
+  });
+  render();
+})();
+</script>
+</body>
+</html>
