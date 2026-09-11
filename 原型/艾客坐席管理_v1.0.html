@@ -182,16 +182,6 @@ document.getElementById('btn-filter-close').addEventListener('click',function(){
 document.getElementById('btn-query').addEventListener('click',function(){render();setFilterOpen(false);});
 document.getElementById('q-name').addEventListener('keydown',function(e){if(e.key==='Enter'){render();setFilterOpen(false);}});
 document.getElementById('btn-reset').addEventListener('click',function(){resetFilters();render();});
-function csvStamp(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());}
-function downloadCsv(filename,matrix){var cell=function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'};var text='\ufeff'+matrix.map(function(row){return row.map(cell).join(',')}).join('\r\n');var blob=new Blob([text],{type:'text/csv;charset=utf-8'});var url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url)},1500);}
-// 导出：按当前筛选结果导出全部命中记录（示例数据）
-document.getElementById('btn-export').addEventListener('click',function(){
-  var cols=['用户账号ID','账号','账号名称','所属部门','是否客服','创建时间','启用状态'];
-  var list=currentList();
-  if(!list.length){showToast('当前筛选条件下没有可导出的记录','fail');return;}
-  downloadCsv('艾客坐席管理_'+csvStamp()+'.csv',[cols].concat(list.map(function(r){return [r.id,r.account,r.name,r.dept,r.isAgent?'是':'否',r.createdAt,r.enabled?'启用':'禁用']})));
-  showToast('已导出 '+list.length+' 条记录','ok');
-});
 filterPopover.addEventListener('click',function(e){e.stopPropagation();});
 document.addEventListener('click',function(){setFilterOpen(false);});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')setFilterOpen(false);});

@@ -597,16 +597,6 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   document.getElementById('btn-filter-close').addEventListener('click',function(){setFilterOpen(false);});
   document.getElementById('btn-query').addEventListener('click',function(){render();setFilterOpen(false);});
   document.getElementById('btn-reset').addEventListener('click',function(){document.getElementById('q-type').value='';render()});
-function csvStamp(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());}
-function downloadCsv(filename,matrix){var cell=function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'};var text='\ufeff'+matrix.map(function(row){return row.map(cell).join(',')}).join('\r\n');var blob=new Blob([text],{type:'text/csv;charset=utf-8'});var url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url)},1500);}
-  // 导出：按当前筛选结果导出全部命中记录（示例数据）
-  document.getElementById('btn-export').addEventListener('click',function(){
-    var cols=['ID','供应商类型','应用ID','应用Key','创建人','创建时间','最后更新人','最后更新时间'];
-    var list=currentList();
-    if(!list.length){showToast('当前筛选条件下没有可导出的记录','fail');return;}
-    downloadCsv('供应商管理_'+csvStamp()+'.csv',[cols].concat(list.map(function(r){var cfg=r.cfg||{};return [r.id,r.type||'',cfg.appid||'',cfg.key||'',r.creator,r.time,r.updator,r.utime]})));
-    showToast('已导出 '+list.length+' 条记录','ok');
-  });
   filterPopover.addEventListener('click',function(e){e.stopPropagation();});document.addEventListener('click',function(){setFilterOpen(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')setFilterOpen(false);});
   var ECFG_PAIRS=[['e-url','f-e-url'],['e-appid','f-e-appid'],['e-key','f-e-key'],['e-secret','f-e-secret'],['e-token','f-e-token'],['e-aes','f-e-aes']];
   function setEditSwitch(on){

@@ -94,15 +94,6 @@ function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribu
 filterTrigger.addEventListener('click',function(e){e.stopPropagation();setFilterOpen(filterPopover.hidden);});
 document.getElementById('btn-filter-close').addEventListener('click',function(){setFilterOpen(false);});
 document.getElementById('btn-query').addEventListener('click',function(){query();setFilterOpen(false);});document.getElementById('q-name').addEventListener('keydown',function(e){if(e.key==='Enter'){query();setFilterOpen(false);}});document.getElementById('btn-reset').addEventListener('click',function(){document.getElementById('q-agent-type').value='';document.getElementById('q-type').value='';document.getElementById('q-name').value='';filtered=ordered(rows);render();});
-function csvStamp(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());}
-function downloadCsv(filename,matrix){var cell=function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'};var text='\ufeff'+matrix.map(function(row){return row.map(cell).join(',')}).join('\r\n');var blob=new Blob([text],{type:'text/csv;charset=utf-8'});var url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url)},1500);}
-// 导出：按当前筛选结果导出全部命中记录（示例数据）
-document.getElementById('btn-export').addEventListener('click',function(){
- var cols=['ID','智能体类型','工作流类型','工作流名称','工作流ID','创建人','创建时间','最后更新人','最后更新时间'];
- if(!filtered.length){showToast('当前筛选条件下没有可导出的记录','fail');return;}
- downloadCsv('工作流管理_'+csvStamp()+'.csv',[cols].concat(filtered.map(function(r){return [r.id,r.agentType,r.type,r.name,r.workflowId,r.creator,r.ctime,r.updater,r.utime]})));
- showToast('已导出 '+filtered.length+' 条记录','ok');
-});
 filterPopover.addEventListener('click',function(e){e.stopPropagation();});document.addEventListener('click',function(){setFilterOpen(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')setFilterOpen(false);});
 var modal=document.getElementById('form-modal'), inputs={agentType:document.getElementById('i-agent-type'),type:document.getElementById('i-type'),name:document.getElementById('i-name'),workflowId:document.getElementById('i-workflow-id')};
 function clearErrors(){['f-agent-type','f-type','f-name','f-workflow-id'].forEach(function(id){document.getElementById(id).classList.remove('invalid');});}

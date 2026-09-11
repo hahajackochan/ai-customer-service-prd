@@ -660,16 +660,6 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     document.getElementById('q-online').value='';
     render();
   });
-function csvStamp(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());}
-function downloadCsv(filename,matrix){var cell=function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'};var text='\ufeff'+matrix.map(function(row){return row.map(cell).join(',')}).join('\r\n');var blob=new Blob([text],{type:'text/csv;charset=utf-8'});var url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url)},1500);}
-  // 导出：按当前筛选结果导出全部命中记录（示例数据）
-  document.getElementById('btn-export').addEventListener('click',function(){
-    var cols=['供应商','账号ID','账号名称','手机号','开启AI接管联系人数','单聊AI接管','群聊AI接管','更新时间'];
-    var list=currentList();
-    if(!list.length){showToast('当前筛选条件下没有可导出的记录','fail');return;}
-    downloadCsv('AI托管账号_'+csvStamp()+'.csv',[cols].concat(list.map(function(r){return [r.supplier,r.uid,r.name,r.phone,r.count,r.modes.indexOf('单聊')>=0?'开启':'关闭',r.modes.indexOf('群聊')>=0?'开启':'关闭',r.time]})));
-    showToast('已导出 '+list.length+' 条记录','ok');
-  });
   filterPopover.addEventListener('click',function(e){e.stopPropagation();});document.addEventListener('click',function(){setFilterOpen(false);});
   document.getElementById('mode-submit').addEventListener('click',function(){
     current.modes=[];
