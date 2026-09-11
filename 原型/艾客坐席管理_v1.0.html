@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>原型 · 智能体管理 v1.0（中台后台样式）</title>
+<title>原型 · 艾客坐席管理 v1.0（中台后台样式）</title>
 <style>
 :root{--brand:#a86115;--amber:#f9ecc9;--ink:#303133;--text:#4a4f55;--muted:#606266;--weak:#909399;--line:#ebeef4;--head:#f2f5f9;--page:#f0f1f2;--danger:#f56c6c;--ok:#67c23a;--blue:#6f8db5}
 *{box-sizing:border-box}
@@ -50,6 +50,19 @@ button,input{font:inherit}
 .filter-popover .form-grid label.duration-filter{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .filter-popover .form-grid label.duration-filter>select{width:92px}.filter-popover .form-grid label.duration-filter>input{width:150px}.filter-popover .form-grid label.duration-filter .totalMaxWrap{display:inline-flex;align-items:center;gap:8px}.filter-popover .form-grid label.duration-filter .totalMaxWrap[hidden]{display:none}
 </style>
+<style>
+.switch{position:relative;display:inline-block;width:38px;height:20px;vertical-align:middle}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#c0c4cc;border-radius:20px;transition:.2s}
+.slider:before{content:"";position:absolute;height:16px;width:16px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+.slider{background:var(--brand)}
+.switch input:checked+.slider:before{transform:translateX(18px)}
+.switch-label{display:inline-flex;align-items:center;gap:7px}
+.state-text{font-size:12px;color:var(--muted)}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:12px;font-size:12px;border:1px solid}
+.tag.yes{background:#f0f9eb;color:#529b2e;border-color:#e1f3d8}
+.tag.no{background:#f4f4f5;color:#909399;border-color:#e9e9eb}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -64,10 +77,10 @@ button,input{font:inherit}
   <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.2" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M5 19.6c1.4-3.5 4-5.2 7-5.2s5.6 1.7 7 5.2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">用户管理</span><span class="chev">▾</span></div>
 
   <div class="nav-item nav-group open" data-target="agent-children" role="button" tabindex="0" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8 4.7h8M12 4.7V2.8M6.2 7.2h11.6a2 2 0 0 1 2 2v8.3a2 2 0 0 1-2 2H6.2a2 2 0 0 1-2-2V9.2a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><path d="M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span class="lbl">智能体管理</span><span class="chev">▾</span></div>
-  <div class="nav-children open" id="agent-children"><div class="nav-children-inner"><div class="nav-item child active js-nav" data-page="智能体管理"><span class="dot-ic">•</span><span class="lbl">智能体管理</span></div><div class="nav-item child js-nav" data-page="工作流管理"><span class="dot-ic">•</span><span class="lbl">工作流管理</span></div></div></div>
+  <div class="nav-children open" id="agent-children"><div class="nav-children-inner"><div class="nav-item child js-nav" data-page="智能体管理"><span class="dot-ic">•</span><span class="lbl">智能体管理</span></div><div class="nav-item child js-nav" data-page="工作流管理"><span class="dot-ic">•</span><span class="lbl">工作流管理</span></div></div></div>
 
   <div class="nav-item nav-group" data-target="third-children" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none"><circle cx="6.4" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.6" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="17.6" r="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M8.4 7.6l2.6 8M15.6 7.6l-2.6 8M8.8 6.4h6.4" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">三方账号管理</span><span class="chev">▾</span></div>
-  <div class="nav-children" id="third-children"><div class="nav-children-inner"><div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div><div class="nav-item child js-nav" data-page="艾客坐席管理"><span class="dot-ic">•</span><span class="lbl">艾客坐席管理</span></div><div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div></div></div>
+  <div class="nav-children" id="third-children"><div class="nav-children-inner"><div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div><div class="nav-item child active js-nav" data-page="艾客坐席管理"><span class="dot-ic">•</span><span class="lbl">艾客坐席管理</span></div><div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div></div></div>
 
   <div class="nav-item nav-group" data-target="ai-children" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
   <div class="nav-children" id="ai-children"><div class="nav-children-inner"><div class="nav-item child ai-child js-nav" data-page="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div><div class="nav-item child ai-child js-nav" data-page="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div><div class="nav-item child ai-child js-nav" data-page="AI回复响应管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应管理</span></div></div></div>
@@ -79,34 +92,23 @@ button,input{font:inherit}
   <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M12 4.6v2.8M12 16.6v2.8M4.6 12h2.8M16.6 12h2.8" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">页面管理</span><span class="chev">▾</span></div>
 </aside>
 <main class="main">
-  <div class="crumb-bar"><span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="crumb">智能体管理 / <b>智能体管理</b></span></div>
-  <div class="tab-bar"><span class="tab-nav">‹</span><span class="tab"><span class="dot"></span>智能体管理<span class="x" title="关闭（演示）">×</span></span><span class="tab-nav" style="margin-left:auto">›</span></div>
+  <div class="crumb-bar"><span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="crumb">三方账号管理 / <b>艾客坐席管理</b></span></div>
+  <div class="tab-bar"><span class="tab-nav">‹</span><span class="tab"><span class="dot"></span>艾客坐席管理<span class="x" title="关闭（演示）">×</span></span><span class="tab-nav" style="margin-left:auto">›</span></div>
   <div class="page-body">
     <div class="card list-filter-card">
-      <div class="list-toolbar"><div class="list-toolbar-primary"></div><div class="list-toolbar-actions"><button class="btn primary" id="btn-add">+ 新增</button><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button></div></div>
-      <div class="filter-popover compact" id="filter-popover" hidden>
-        <div class="filter-bar"><span class="fitem"><label for="q-key">应用Key</label><input id="q-key" placeholder="请输入应用Key"></span><div class="filter-footer"><button class="btn" id="btn-reset" type="button">重置</button><button class="btn" id="btn-filter-close" type="button">关闭</button><button class="btn primary" id="btn-query" type="button">提交</button></div></div>
+      <div class="list-toolbar"><div class="list-toolbar-primary"></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button></div></div>
+      <div class="filter-popover medium" id="filter-popover" hidden>
+        <form class="form-grid" id="filters"><label>账号<input id="q-account" placeholder="请输入账号"></label><label>账号名称<input id="q-name" placeholder="请输入账号名称"></label><label>所属部门<select id="q-dept"><option value="">全部</option><option value="客户服务部">客户服务部</option><option value="售前咨询部">售前咨询部</option><option value="售后服务部">售后服务部</option></select></label><label>是否客服<select id="q-agent"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></label><label>启用状态<select id="q-enabled"><option value="">全部</option><option value="1">启用</option><option value="0">禁用</option></select></label><div class="form-actions"><button class="btn" id="btn-reset" type="button">重置</button><button class="btn" id="btn-filter-close" type="button">关闭</button><button class="btn primary" id="btn-query" type="button">提交</button></div></form>
       </div>
     </div>
     <div class="table-card" id="agent-table">
-      <table><thead><tr><th style="min-width:72px">ID</th><th style="min-width:120px">智能体类型</th><th style="min-width:180px">应用Key</th><th style="min-width:180px">应用密钥</th><th>创建人</th><th style="min-width:164px">创建时间</th><th>最后更新人</th><th style="min-width:164px">最后更新时间</th><th style="min-width:80px">操作</th></tr></thead><tbody id="tbody"></tbody></table>
+      <table><thead><tr><th style="min-width:120px">用户账号ID</th><th style="min-width:170px">账号</th><th style="min-width:120px">账号名称</th><th style="min-width:140px">所属部门</th><th style="min-width:100px">是否客服</th><th style="min-width:164px">创建时间</th><th style="min-width:150px">启用状态</th></tr></thead><tbody id="tbody"></tbody></table>
       <div class="pager"><span id="pager-info">共 0 条</span><span class="page-size">10条/页</span><button class="page-num" disabled>‹</button><button class="page-num active">1</button><button class="page-num" disabled>›</button></div>
     </div>
   </div>
 </main>
 </div>
 
-<div class="modal" id="edit-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-box">
-    <div class="modal-head"><span id="modal-title">新增智能体</span><button type="button" class="modal-close" id="modal-close" aria-label="关闭">×</button></div>
-    <div class="modal-body">
-      <div class="field" id="field-type"><label for="input-type"><i>*</i>智能体类型</label><select id="input-type"><option value="">请选择智能体类型</option><option value="飞书aily-工作流应用">飞书aily-工作流应用</option></select><div class="err">请选择智能体类型</div></div>
-      <div class="field" id="field-key"><label for="input-key"><i>*</i>应用Key</label><input id="input-key" maxlength="100" autocomplete="off" placeholder="请输入应用Key"><div class="err">请输入应用Key</div></div>
-      <div class="field" id="field-secret"><label for="input-secret"><i>*</i>应用密钥</label><input id="input-secret" type="password" maxlength="200" autocomplete="new-password" placeholder="请输入应用密钥"><div class="err">请输入应用密钥</div><div class="tip">应用密钥仅在弹窗中维护，列表统一脱敏显示。</div></div>
-    </div>
-    <div class="modal-foot"><button type="button" class="btn" id="modal-cancel">取消</button><button type="button" class="btn primary" id="modal-save">保存</button></div>
-  </div>
-</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -139,63 +141,49 @@ document.querySelectorAll('.nav-group').forEach(function(el){
   el.addEventListener('click',toggle);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
 });
 document.querySelectorAll('.js-nothing').forEach(function(el){el.addEventListener('click',function(){showToast('该入口不在本次原型演示范围内','info');});});
-
 var rows=[
-  {id:3,type:'飞书aily-工作流应用',key:'agent_customer_service_prod',secret:'sk_prod_8Qw2Lm9X7Kp4',creator:'陈嘉豪',createdAt:'2026-09-09 09:30',updater:'陈嘉豪',updatedAt:'2026-09-09 09:30'}
+  {id:'U_10001',account:'aike_zhangmin',name:'张敏',dept:'客户服务部',isAgent:true,createdAt:'2026-09-01 09:20',enabled:true},
+  {id:'U_10002',account:'aike_lijia',name:'李佳',dept:'客户服务部',isAgent:true,createdAt:'2026-09-02 10:05',enabled:true},
+  {id:'U_10003',account:'aike_wangming',name:'王明',dept:'售后服务部',isAgent:true,createdAt:'2026-09-03 14:12',enabled:false},
+  {id:'U_10004',account:'aike_chenhao',name:'陈浩',dept:'售前咨询部',isAgent:false,createdAt:'2026-09-05 11:30',enabled:true},
+  {id:'U_10005',account:'aike_zhaolei',name:'赵磊',dept:'客户服务部',isAgent:false,createdAt:'2026-09-08 16:40',enabled:false}
 ];
-var nextId=4,editingId=null,lastFocus=null;
-var tbody=document.getElementById('tbody'),modal=document.getElementById('edit-modal'),title=document.getElementById('modal-title');
-var typeInput=document.getElementById('input-type'),keyInput=document.getElementById('input-key'),secretInput=document.getElementById('input-secret');
+var tbody=document.getElementById('tbody');
 function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function maskSecret(secret){var text=String(secret||'');var tail=text.slice(-4);return '••••••••'+tail;}
-function now(){var d=new Date();function p(v){return String(v).padStart(2,'0');}return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());}
-function visibleRows(){var q=document.getElementById('q-key').value.trim().toLowerCase();return rows.filter(function(r){return !q||r.key.toLowerCase().indexOf(q)!==-1;}).slice().sort(function(a,b){return String(b.createdAt).localeCompare(String(a.createdAt))||b.id-a.id;});}
+function currentList(){
+  var account=document.getElementById('q-account').value.trim().toLowerCase();
+  var name=document.getElementById('q-name').value.trim().toLowerCase();
+  var dept=document.getElementById('q-dept').value;
+  var agent=document.getElementById('q-agent').value;
+  var enabled=document.getElementById('q-enabled').value;
+  return rows.filter(function(r){
+    return (!account||r.account.toLowerCase().indexOf(account)!==-1)
+      &&(!name||r.name.toLowerCase().indexOf(name)!==-1)
+      &&(!dept||r.dept===dept)
+      &&(!agent||(r.isAgent?'1':'0')===agent)
+      &&(!enabled||(r.enabled?'1':'0')===enabled);
+  }).slice().sort(function(a,b){return String(b.createdAt).localeCompare(String(a.createdAt))||(Number(b.id.slice(2))-Number(a.id.slice(2)));});
+}
 function render(){
-  var list=visibleRows();
-  if(!list.length)tbody.innerHTML='<tr class="empty-row"><td colspan="9">暂无数据</td></tr>';
-  else tbody.innerHTML=list.map(function(r){return '<tr><td class="weak">'+r.id+'</td><td>'+esc(r.type)+'</td><td class="key-cell">'+esc(r.key)+'</td><td class="secret-cell" title="应用密钥已脱敏">'+esc(maskSecret(r.secret))+'</td><td>'+esc(r.creator)+'</td><td class="weak">'+esc(r.createdAt)+'</td><td>'+esc(r.updater)+'</td><td class="weak">'+esc(r.updatedAt)+'</td><td><button class="action-link btn-edit" data-id="'+r.id+'">编辑</button></td></tr>';}).join('');
+  var list=currentList();
+  if(!list.length)tbody.innerHTML='<tr class="empty-row"><td colspan="7">暂无数据</td></tr>';
+  else tbody.innerHTML=list.map(function(r){
+    return '<tr data-id="'+esc(r.id)+'"><td class="weak">'+esc(r.id)+'</td><td class="key-cell">'+esc(r.account)+'</td><td class="strong">'+esc(r.name)+'</td><td>'+esc(r.dept)+'</td><td><span class="tag '+(r.isAgent?'yes':'no')+'">'+(r.isAgent?'是':'否')+'</span></td><td class="weak">'+esc(r.createdAt)+'</td><td><div class="switch-label"><label class="switch"><input type="checkbox" aria-label="'+esc(r.id)+' 启用状态" data-switch="'+esc(r.id)+'" '+(r.enabled?'checked ':'')+'><span class="slider"></span></label><span class="state-text">'+(r.enabled?'启用':'禁用')+'</span></div></td></tr>';
+  }).join('');
   document.getElementById('pager-info').textContent='共 '+list.length+' 条';
-  tbody.querySelectorAll('.btn-edit').forEach(function(btn){btn.addEventListener('click',function(){openModal(Number(btn.dataset.id));});});
-}
-function clearValidation(){document.getElementById('field-type').classList.remove('invalid');document.getElementById('field-key').classList.remove('invalid');document.getElementById('field-secret').classList.remove('invalid');}
-function openModal(id){
-  editingId=id==null?null:id;clearValidation();lastFocus=document.activeElement;
-  if(editingId==null){title.textContent='新增智能体';typeInput.value='';typeInput.disabled=false;keyInput.value='';secretInput.value='';}
-  else{var row=rows.find(function(item){return item.id===editingId;});if(!row)return;title.textContent='编辑智能体';typeInput.value=row.type;typeInput.disabled=true;keyInput.value=row.key;secretInput.value=row.secret;}
-  modal.classList.add('active');setTimeout(function(){(editingId==null?typeInput:keyInput).focus();},0);
-}
-function closeModal(){modal.classList.remove('active');clearValidation();if(lastFocus&&lastFocus.focus)lastFocus.focus();}
-function save(){
-  var type=typeInput.value,key=keyInput.value.trim(),secret=secretInput.value.trim(),valid=true;
-  document.getElementById('field-type').classList.toggle('invalid',!type);document.getElementById('field-key').classList.toggle('invalid',!key);document.getElementById('field-secret').classList.toggle('invalid',!secret);
-  if(!type){typeInput.focus();valid=false;}else if(!key){keyInput.focus();valid=false;}else if(!secret){secretInput.focus();valid=false;}
-  if(!valid)return;
-  var stamp=now();
-  if(editingId==null){rows.push({id:nextId++,type:type,key:key,secret:secret,creator:'陈嘉豪',createdAt:stamp,updater:'陈嘉豪',updatedAt:stamp});showToast('新增成功','ok');}
-  else{var row=rows.find(function(item){return item.id===editingId;});row.key=key;row.secret=secret;row.updater='陈嘉豪';row.updatedAt=stamp;showToast('保存成功','ok');}
-  document.getElementById('q-key').value='';closeModal();render();
+  tbody.querySelectorAll('[data-switch]').forEach(function(box){box.addEventListener('change',function(){var row=rows.find(function(x){return x.id===box.dataset.switch;});if(!row)return;row.enabled=box.checked;showToast((box.checked?'已启用 ':'已禁用 ')+row.name,'ok');render();});});
 }
 var filterTrigger=document.getElementById('btn-filter'),filterPopover=document.getElementById('filter-popover');
-function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));if(open)setTimeout(function(){document.getElementById('q-key').focus();},0);}
+function resetFilters(){document.getElementById('q-account').value='';document.getElementById('q-name').value='';document.getElementById('q-dept').value='';document.getElementById('q-agent').value='';document.getElementById('q-enabled').value='';}
+function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));if(open)setTimeout(function(){document.getElementById('q-account').focus();},0);}
 filterTrigger.addEventListener('click',function(e){e.stopPropagation();setFilterOpen(filterPopover.hidden);});
 document.getElementById('btn-filter-close').addEventListener('click',function(){setFilterOpen(false);});
 document.getElementById('btn-query').addEventListener('click',function(){render();setFilterOpen(false);});
-document.getElementById('q-key').addEventListener('keydown',function(e){if(e.key==='Enter'){render();setFilterOpen(false);}});
-document.getElementById('btn-reset').addEventListener('click',function(){document.getElementById('q-key').value='';render();});
+document.getElementById('q-name').addEventListener('keydown',function(e){if(e.key==='Enter'){render();setFilterOpen(false);}});
+document.getElementById('btn-reset').addEventListener('click',function(){resetFilters();render();});
 filterPopover.addEventListener('click',function(e){e.stopPropagation();});
 document.addEventListener('click',function(){setFilterOpen(false);});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')setFilterOpen(false);});
-document.getElementById('btn-add').addEventListener('click',function(){openModal(null);});
-document.getElementById('modal-close').addEventListener('click',closeModal);
-document.getElementById('modal-cancel').addEventListener('click',closeModal);
-document.getElementById('modal-save').addEventListener('click',save);
-[typeInput,keyInput,secretInput].forEach(function(input){input.addEventListener('input',function(){if(input.value.trim())input.closest('.field').classList.remove('invalid');});});
-document.addEventListener('keydown',function(e){
-  if(!modal.classList.contains('active'))return;
-  if(e.key==='Escape'){closeModal();return;}
-  if(e.key==='Enter'&&document.activeElement!==document.getElementById('modal-close')){e.preventDefault();save();}
-  if(e.key==='Tab'){var controls=[document.getElementById('modal-close'),typeInput,keyInput,secretInput,document.getElementById('modal-cancel'),document.getElementById('modal-save')];var first=controls[0],last=controls[controls.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
-});
 var focusId=new URLSearchParams(location.search).get('focus');if(focusId&&document.getElementById(focusId))document.getElementById(focusId).classList.add('focus-target');
 render();
 })();

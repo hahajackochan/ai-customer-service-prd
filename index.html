@@ -99,11 +99,12 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <a href="#feature-agent">4.1 智能体管理</a>
         <a href="#feature-workflow">4.2 工作流管理</a>
         <a href="#feature-1">4.3 供应商管理</a>
-        <a href="#feature-3">4.4 AI托管账号</a>
-        <a href="#feature-h5">4.5 会话接待插件H5</a>
-        <a href="#feature-4">4.6 会话消息管理</a>
+        <a href="#feature-seat">4.4 艾客坐席管理</a>
+        <a href="#feature-3">4.5 AI托管账号</a>
+        <a href="#feature-h5">4.6 会话接待插件H5</a>
         <a href="#feature-5">4.7 客户会话管理</a>
-        <a href="#feature-6">4.8 AI回复响应管理</a>
+        <a href="#feature-4">4.8 会话消息管理</a>
+        <a href="#feature-6">4.9 AI回复响应管理</a>
       </span>
     </div>
   </nav>
@@ -122,7 +123,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th style="width:160px">字段</th><th>内容</th></tr>
         <tr><td>产品/系统</td><td>消费者业务中台（租户端）</td></tr>
         <tr><td>需求名称</td><td>AI客服</td></tr>
-        <tr><td>版本</td><td>v1.18</td></tr>
+        <tr><td>版本</td><td>v1.19</td></tr>
         <tr><td>文档负责人</td><td>陈嘉豪</td></tr>
         <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息。</td></tr>
         <tr><td>涉及三方</td><td>艾客客服系统（前期）；京东、天猫等仅预留供应商维度扩展</td></tr>
@@ -132,6 +133,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       <h3>版本记录</h3>
       <table>
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-09-11</td><td>v1.19</td><td>按需求方确认：工作流类型调整为意图识别、业务API、商品知识库、FAQ知识库；新增「艾客坐席管理」模块（4.4，三方账号管理下、供应商管理之后），列表字段为用户账号ID、账号、账号名称、所属部门、是否客服、创建时间、启用状态，支持账号 / 账号名称 / 所属部门 / 是否客服 / 启用状态筛选与启用状态切换；客户会话管理与会话消息管理顺序互换（现为4.7、4.8），目录、功能清单与正文交叉引用同步；客户会话管理「聊天内容」详情无AI回复时不再预留「AI过程分析」空白占位。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-11</td><td>v1.18</td><td>按需求方确认：智能体管理、工作流管理、供应商管理、AI托管账号、会话消息管理、客户会话管理、AI回复响应管理共7个后台列表页，筛选条件默认收起，点击列表右上角「筛选」按钮后在下方浮层展示，浮层支持重置、关闭、提交；工作流新增 / 编辑增加必填「智能体类型」，列表与筛选同步新增该字段，当前仅支持「飞书aily-工作流应用」；4.5会话接待插件H5移除单聊 / 群聊会话列表复选框、记录选择及批量操作，只保留全部和单个开启 / 禁用AI接管，并删除账号未开启单聊AI接管提示文案；「AI回复响应时长管理」更名「AI回复响应管理」，删除各环节时间筛选条件。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-11</td><td>v1.17</td><td>按需求方确认：8个后台原型顶栏租户文案由「索菲亚会员小程序」改为「企微AI客服」；智能体原型示例仅保留1条，智能体类型改为「飞书aily-工作流应用」；AI托管账号列表新增详情，移除企业名称、联系人、设备名称、设备保管者、是否在线、所属组及总「是否AI托管」字段，单聊 / 群聊AI接管独立控制，艾客详情展示6个扩展字段；会话接待插件H5删除顶部账号总开关，开放单聊 / 群聊页签及当前账号、当前类型的全部 / 批量 / 单个AI接管操作；会话消息管理「归因」改为「转人工归因」，固定10个枚举。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-10</td><td>v1.16</td><td>按需求方确认：AI托管账号原型编辑弹窗补齐复选框选中态（选项卡片高亮）并修正禁用态选择器；列表新增「账号ID」筛选条件；「同步」按钮移至筛选区左侧并更名「同步账号」；客户会话管理「去配置」改为按账号ID跳转，目标页自动填入账号ID并搜索高亮；4.6会话消息管理前端规则删除第1、2、6、7、8、9行，交互逻辑删除第1、4、5、6行，后端处理逻辑清空；4.7客户会话管理删除「聊天详情」原型嵌入。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
@@ -175,19 +177,20 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       <table class="scope-table">
         <tr><th>系统</th><th>模块</th><th>功能点</th><th>优先级</th><th>说明</th><th>详细方案</th></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>智能体管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、应用Key和应用密钥；当前类型仅支持飞书aily-工作流应用，列表密钥脱敏展示，记录按创建时间倒序，支持新增、编辑。</td><td><a href="#feature-agent">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、工作流类型、工作流名称、工作流ID；智能体类型当前仅支持飞书aily-工作流应用，工作流类型仅支持意图识别、解决方案；列表新增智能体类型字段及筛选条件，记录按创建时间倒序。</td><td><a href="#feature-workflow">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、工作流类型、工作流名称、工作流ID；智能体类型当前仅支持飞书aily-工作流应用，工作流类型支持意图识别、业务API、商品知识库、FAQ知识库；列表新增智能体类型字段及筛选条件，记录按创建时间倒序。</td><td><a href="#feature-workflow">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>供应商管理</td><td><span class="tag p0">P0</span></td><td>供应商列表与维护页面；筛选条件仅含供应商类型；列表字段含供应商类型、应用ID、应用Key等，共9列，记录按创建时间倒序；新增供应商需选择供应商类型（当前支持艾客）并填写该类型接入配置：服务地址、应用ID、应用Key、应用Secret、回调Token、回调AES密钥、启用状态；编辑可维护接入配置与启用状态，供应商类型创建后不可更换。</td><td><a href="#feature-1">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>艾客坐席管理</td><td><span class="tag p0">P0</span></td><td>艾客坐席账号列表；筛选条件为账号、账号名称、所属部门、是否客服、启用状态，列表字段为用户账号ID、账号、账号名称、所属部门、是否客服、创建时间、启用状态，共7列，记录按创建时间倒序，支持启用状态切换。</td><td><a href="#feature-seat">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>AI托管账号</td><td><span class="tag p0">P0</span></td><td>AI托管账号列表展示9个数据字段及操作列，支持按账号名称、账号ID、单聊AI接管、群聊AI接管、在线状态筛选；按最近上线时间倒序；单聊 / 群聊AI接管独立控制，操作列支持详情、编辑。</td><td><a href="#feature-3">查看</a></td></tr>
         <tr><td>消费者业务中台 / 会话接待插件H5</td><td>AI接管配置（艾客客服端内嵌）</td><td>会话接待插件H5</td><td><span class="tag p0">P0</span></td><td>展示当前账号、当前会话及账号下单聊 / 群聊会话列表；列表记录不可选择且不展示复选框，仅支持当前会话、行内单个及当前类型全部开启 / 禁用AI接管。</td><td><a href="#feature-h5">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>15列，逐条查询客户消息、回复及转人工归因，按发送时间倒序；员工未回复时保留该条消息并显示「员工未回复」占位；共享AI过程分析，支持意图 / 知识多结果、评分理由、Prompt与输出。</td><td><a href="#feature-4">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>客户会话管理</td><td><span class="tag p0">P0</span></td><td>13列，按客户 × 成员管理会话接管、历史AI标记及聊天记录，按最后聊天时间倒序；支持日期筛选、分段加载和追溯，聊天返回保留筛选。</td><td><a href="#feature-5">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>15列，逐条查询客户消息、回复及转人工归因，按发送时间倒序；员工未回复时保留该条消息并显示「员工未回复」占位；共享AI过程分析，支持意图 / 知识多结果、评分理由、Prompt与输出。</td><td><a href="#feature-4">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI回复响应管理</td><td><span class="tag p0">P0</span></td><td>11列，查询AI回复总时长、七节点与阶段耗时，按成员回复时间倒序；仅支持总响应时长阈值 / 区间筛选，不提供各环节时间筛选，并支持关联追溯。</td><td><a href="#feature-6">查看</a></td></tr>
       </table>
     </section>
 
     <section id="solution" class="section">
       <h2>四、详细方案</h2>
-      <div class="note"><b>后台列表统一筛选交互：</b>4.1、4.2、4.3、4.4、4.6、4.7、4.8 的筛选条件默认收起；点击列表右上角「筛选」按钮后，在按钮下方弹出当前页面的筛选条件浮层。浮层统一提供「重置 / 关闭 / 提交」；提交后应用条件并关闭浮层，重置后清空条件并刷新列表，关闭仅收起浮层且不触发查询。</div>
+      <div class="note"><b>后台列表统一筛选交互：</b>4.1、4.2、4.3、4.4、4.5、4.7、4.8、4.9 的筛选条件默认收起；点击列表右上角「筛选」按钮后，在按钮下方弹出当前页面的筛选条件浮层。浮层统一提供「重置 / 关闭 / 提交」；提交后应用条件并关闭浮层，重置后清空条件并刷新列表，关闭仅收起浮层且不触发查询。</div>
 
       <article id="feature-agent" class="feature">
         <div class="feature-head"><h3 class="feature-title">4.1 智能体管理</h3><span class="feature-id">消费者业务中台 / 智能体管理</span></div>
@@ -214,7 +217,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
-            <li>新增 / 编辑包含智能体类型、工作流类型、工作流名称、工作流ID，均为必填；智能体类型当前仅可选择「飞书aily-工作流应用」，工作流类型仅可选择「意图识别」「解决方案」。列表新增「智能体类型」字段，并支持按智能体类型筛选。</li>
+            <li>新增 / 编辑包含智能体类型、工作流类型、工作流名称、工作流ID，均为必填；智能体类型当前仅可选择「飞书aily-工作流应用」，工作流类型可选择「意图识别」「业务API」「商品知识库」「FAQ知识库」。列表新增「智能体类型」字段，并支持按智能体类型筛选。</li>
           </ul>
 
           <div class="proto-card">
@@ -242,8 +245,29 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
 
+      <article id="feature-seat" class="feature">
+        <div class="feature-head"><h3 class="feature-title">4.4 艾客坐席管理</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
+        <div class="feature-content">
+          <h4>前端规则逻辑</h4>
+          <ul class="rules">
+            <li>筛选条件：账号、账号名称、所属部门、是否客服、启用状态；列表展示用户账号ID、账号、账号名称、所属部门、是否客服、创建时间、启用状态，共7列，记录按创建时间倒序。</li>
+            <li>启用状态支持「启用 / 禁用」切换，切换后即时生效，列表同步回显最新状态。</li>
+          </ul>
+          <h4>后端处理逻辑</h4>
+          <ul class="rules">
+            <li>列表读取艾客坐席账号数据，返回用户账号ID、账号、账号名称、所属部门、是否客服、创建时间与启用状态；启用状态变更提交后返回最新状态，失败时不改变原状态并提示。</li>
+          </ul>
+          <div class="proto-card">
+            <div class="block-head"><span>原型 · 艾客坐席管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 艾客坐席管理','原型/艾客坐席管理_v1.0.html')">放大查看</button></span></div>
+            <iframe class="proto-frame" src="原型/艾客坐席管理_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="艾客坐席管理原型"></iframe>
+          </div>
+        </div>
+      </article>
+
+
+
       <article id="feature-3" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.4 AI托管账号</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.5 AI托管账号</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
@@ -271,7 +295,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-h5" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.5 会话接待插件H5</h3><span class="feature-id">消费者业务中台 / 会话接待插件（艾客客服端内嵌）</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.6 会话接待插件H5</h3><span class="feature-id">消费者业务中台 / 会话接待插件（艾客客服端内嵌）</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
@@ -300,8 +324,27 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
 
+      <article id="feature-5" class="feature">
+        <div class="feature-head"><h3 class="feature-title">4.7 客户会话管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-content">
+          <h4>规则说明</h4>
+          <ul class="rules">
+            <li>AI接管状态：列表仅展示开关；账号已开启单聊AI接管时才可操作，不满足前提时开关置灰并提示原因，点击「去配置」跳转AI托管账号，按账号ID自动搜索出该账号记录。客户会话列表按最后聊天时间倒序展示。</li>
+            <li>涉及AI回复：只读；该会话有实际AI发送记录时显示「是」，否则显示「否」，不随当前接管开关变化。</li>
+            <li>「聊天内容」详情右侧仅在存在可追溯的AI回复时展示「AI过程分析」，无AI回复时不预留空白占位。</li>
+          </ul>
+          <div class="proto-card">
+            <div class="block-head"><span>原型 · 客户会话管理（当前接管编辑、历史AI事实、聊天入口）</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 客户会话管理','原型/客户会话管理_v1.0.html')">放大查看</button></span></div>
+            <iframe class="proto-frame" src="原型/客户会话管理_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="客户会话管理原型"></iframe>
+            <div class="proto-tip">模拟会话配置、列表查询和聊天入口。</div>
+          </div>
+        </div>
+      </article>
+
+
+
       <article id="feature-4" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.6 会话消息管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.8 会话消息管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
@@ -326,26 +369,8 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
 
-      <article id="feature-5" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.7 客户会话管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
-        <div class="feature-content">
-          <h4>规则说明</h4>
-          <ul class="rules">
-            <li>AI接管状态：列表仅展示开关；账号已开启单聊AI接管时才可操作，不满足前提时开关置灰并提示原因，点击「去配置」跳转AI托管账号，按账号ID自动搜索出该账号记录。客户会话列表按最后聊天时间倒序展示。</li>
-            <li>涉及AI回复：只读；该会话有实际AI发送记录时显示「是」，否则显示「否」，不随当前接管开关变化。</li>
-          </ul>
-          <div class="proto-card">
-            <div class="block-head"><span>原型 · 客户会话管理（当前接管编辑、历史AI事实、聊天入口）</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 客户会话管理','原型/客户会话管理_v1.0.html')">放大查看</button></span></div>
-            <iframe class="proto-frame" src="原型/客户会话管理_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="客户会话管理原型"></iframe>
-            <div class="proto-tip">模拟会话配置、列表查询和聊天入口。</div>
-          </div>
-        </div>
-      </article>
-
-
-
       <article id="feature-6" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.8 AI回复响应管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.9 AI回复响应管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
@@ -359,7 +384,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
           <ul class="rules">
             <li>进入页面加载记录；查询应用筛选，重置清空条件。非法数值 / 区间在输入处提示并拦截，无命中显示「暂无符合条件的AI回复记录」。</li>
             <li>「详情」展示消息标识、七节点完成时间和阶段耗时；关闭按钮返回，点击遮罩不关闭。查询失败可重试，缺失节点不沿用其他回复数据。</li>
-            <li>详情 → AI过程分析 → 聊天，共用4.6历史追溯；来源与筛选恢复按4.7聊天返回规则执行。</li>
+            <li>详情 → AI过程分析 → 聊天，共用4.8历史追溯；来源与筛选恢复按4.7聊天返回规则执行。</li>
           </ul>
           <h4>后端处理逻辑</h4>
           <ul class="rules">
@@ -395,6 +420,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
     <div class="modal-body">
       <table class="version-log-table">
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-09-11</td><td>v1.19</td><td>按需求方确认：工作流类型调整为意图识别、业务API、商品知识库、FAQ知识库；新增「艾客坐席管理」模块（4.4，三方账号管理下、供应商管理之后），列表字段为用户账号ID、账号、账号名称、所属部门、是否客服、创建时间、启用状态，支持账号 / 账号名称 / 所属部门 / 是否客服 / 启用状态筛选与启用状态切换；客户会话管理与会话消息管理顺序互换（现为4.7、4.8），目录、功能清单与正文交叉引用同步；客户会话管理「聊天内容」详情无AI回复时不再预留「AI过程分析」空白占位。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-11</td><td>v1.18</td><td>按需求方确认：智能体管理、工作流管理、供应商管理、AI托管账号、会话消息管理、客户会话管理、AI回复响应管理共7个后台列表页，筛选条件默认收起，点击列表右上角「筛选」按钮后在下方浮层展示，浮层支持重置、关闭、提交；工作流新增 / 编辑增加必填「智能体类型」，列表与筛选同步新增该字段，当前仅支持「飞书aily-工作流应用」；4.5会话接待插件H5移除单聊 / 群聊会话列表复选框、记录选择及批量操作，只保留全部和单个开启 / 禁用AI接管，并删除账号未开启单聊AI接管提示文案；「AI回复响应时长管理」更名「AI回复响应管理」，删除各环节时间筛选条件。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-11</td><td>v1.17</td><td>按需求方确认：8个后台原型顶栏租户文案由「索菲亚会员小程序」改为「企微AI客服」；智能体原型示例仅保留1条，智能体类型改为「飞书aily-工作流应用」；AI托管账号列表新增详情，移除企业名称、联系人、设备名称、设备保管者、是否在线、所属组及总「是否AI托管」字段，单聊 / 群聊AI接管独立控制，艾客详情展示6个扩展字段；会话接待插件H5删除顶部账号总开关，开放单聊 / 群聊页签及当前账号、当前类型的全部 / 批量 / 单个AI接管操作；会话消息管理「归因」改为「转人工归因」，固定10个枚举。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-10</td><td>v1.16</td><td>按需求方确认：AI托管账号原型编辑弹窗补齐复选框选中态（选项卡片高亮）并修正禁用态选择器；列表新增「账号ID」筛选条件；「同步」按钮移至筛选区左侧并更名「同步账号」；客户会话管理「去配置」改为按账号ID跳转，目标页自动填入账号ID并搜索高亮；4.6会话消息管理前端规则删除第1、2、6、7、8、9行，交互逻辑删除第1、4、5、6行，后端处理逻辑清空；4.7客户会话管理删除「聊天详情」原型嵌入。PRD与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
