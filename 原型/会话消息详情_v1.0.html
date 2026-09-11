@@ -288,7 +288,7 @@ td.strong{color:var(--ink)}
       <div class="nav-item open" id="nav-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
 <div class="nav-item child ai-child js-nav" data-page="会话消息管理" title="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div>
 <div class="nav-item child ai-child js-nav active" data-page="客户会话管理" title="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div>
-<div class="nav-item child ai-child js-nav" data-page="AI回复响应时长管理" title="AI回复响应时长管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应时长管理</span></div>
+<div class="nav-item child ai-child js-nav" data-page="AI回复响应管理" title="AI回复响应管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应管理</span></div>
       <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
       <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
       <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 10h16M10 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">京东模块</span><span class="chev">▾</span></div>
@@ -444,7 +444,7 @@ window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,sessions,records,account,saveAccoun
 (function(){
 'use strict';const D=window.AIDemo;
 window.showToast=function(msg,cls){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='toast '+(cls||'ok');t.style.display='block';clearTimeout(window.showToast.timer);window.showToast.timer=setTimeout(()=>t.style.display='none',2300);};
-const PAGES={'供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI回复响应时长管理':'AI回复响应时长管理_v1.0.html'};
+const PAGES={'供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI回复响应管理':'AI回复响应管理_v1.0.html'};
 document.querySelectorAll('.js-nav').forEach(el=>{el.tabIndex=0;el.setAttribute('role','link');const go=()=>{const file=PAGES[el.dataset.page];if(file)location.href=D.url(file);};el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go();}});});
 for(const [id,selector]of [['nav-third','.nav-item.child:not(.ai-child)'],['nav-ai','.nav-item.ai-child']]){const el=document.getElementById(id);if(el){el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-expanded','true');const toggle=()=>{const open=el.classList.toggle('open');el.setAttribute('aria-expanded',String(open));document.querySelectorAll(selector).forEach(c=>c.style.display=open?'flex':'none');};el.addEventListener('click',toggle);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});}}
 document.querySelectorAll('.js-nothing').forEach(el=>el.addEventListener('click',()=>showToast('本次原型仅包含三方账号管理与AI会话管理相关页面。','info')));
@@ -459,13 +459,13 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
 const D=window.AIDemo,E=D.esc,root=document.getElementById('view-root');
 const sid=D.params.get('sid'),focusId=D.params.get('message')||D.params.get('id')||'';
 const back=D.params.get('back')||'sessions';
-const pageMap={sessions:['客户会话管理','客户会话管理_v1.0.html'],messages:['会话消息管理','会话消息管理_v1.0.html'],latency:['AI回复响应时长管理','AI回复响应时长管理_v1.0.html']};
+const pageMap={sessions:['客户会话管理','客户会话管理_v1.0.html'],messages:['会话消息管理','会话消息管理_v1.0.html'],latency:['AI回复响应管理','AI回复响应管理_v1.0.html']};
 const meta=pageMap[back]||pageMap.sessions;
 function backUrl(){const o={};['filters','page','size'].forEach(k=>{if(D.params.get(k))o[k]=D.params.get(k)});return D.url(meta[1],o)}
 const session=D.sessions.find(x=>x.id===sid);
 function pictureSvg(){return '<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="180" rx="8" fill="#fff4dc"/><ellipse cx="150" cy="92" rx="90" ry="48" fill="#e7bb78"/><rect x="62" y="92" width="176" height="52" rx="8" fill="#bc7e35"/><rect x="78" y="66" width="42" height="28" rx="5" fill="#d99b53"/><rect x="180" y="66" width="42" height="28" rx="5" fill="#d99b53"/><text x="150" y="163" text-anchor="middle" font-size="14" fill="#8a632c">柜体颜色参考图（示例）</text></svg>'}
 function openTrace(r){if(r&&r.trace)window.openDrawer('AI决策追溯',D.traceHTML(r),'<a class="link-btn" href="'+D.url('会话消息管理_v1.0.html',{sid:r.sid,message:r.id})+'">查看关联消息</a>')}
-function openLatency(r){const stages=r&&r.stages||[],total=stages.reduce((n,x)=>n+(+x.duration||0),0);let body='<div class="duration-hero"><b>'+total+' ms</b><p>AI响应总时长 · 成员回复时间 '+E(D.fmt(r.replyAt,true))+'</p></div>';body+=stages.map(function(x){return '<div class="timeline-item"><div class="row"><b>'+E(x.name)+'</b><small>'+x.duration+' ms</small></div><small>'+E(D.fmt(x.at,true))+'</small></div>'}).join('');window.openDrawer('AI回复响应时长详情',body,'<a class="link-btn" href="'+D.url('AI回复响应时长管理_v1.0.html',{sid:r.sid,id:r.replyId})+'">查看响应时长管理</a>')}
+function openLatency(r){const stages=r&&r.stages||[],total=stages.reduce((n,x)=>n+(+x.duration||0),0);let body='<div class="duration-hero"><b>'+total+' ms</b><p>AI响应总时长 · 成员回复时间 '+E(D.fmt(r.replyAt,true))+'</p></div>';body+=stages.map(function(x){return '<div class="timeline-item"><div class="row"><b>'+E(x.name)+'</b><small>'+x.duration+' ms</small></div><small>'+E(D.fmt(x.at,true))+'</small></div>'}).join('');window.openDrawer('AI回复响应详情',body,'<a class="link-btn" href="'+D.url('AI回复响应管理_v1.0.html',{sid:r.sid,id:r.replyId})+'">查看AI回复响应管理</a>')}
 if(!session){root.innerHTML='<div class="card"><div class="empty-panel">未找到会话记录（示例数据范围外或参数缺失）。<div style="margin-top:12px"><a class="btn primary" href="'+backUrl()+'">返回'+meta[0]+'</a></div></div></div>'}
 else{
  const msgs=D.messages(session),summary=D.summary(session),traced=msgs.find(x=>x.record&&x.record.trace)||null;

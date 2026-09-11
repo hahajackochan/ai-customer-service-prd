@@ -29,6 +29,27 @@ button,input{font:inherit}
 .toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:200;display:none;padding:9px 18px;border-radius:4px;color:#fff;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.15)}.toast.ok{background:var(--ok)}.toast.info{background:#7a8699}.focus-target{outline:2px solid #e3a344;outline-offset:2px}
 @media(max-width:1100px){.top-tabs{margin-left:20px;gap:6px}.top-tab{padding:0 10px}.top-right{gap:9px}.table-card{max-width:calc(100vw - 264px)}}
 </style>
+<style>
+/* 列表筛选：参考后台「筛选」按钮浮层交互 */
+.list-filter-card{position:relative;padding:0!important;overflow:visible;min-height:62px}
+.list-toolbar{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px}
+.list-toolbar-primary,.list-toolbar-actions{display:flex;align-items:center;gap:10px}.list-toolbar-actions{margin-left:auto}
+.filter-trigger svg{width:15px;height:15px;flex:0 0 auto}
+.filter-popover{position:absolute;z-index:45;right:20px;top:58px;width:min(920px,calc(100vw - 300px));min-width:420px;background:#fff;border:1px solid #e4e7ed;border-radius:6px;padding:24px 26px 20px;box-shadow:0 8px 24px rgba(31,35,41,.16)}
+.filter-popover.compact{width:440px}.filter-popover.medium{width:min(720px,calc(100vw - 300px))}.filter-popover[hidden]{display:none}
+.filter-popover:before{content:"";position:absolute;right:34px;top:-7px;width:12px;height:12px;background:#fff;border-left:1px solid #e4e7ed;border-top:1px solid #e4e7ed;transform:rotate(45deg)}
+.filter-popover .filter-bar,.filter-popover .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px;align-items:center}
+.filter-popover .filter-bar .fitem,.filter-popover .form-grid label{display:grid;grid-template-columns:96px minmax(0,1fr);align-items:center;gap:10px;margin:0}
+.filter-popover .filter-bar .fitem input,.filter-popover .filter-bar .fitem select,.filter-popover .form-grid input,.filter-popover .form-grid select{width:100%;max-width:none}
+.filter-popover .filter-footer,.filter-popover .form-actions{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin-top:14px;padding-top:18px;border-top:1px solid #f0f1f3}
+.filter-popover .filter-footer .btn,.filter-popover .form-actions .btn{min-width:72px}
+@media(max-width:900px){.filter-popover,.filter-popover.medium{right:10px;width:calc(100vw - 270px);min-width:360px}.filter-popover .filter-bar,.filter-popover .form-grid{grid-template-columns:1fr}}
+</style>
+<style>
+.filter-popover.compact .filter-bar{grid-template-columns:1fr}
+.filter-popover .form-grid label.duration-filter{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.filter-popover .form-grid label.duration-filter>select{width:92px}.filter-popover .form-grid label.duration-filter>input{width:150px}.filter-popover .form-grid label.duration-filter .totalMaxWrap{display:inline-flex;align-items:center;gap:8px}.filter-popover .form-grid label.duration-filter .totalMaxWrap[hidden]{display:none}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -49,7 +70,7 @@ button,input{font:inherit}
   <div class="nav-children" id="third-children"><div class="nav-children-inner"><div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div><div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div></div></div>
 
   <div class="nav-item nav-group" data-target="ai-children" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
-  <div class="nav-children" id="ai-children"><div class="nav-children-inner"><div class="nav-item child ai-child js-nav" data-page="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div><div class="nav-item child ai-child js-nav" data-page="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div><div class="nav-item child ai-child js-nav" data-page="AI回复响应时长管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应时长管理</span></div></div></div>
+  <div class="nav-children" id="ai-children"><div class="nav-children-inner"><div class="nav-item child ai-child js-nav" data-page="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div><div class="nav-item child ai-child js-nav" data-page="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div><div class="nav-item child ai-child js-nav" data-page="AI回复响应管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应管理</span></div></div></div>
 
   <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
   <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
@@ -61,9 +82,11 @@ button,input{font:inherit}
   <div class="crumb-bar"><span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="crumb">智能体管理 / <b>智能体管理</b></span></div>
   <div class="tab-bar"><span class="tab-nav">‹</span><span class="tab"><span class="dot"></span>智能体管理<span class="x" title="关闭（演示）">×</span></span><span class="tab-nav" style="margin-left:auto">›</span></div>
   <div class="page-body">
-    <div class="card">
-      <div class="filter-bar"><span class="fitem"><label for="q-key">应用Key</label><input id="q-key" placeholder="请输入应用Key"></span><span class="factions"><button class="btn primary" id="btn-query">查询</button><button class="btn" id="btn-reset">重置</button></span></div>
-      <div class="toolbar"><div class="toolbar-actions"><button class="btn primary" id="btn-add">+ 新增</button></div></div>
+    <div class="card list-filter-card">
+      <div class="list-toolbar"><div class="list-toolbar-primary"></div><div class="list-toolbar-actions"><button class="btn primary" id="btn-add">+ 新增</button><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button></div></div>
+      <div class="filter-popover compact" id="filter-popover" hidden>
+        <div class="filter-bar"><span class="fitem"><label for="q-key">应用Key</label><input id="q-key" placeholder="请输入应用Key"></span><div class="filter-footer"><button class="btn" id="btn-reset" type="button">重置</button><button class="btn" id="btn-filter-close" type="button">关闭</button><button class="btn primary" id="btn-query" type="button">提交</button></div></div>
+      </div>
     </div>
     <div class="table-card" id="agent-table">
       <table><thead><tr><th style="min-width:72px">ID</th><th style="min-width:120px">智能体类型</th><th style="min-width:180px">应用Key</th><th style="min-width:180px">应用密钥</th><th>创建人</th><th style="min-width:164px">创建时间</th><th>最后更新人</th><th style="min-width:164px">最后更新时间</th><th style="min-width:80px">操作</th></tr></thead><tbody id="tbody"></tbody></table>
@@ -96,7 +119,7 @@ var PAGES={
   'AI托管账号':'AI托管账号_v1.0.html',
   '客户会话管理':'客户会话管理_v1.0.html',
   '会话消息管理':'会话消息管理_v1.0.html',
-  'AI回复响应时长管理':'AI回复响应时长管理_v1.0.html'
+  'AI回复响应管理':'AI回复响应管理_v1.0.html'
 };
 function pageUrl(file){
   var target=new URL(file,location.href);target.search='';
@@ -152,9 +175,16 @@ function save(){
   else{var row=rows.find(function(item){return item.id===editingId;});row.key=key;row.secret=secret;row.updater='陈嘉豪';row.updatedAt=stamp;showToast('保存成功','ok');}
   document.getElementById('q-key').value='';closeModal();render();
 }
-document.getElementById('btn-query').addEventListener('click',render);
-document.getElementById('q-key').addEventListener('keydown',function(e){if(e.key==='Enter')render();});
+var filterTrigger=document.getElementById('btn-filter'),filterPopover=document.getElementById('filter-popover');
+function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));if(open)setTimeout(function(){document.getElementById('q-key').focus();},0);}
+filterTrigger.addEventListener('click',function(e){e.stopPropagation();setFilterOpen(filterPopover.hidden);});
+document.getElementById('btn-filter-close').addEventListener('click',function(){setFilterOpen(false);});
+document.getElementById('btn-query').addEventListener('click',function(){render();setFilterOpen(false);});
+document.getElementById('q-key').addEventListener('keydown',function(e){if(e.key==='Enter'){render();setFilterOpen(false);}});
 document.getElementById('btn-reset').addEventListener('click',function(){document.getElementById('q-key').value='';render();});
+filterPopover.addEventListener('click',function(e){e.stopPropagation();});
+document.addEventListener('click',function(){setFilterOpen(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')setFilterOpen(false);});
 document.getElementById('btn-add').addEventListener('click',function(){openModal(null);});
 document.getElementById('modal-close').addEventListener('click',closeModal);
 document.getElementById('modal-cancel').addEventListener('click',closeModal);
