@@ -35,6 +35,7 @@ button,input{font:inherit}
 .list-toolbar{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px}
 .list-toolbar-primary,.list-toolbar-actions{display:flex;align-items:center;gap:10px}.list-toolbar-actions{margin-left:auto}
 .filter-trigger svg{width:15px;height:15px;flex:0 0 auto}
+.export-trigger svg{width:15px;height:15px;flex:0 0 auto}
 .filter-popover{position:absolute;z-index:45;right:20px;top:58px;width:min(920px,calc(100vw - 300px));min-width:420px;background:#fff;border:1px solid #e4e7ed;border-radius:6px;padding:24px 26px 20px;box-shadow:0 8px 24px rgba(31,35,41,.16)}
 .filter-popover.compact{width:440px}.filter-popover.medium{width:min(720px,calc(100vw - 300px))}.filter-popover[hidden]{display:none}
 .filter-popover:before{content:"";position:absolute;right:34px;top:-7px;width:12px;height:12px;background:#fff;border-left:1px solid #e4e7ed;border-top:1px solid #e4e7ed;transform:rotate(45deg)}
@@ -96,7 +97,7 @@ button,input{font:inherit}
   <div class="tab-bar"><span class="tab-nav">‹</span><span class="tab"><span class="dot"></span>艾客坐席管理<span class="x" title="关闭（演示）">×</span></span><span class="tab-nav" style="margin-left:auto">›</span></div>
   <div class="page-body">
     <div class="card list-filter-card">
-      <div class="list-toolbar"><div class="list-toolbar-primary"></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button></div></div>
+      <div class="list-toolbar"><div class="list-toolbar-primary"></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div>
       <div class="filter-popover medium" id="filter-popover" hidden>
         <form class="form-grid" id="filters"><label>账号<input id="q-account" placeholder="请输入账号"></label><label>账号名称<input id="q-name" placeholder="请输入账号名称"></label><label>所属部门<select id="q-dept"><option value="">全部</option><option value="客户服务部">客户服务部</option><option value="售前咨询部">售前咨询部</option><option value="售后服务部">售后服务部</option></select></label><label>是否客服<select id="q-agent"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></label><label>启用状态<select id="q-enabled"><option value="">全部</option><option value="1">启用</option><option value="0">禁用</option></select></label><div class="form-actions"><button class="btn" id="btn-reset" type="button">重置</button><button class="btn" id="btn-filter-close" type="button">关闭</button><button class="btn primary" id="btn-query" type="button">提交</button></div></form>
       </div>
@@ -181,6 +182,16 @@ document.getElementById('btn-filter-close').addEventListener('click',function(){
 document.getElementById('btn-query').addEventListener('click',function(){render();setFilterOpen(false);});
 document.getElementById('q-name').addEventListener('keydown',function(e){if(e.key==='Enter'){render();setFilterOpen(false);}});
 document.getElementById('btn-reset').addEventListener('click',function(){resetFilters();render();});
+function csvStamp(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());}
+function downloadCsv(filename,matrix){var cell=function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'};var text='\ufeff'+matrix.map(function(row){return row.map(cell).join(',')}).join('\r\n');var blob=new Blob([text],{type:'text/csv;charset=utf-8'});var url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url)},1500);}
+// 导出：按当前筛选结果导出全部命中记录（示例数据）
+document.getElementById('btn-export').addEventListener('click',function(){
+  var cols=['用户账号ID','账号','账号名称','所属部门','是否客服','创建时间','启用状态'];
+  var list=currentList();
+  if(!list.length){showToast('当前筛选条件下没有可导出的记录','fail');return;}
+  downloadCsv('艾客坐席管理_'+csvStamp()+'.csv',[cols].concat(list.map(function(r){return [r.id,r.account,r.name,r.dept,r.isAgent?'是':'否',r.createdAt,r.enabled?'启用':'禁用']})));
+  showToast('已导出 '+list.length+' 条记录','ok');
+});
 filterPopover.addEventListener('click',function(e){e.stopPropagation();});
 document.addEventListener('click',function(){setFilterOpen(false);});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')setFilterOpen(false);});

@@ -168,48 +168,70 @@ td.strong{color:var(--ink)}
 .drawer-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:600}
 .drawer-body{padding:20px 22px;overflow:auto;flex:1}
 .drawer-foot{padding:12px 22px;border-top:1px solid var(--line);display:flex;gap:18px;flex-wrap:wrap}
-.trace-summary{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding-bottom:16px}
-.trace-summary small{display:block;flex-basis:100%;font-size:12px;color:var(--weak);overflow-wrap:anywhere}
-.trace-step{border-top:1px solid var(--line);padding:12px 0}
-.trace-step h4{margin:3px 0 14px;color:#634314;font-size:14px}
-.trace-step h4 i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;margin-right:8px;border-radius:50%;background:var(--amber)}
-.trace-kv{display:grid;grid-template-columns:126px 1fr;gap:10px;margin:9px 0;font-size:13px;line-height:1.7}
+.trace-summary{padding:14px 16px;border:1px solid #f0e2cc;border-radius:10px;background:linear-gradient(180deg,#fffaf2,#fffdfa)}
+.trace-summary-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.trace-summary-head b{font-size:15px;color:var(--ink);font-weight:700}
+.trace-summary-meta{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;padding-top:10px;border-top:1px dashed #f0e2cc;font-size:12px;color:var(--muted)}
+.trace-summary-meta span{display:inline-flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
+.trace-summary-meta em{font-style:normal;color:var(--weak)}
+.trace-step{border-top:1px solid var(--line);padding:16px 0 2px;margin-top:16px}
+.trace-step:first-of-type{border-top:0;margin-top:14px;padding-top:0}
+.trace-step h4{display:flex;align-items:center;gap:9px;margin:0 0 12px;color:#634314;font-size:14px;font-weight:700}
+.trace-step h4 i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--amber);color:var(--amber-deep);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.trace-kv{display:grid;grid-template-columns:126px minmax(0,1fr);gap:6px 14px;margin:0;padding:9px 0;font-size:13px;line-height:1.75;border-bottom:1px dashed #f2f4f8}
+.trace-kv:last-child{border-bottom:0}
 .trace-kv>span{color:var(--weak)}
-.trace-kv>div{overflow-wrap:anywhere;white-space:pre-wrap}
-.reason-box{background:#fff8ee;border:1px solid #f5dfb6;border-radius:6px;padding:7px 14px;margin-bottom:15px}
-.trace-step pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;padding:12px;border-radius:4px;font-size:12px;line-height:1.8;color:var(--muted)}
-.trace-step summary{cursor:pointer;font-size:13px;color:var(--brand)}
-.trace-results-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0;color:var(--muted);font-size:12px;flex-wrap:wrap}
+.trace-kv>div{overflow-wrap:anywhere;white-space:pre-wrap;color:var(--text)}
+.reason-box{background:#fff8ee;border:1px solid #f5dfb6;border-left:3px solid #dfa94e;border-radius:8px;padding:4px 16px;margin:14px 0 0}
+.trace-step pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;border:1px solid var(--line);padding:12px;border-radius:6px;font-size:12px;line-height:1.8;color:var(--muted)}
+.trace-step summary{cursor:pointer;font-size:13px;color:var(--brand);padding:6px 0;font-weight:600}
+.trace-results{margin-top:2px}
+.trace-results-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px;color:var(--muted);font-size:12px;flex-wrap:wrap}
 .trace-results-meta b{color:var(--ink);font-weight:600}
-.trace-result{border:1px solid var(--line);border-radius:6px;margin:8px 0;background:#fff;overflow:hidden}
-.trace-step .trace-result>summary{display:flex;align-items:center;gap:8px;padding:11px 10px;color:var(--ink);list-style:none;min-width:0}
+.trace-result{border:1px solid var(--line);border-radius:8px;margin:8px 0;background:#fff;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.trace-result:hover{border-color:#e8d3b0;box-shadow:0 2px 8px rgba(168,97,21,.07)}
+.trace-result[open]{border-color:#e8d3b0;box-shadow:0 2px 10px rgba(168,97,21,.08)}
+.trace-step .trace-result>summary{display:flex;align-items:center;gap:10px;padding:12px 14px;color:var(--ink);list-style:none;min-width:0}
 .trace-result>summary::-webkit-details-marker{display:none}
-.trace-result>summary:before{content:'›';flex:0 0 12px;font-size:17px;color:var(--weak);transition:transform .12s}
-.trace-result[open]>summary:before{transform:rotate(90deg)}
+.trace-result>summary:before{content:'';flex:0 0 auto;width:7px;height:7px;margin:0 2px 0 1px;border-right:2px solid var(--weak);border-bottom:2px solid var(--weak);transform:rotate(-45deg);transition:transform .16s,border-color .16s}
+.trace-result[open]>summary:before{transform:rotate(45deg);border-color:var(--brand)}
 .trace-result>summary:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
 .trace-result-copy{flex:1;min-width:0;overflow-wrap:anywhere;line-height:1.6}
 .trace-result-name{display:block;font-weight:600;font-size:13px}
-.trace-result-state{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
-.trace-result-score{flex:0 0 auto;text-align:right;max-width:38%;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.trace-result-state{display:inline-flex;align-items:center;height:20px;padding:0 8px;margin-top:5px;border-radius:10px;background:#f4f6f9;font-size:11px;color:var(--muted);font-weight:400}
+.trace-result-score{flex:0 0 auto;text-align:right;max-width:38%;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;padding-left:12px;border-left:1px dashed var(--line)}
 .trace-result-score small{display:block;color:var(--weak);font-size:11px;margin-bottom:2px}
-.trace-result-score b{font-size:15px;color:var(--brand)}
+.trace-result-score b{font-size:16px;color:var(--brand);line-height:1.2}
 .trace-result-score.missing b{font-size:12px;color:var(--weak);font-weight:400}
-.trace-result-body{border-top:1px solid var(--line);padding:3px 12px 8px;background:#fafbfc}
-.trace-result-body .trace-kv{grid-template-columns:76px minmax(0,1fr);gap:8px;font-size:12px}
-.trace-result-empty{border:1px dashed var(--line);padding:16px 12px;border-radius:5px;color:var(--weak);font-size:12px;line-height:1.8}
+.trace-result-body{border-top:1px solid var(--line);padding:6px 14px 10px;background:#fafbfc}
+.trace-result-body .trace-kv{grid-template-columns:76px minmax(0,1fr);gap:4px 12px;font-size:12px;padding:6px 0}
+.trace-result-empty{border:1px dashed #e3e6ec;background:#fafbfc;padding:18px 14px;border-radius:8px;color:var(--weak);font-size:12px;line-height:1.8;text-align:center}
 .trace-kv{grid-template-columns:104px minmax(0,1fr)}
 .chat-layout{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
 .chat-card,.trace-card{min-width:0}
 .empty-panel{color:var(--weak);text-align:center;padding:64px 14px;font-size:13px;line-height:1.9}
-.duration-hero{padding:14px;background:#fdf9f0;border-radius:6px;margin-bottom:16px}
-.duration-hero b{color:var(--brand);font-size:26px}
-.duration-hero p{margin:4px 0;font-size:12px;color:var(--muted)}
-.timeline-item{border-left:2px solid #efdfc5;margin-left:8px;padding:0 0 18px 20px;position:relative}
-.timeline-item:before{content:'';position:absolute;width:9px;height:9px;border-radius:50%;background:var(--brand);left:-5.5px;top:5px}
-.timeline-item .row{display:flex;justify-content:space-between;gap:8px}
-.timeline-item small{font-size:12px;color:var(--weak)}
-.time-track{height:5px;background:#f2f2f2;border-radius:3px;margin-top:8px}
-.time-track i{display:block;height:5px;background:#d3a25a;border-radius:3px}
+.duration-hero{padding:16px 18px;background:linear-gradient(180deg,#fffaf2,#fffdfa);border:1px solid #f0e2cc;border-radius:10px;margin-bottom:18px}
+.duration-hero .duration-label{display:block;font-size:12px;color:var(--weak)}
+.duration-hero .duration-value{display:flex;align-items:baseline;gap:6px;margin:6px 0 4px}
+.duration-hero .duration-value b{color:var(--brand);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.duration-hero .duration-value span{font-size:13px;color:var(--brand);font-weight:700}
+.duration-hero p{margin:2px 0;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.duration-hero .duration-range{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.duration-share{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;background:#f1f3f6;margin-top:12px}
+.duration-share i{display:block;height:100%;background:#d3a25a}
+.timeline{padding-top:2px}
+.timeline-item{border-left:2px solid #f0e2cc;margin-left:9px;padding:0 0 18px 22px;position:relative}
+.timeline-item:last-child{border-left-color:transparent;padding-bottom:0}
+.timeline-item:before{content:'';position:absolute;width:9px;height:9px;border-radius:50%;background:var(--brand);left:-5.5px;top:6px;box-shadow:0 0 0 3px #fdf4e8}
+.timeline-item.origin:before{background:#c58b3c}
+.timeline-item.reference:before{background:#ccd2da;box-shadow:0 0 0 3px #f4f6f9}
+.timeline-item .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.timeline-item .row b{font-size:13px;font-weight:600;color:var(--ink)}
+.timeline-item .tl-dur{flex:0 0 auto;font-size:12px;font-weight:600;color:var(--brand);background:#fdf4e8;border-radius:10px;padding:1px 9px;font-variant-numeric:tabular-nums}
+.timeline-item.reference .tl-dur,.timeline-item.origin .tl-dur{background:#f4f6f9;color:var(--weak);font-weight:400}
+.timeline-item small{display:block;font-size:12px;color:var(--weak);font-variant-numeric:tabular-nums}
+.time-track{height:5px;background:#f2f2f2;border-radius:3px;margin-top:8px;overflow:hidden}
+.time-track i{display:block;height:5px;background:linear-gradient(90deg,#d3a25a,#e8c391);border-radius:3px}
 .history-top{height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--weak);font-size:12px;background:#fafbfc}
 .spinner{width:14px;height:14px;border:2px solid #e7e9ed;border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}
@@ -217,6 +239,8 @@ td.strong{color:var(--ink)}
 .chat-layout{display:grid;grid-template-columns:minmax(360px,1.45fr) minmax(360px,1fr);gap:14px;height:calc(100vh - 330px);min-height:380px}.chat-layout.single{grid-template-columns:minmax(0,1fr)}
 .chat-card,.trace-card{background:#fff;border-radius:8px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .chat-heading{height:46px;flex-shrink:0;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-weight:600}
+.heading-label{display:inline-flex;align-items:center;gap:8px}
+.heading-label svg{width:16px;height:16px;flex:0 0 auto;color:var(--brand)}
 .chat-stream{overflow-y:auto;overscroll-behavior:contain;overflow-anchor:none;flex:1;min-height:0;padding:12px 20px 22px;background:#fafbfc}
 .trace-content{overflow:auto;flex:1;padding:16px;min-height:0}
 .conversation-meta{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;font-size:13px}
@@ -232,6 +256,16 @@ td.strong{color:var(--ink)}
 .message-row{display:flex;flex-direction:column;align-items:flex-start;margin:0 0 17px}
 .message-row.member{align-items:flex-end}
 .message-row.event{align-items:center}
+.message-row .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:12px;color:var(--weak)}
+.message-row.member .meta{justify-content:flex-end}
+.meta-who{color:var(--muted)}
+.meta-time{font-variant-numeric:tabular-nums}
+.msg-actions{display:inline-flex;align-items:center;gap:6px;margin-left:2px}
+.msg-action{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 10px;border:1px solid #e8d4b4;border-radius:12px;background:#fffaf2;color:#8f5410;font:inherit;font-size:12px;line-height:1;cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s,color .15s}
+.msg-action svg{width:12px;height:12px;flex:0 0 auto}
+.msg-action:hover{background:#fdf1df;border-color:#dcb87f;color:#7a4409;box-shadow:0 1px 3px rgba(168,97,21,.14)}
+.msg-action:active{background:#f9e7cd}
+.msg-action:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
 .message-row small{font-size:11px;color:var(--weak);margin-bottom:4px}
 .bubble{max-width:82%;padding:10px 13px;border-radius:8px;background:white;border:1px solid var(--line);line-height:1.8;font-size:13px;overflow-wrap:anywhere}
 .member .bubble{background:#f5f6f7}
@@ -431,7 +465,7 @@ function traceHTML(r){
  const success=r.ai,failed=r.kind==='error',transfer=r.kind==='transfer';
  const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
  const prompt='系统：仅依据当次有效知识答复，不确定时转人工。\n知识：'+(success?r.knowledge+'（示例快照 v1）':'未取得可直接回复的有效知识。')+'\n上下文：\n'+context+'\n问句：'+r.question;
- return '<div class="trace-summary"><span class="tag online">示例快照</span><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b><small>追溯ID '+esc(r.traceId)+'</small><small>客户消息ID '+esc(r.id)+' · 会话 '+esc(r.sid)+'</small></div>'
+ return '<div class="trace-summary"><div class="trace-summary-head"><span class="tag online">示例快照</span><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b></div><div class="trace-summary-meta"><span><em>追溯ID</em>'+esc(r.traceId)+'</span><span><em>客户消息ID</em>'+esc(r.id)+'</span><span><em>会话</em>'+esc(r.sid)+'</span></div></div>'
  + (r.reason?'<div class="reason-box">'+kv('处理类型',r.reason.type)+kv('转人工归因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
  +section('1','输入 · 模型与触发消息',kv('模型','客服模型-示例 v1')+kv('客户消息原文',r.question)+kv('触发时间',fmt(r.receivedAt,true))+kv('触发消息ID',r.id)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
  +section('2','理解 · 意图识别',kv('识别结果说明',r.intentSummary)+results('intent',r.intentResults,'暂无意图结果；识别状态见上方记录。'))
@@ -465,19 +499,20 @@ function backUrl(){const o={};['filters','page','size'].forEach(k=>{if(D.params.
 const session=D.sessions.find(x=>x.id===sid);
 function pictureSvg(){return '<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="180" rx="8" fill="#fff4dc"/><ellipse cx="150" cy="92" rx="90" ry="48" fill="#e7bb78"/><rect x="62" y="92" width="176" height="52" rx="8" fill="#bc7e35"/><rect x="78" y="66" width="42" height="28" rx="5" fill="#d99b53"/><rect x="180" y="66" width="42" height="28" rx="5" fill="#d99b53"/><text x="150" y="163" text-anchor="middle" font-size="14" fill="#8a632c">柜体颜色参考图（示例）</text></svg>'}
 function openTrace(r){if(r&&r.trace)window.openDrawer('AI决策追溯',D.traceHTML(r),'<a class="link-btn" href="'+D.url('会话消息管理_v1.0.html',{sid:r.sid,message:r.id})+'">查看关联消息</a>')}
-function openLatency(r){const stages=r&&r.stages||[],total=stages.reduce((n,x)=>n+(+x.duration||0),0);let body='<div class="duration-hero"><b>'+total+' ms</b><p>AI响应总时长 · 成员回复时间 '+E(D.fmt(r.replyAt,true))+'</p></div>';body+=stages.map(function(x){return '<div class="timeline-item"><div class="row"><b>'+E(x.name)+'</b><small>'+x.duration+' ms</small></div><small>'+E(D.fmt(x.at,true))+'</small></div>'}).join('');window.openDrawer('AI回复响应详情',body,'<a class="link-btn" href="'+D.url('AI回复响应管理_v1.0.html',{sid:r.sid,id:r.replyId})+'">查看AI回复响应管理</a>')}
+function openLatency(r){const stages=r&&r.stages||[],total=stages.reduce((n,x)=>n+(+x.duration||0),0);const hero='<div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+total+'</b><span>ms</span></div><div class="duration-range">系统收到消息 '+E(D.fmt(r.receivedAt,true))+' → 成员回复时间 '+E(D.fmt(r.replyAt,true))+'</div>'+(total>0?'<div class="duration-share">'+stages.map(function(x){return '<i style="width:'+Math.max(3,(+x.duration||0)/total*100)+'%"></i>'}).join('')+'</div>':'')+'</div>';const body=hero+'<div class="timeline">'+stages.map(function(x){return '<div class="timeline-item"><div class="row"><b>'+E(x.name)+'</b><span class="tl-dur">'+x.duration+' ms</span></div><small>'+E(D.fmt(x.at,true))+'</small></div>'}).join('')+'</div>';window.openDrawer('AI回复响应详情',body,'<a class="link-btn" href="'+D.url('AI回复响应管理_v1.0.html',{sid:r.sid,id:r.replyId})+'">查看AI回复响应管理</a>')}
 if(!session){root.innerHTML='<div class="card"><div class="empty-panel">未找到会话记录（示例数据范围外或参数缺失）。<div style="margin-top:12px"><a class="btn primary" href="'+backUrl()+'">返回'+meta[0]+'</a></div></div></div>'}
 else{
  const msgs=D.messages(session),summary=D.summary(session),traced=msgs.find(x=>x.record&&x.record.trace)||null;
+ const ACTION_ICON={trace:'<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="3.6" cy="3.6" r="1.7" stroke="currentColor" stroke-width="1.4"/><circle cx="12.4" cy="8" r="1.7" stroke="currentColor" stroke-width="1.4"/><circle cx="3.6" cy="12.4" r="1.7" stroke="currentColor" stroke-width="1.4"/><path d="M5.2 4.3c3 .5 4.5 1.8 5.8 3.1M5.2 11.7c3-.5 4.5-1.8 5.8-3.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',latency:'<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 4.4V8l2.5 1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
  let stream=msgs.map(function(m){const rec=m.record||{},selected=m.id===focusId;
   if(m.role==='event')return '<div class="message-row event'+(selected?' selected':'')+'" data-id="'+E(m.id)+'"><div class="bubble">'+E(m.text)+'<small> · '+E(D.fmt(m.at,true))+'</small></div></div>';
   const role=m.role==='customer'?'customer':'member',ai=m.role==='member'&&m.ai;
   let body=m.type==='图片'?'<button class="picture-preview" type="button" data-picture="1">'+pictureSvg()+'</button>':'<div class="bubble">'+E(m.text)+'</div>';
-  let actions='';if(m.role==='member'&&ai&&rec.trace)actions+='<button class="link-btn" data-trace="'+E(rec.id)+'">AI过程分析</button>';if(m.role==='member'&&rec.ai)actions+='<button class="link-btn" data-latency="'+E(rec.id)+'">耗时详情</button>';
-  return '<div class="message-row '+role+(ai?' ai':'')+(selected?' selected':'')+'" data-id="'+E(m.id)+'"><div><div class="meta">'+(role==='customer'?E(session.cname):E(session.mname))+' · '+E(D.fmt(m.at,true))+(ai?' <span class="tag online">AI回复</span>':'')+(actions?' '+actions:'')+'</div>'+body+'</div></div>';
+  let actions='';if(m.role==='member'&&ai&&rec.trace)actions+='<button type="button" class="msg-action" data-trace="'+E(rec.id)+'">'+ACTION_ICON.trace+'AI过程分析</button>';if(m.role==='member'&&rec.ai)actions+='<button type="button" class="msg-action" data-latency="'+E(rec.id)+'">'+ACTION_ICON.latency+'耗时详情</button>';
+  return '<div class="message-row '+role+(ai?' ai':'')+(selected?' selected':'')+'" data-id="'+E(m.id)+'"><div><div class="meta"><span class="meta-who">'+(role==='customer'?E(session.cname):E(session.mname))+'</span><span class="meta-time">'+E(D.fmt(m.at,true))+'</span>'+(ai?'<span class="tag online">AI回复</span>':'')+(actions?'<span class="msg-actions">'+actions+'</span>':'')+'</div>'+body+'</div></div>';
  }).join('');
- let right=traced?D.traceHTML(traced):'';const hasRight=!!traced;
- root.innerHTML='<div class="conversation-meta"><b>'+E(session.cname)+' × '+E(session.mname)+'</b><span>会话ID：'+E(session.id)+'</span><span>最后聊天：'+E(D.fmt(summary.last,true))+'</span><a class="return link-btn" href="'+backUrl()+'">返回'+meta[0]+'</a></div><div class="chat-layout'+(hasRight?'':' single')+'"><div class="chat-card"><div class="chat-heading"><span>会话消息</span><span class="tag '+(D.enabled(session)?'online':'offline')+'">'+(D.enabled(session)?'AI接管中':'未接管')+'</span></div><div class="chat-stream">'+(stream||'<div class="empty-panel">暂无聊天记录</div>')+'</div></div>'+(hasRight?'<div class="trace-card"><div class="chat-heading">AI过程分析</div><div class="trace-content" id="inline-trace">'+right+'</div></div>':'')+'</div>';
+ let right=traced?D.traceHTML(traced.record):'';const hasRight=!!traced;
+ root.innerHTML='<div class="conversation-meta"><b>'+E(session.cname)+' × '+E(session.mname)+'</b><span>会话ID：'+E(session.id)+'</span><span>最后聊天：'+E(D.fmt(summary.last,true))+'</span><a class="return link-btn" href="'+backUrl()+'">返回'+meta[0]+'</a></div><div class="chat-layout'+(hasRight?'':' single')+'"><div class="chat-card"><div class="chat-heading"><span>会话消息</span><span class="tag '+(D.enabled(session)?'online':'offline')+'">'+(D.enabled(session)?'AI接管中':'未接管')+'</span></div><div class="chat-stream">'+(stream||'<div class="empty-panel">暂无聊天记录</div>')+'</div></div>'+(hasRight?'<div class="trace-card"><div class="chat-heading"><span class="heading-label">'+ACTION_ICON.trace+'AI过程分析</span><span class="sample">决策追溯示例</span></div><div class="trace-content" id="inline-trace">'+right+'</div></div>':'')+'</div>';
  document.querySelectorAll('[data-trace]').forEach(function(b){b.addEventListener('click',function(){const r=D.records.find(x=>x.id===b.dataset.trace);openTrace(r)})});
  document.querySelectorAll('[data-latency]').forEach(function(b){b.addEventListener('click',function(){const r=D.records.find(x=>x.id===b.dataset.latency);openLatency(r)})});
  document.querySelectorAll('[data-picture]').forEach(function(b){b.addEventListener('click',function(){const stage=document.getElementById('image-stage');stage.innerHTML=pictureSvg();document.getElementById('image-modal').classList.add('active')})});
