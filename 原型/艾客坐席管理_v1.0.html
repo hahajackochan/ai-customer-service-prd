@@ -52,14 +52,6 @@ button,input{font:inherit}
 .filter-popover .form-grid label.duration-filter>select{width:92px}.filter-popover .form-grid label.duration-filter>input{width:150px}.filter-popover .form-grid label.duration-filter .totalMaxWrap{display:inline-flex;align-items:center;gap:8px}.filter-popover .form-grid label.duration-filter .totalMaxWrap[hidden]{display:none}
 </style>
 <style>
-.switch{position:relative;display:inline-block;width:38px;height:20px;vertical-align:middle}
-.switch input{opacity:0;width:0;height:0}
-.slider{position:absolute;cursor:pointer;inset:0;background:#c0c4cc;border-radius:20px;transition:.2s}
-.slider:before{content:"";position:absolute;height:16px;width:16px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s}
-.switch input:checked+.slider{background:var(--brand)}
-.switch input:checked+.slider:before{transform:translateX(18px)}
-.switch-label{display:inline-flex;align-items:center;gap:7px}
-.state-text{font-size:12px;color:var(--muted)}
 .tag{display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:12px;font-size:12px;border:1px solid}
 .tag.yes{background:#f0f9eb;color:#529b2e;border-color:#e1f3d8}
 .tag.no{background:#f4f4f5;color:#909399;border-color:#e9e9eb}
@@ -169,10 +161,9 @@ function render(){
   var list=currentList();
   if(!list.length)tbody.innerHTML='<tr class="empty-row"><td colspan="7">暂无数据</td></tr>';
   else tbody.innerHTML=list.map(function(r){
-    return '<tr data-id="'+esc(r.id)+'"><td class="weak">'+esc(r.id)+'</td><td class="key-cell">'+esc(r.account)+'</td><td class="strong">'+esc(r.name)+'</td><td>'+esc(r.dept)+'</td><td><span class="tag '+(r.isAgent?'yes':'no')+'">'+(r.isAgent?'是':'否')+'</span></td><td class="weak">'+esc(r.createdAt)+'</td><td><div class="switch-label"><label class="switch"><input type="checkbox" aria-label="'+esc(r.id)+' 启用状态" data-switch="'+esc(r.id)+'" '+(r.enabled?'checked ':'')+'><span class="slider"></span></label><span class="state-text">'+(r.enabled?'启用':'禁用')+'</span></div></td></tr>';
+    return '<tr data-id="'+esc(r.id)+'"><td class="weak">'+esc(r.id)+'</td><td class="key-cell">'+esc(r.account)+'</td><td class="strong">'+esc(r.name)+'</td><td>'+esc(r.dept)+'</td><td><span class="tag '+(r.isAgent?'yes':'no')+'">'+(r.isAgent?'是':'否')+'</span></td><td class="weak">'+esc(r.createdAt)+'</td><td><span class="tag '+(r.enabled?'yes':'no')+'">'+(r.enabled?'启用':'禁用')+'</span></td></tr>';
   }).join('');
   document.getElementById('pager-info').textContent='共 '+list.length+' 条';
-  tbody.querySelectorAll('[data-switch]').forEach(function(box){box.addEventListener('change',function(){var row=rows.find(function(x){return x.id===box.dataset.switch;});if(!row)return;row.enabled=box.checked;showToast((box.checked?'已启用 ':'已禁用 ')+row.name,'ok');render();});});
 }
 var filterTrigger=document.getElementById('btn-filter'),filterPopover=document.getElementById('filter-popover');
 function resetFilters(){document.getElementById('q-account').value='';document.getElementById('q-name').value='';document.getElementById('q-dept').value='';document.getElementById('q-agent').value='';document.getElementById('q-enabled').value='';}
