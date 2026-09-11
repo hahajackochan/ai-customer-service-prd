@@ -104,17 +104,15 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
     </div>
   </header>
 
-  <section class="card" aria-label="账号AI托管">
-    <h3>账号AI托管</h3>
+  <section class="card" aria-label="当前账号">
+    <h3>当前账号</h3>
     <div class="kv">
       <div>
         <div class="name" id="acct-name">—</div>
         <div class="meta" id="acct-meta">—</div>
       </div>
-      <button type="button" class="sw" id="acct-sw" role="switch" aria-label="账号AI托管开关"></button>
     </div>
     <div class="tags" id="acct-tags"></div>
-    <div class="reason" id="acct-reason"></div>
   </section>
 
   <section class="card" aria-label="当前会话AI接管">
@@ -132,8 +130,8 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
   <section class="card" aria-label="会话列表">
     <h3>会话AI接管设置</h3>
     <div class="tabs">
-      <button type="button" class="tab-btn active" id="tab-single">单聊<span class="cnt" id="cnt-single"></span></button>
-      <button type="button" class="tab-btn" id="tab-group" disabled aria-disabled="true" title="后续版本支持">群聊<span class="cnt">（后续）</span></button>
+      <button type="button" class="tab-btn active" id="tab-single" aria-selected="true">单聊<span class="cnt" id="cnt-single"></span></button>
+      <button type="button" class="tab-btn" id="tab-group" aria-selected="false">群聊<span class="cnt" id="cnt-group"></span></button>
     </div>
     <div class="search">
       <input id="q" placeholder="搜索会话名称" autocomplete="off">
@@ -156,19 +154,6 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
   <div class="p-foot">原型演示 · 数据为模拟示例，与AI托管账号 / 客户会话管理原型共享状态</div>
 </div>
 
-<div class="modal" id="m-modes">
-  <div class="mbox">
-    <div class="mhead">开启账号AI托管</div>
-    <div class="mbody">
-      <div>请选择AI托管方式（可同时勾选，至少一项）：</div>
-      <label class="opt"><input type="checkbox" id="opt-single"><span><span class="t">单聊AI托管</span><br><span class="d">对账号下单聊会话开放AI接管</span></span></label>
-      <label class="opt"><input type="checkbox" id="opt-group"><span><span class="t">群聊AI托管</span><br><span class="d">对账号下群聊会话开放AI接管</span></span></label>
-      <div class="merr" id="modes-err"></div>
-    </div>
-    <div class="mfoot"><button type="button" class="btn" id="modes-cancel">取消</button><button type="button" class="btn primary" id="modes-ok">确定</button></div>
-  </div>
-</div>
-
 <div class="modal" id="m-confirm">
   <div class="mbox">
     <div class="mhead" id="cf-title">确认操作</div>
@@ -183,275 +168,88 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
 <script>
 (function(){
 'use strict';
-/* ---------- 共享模拟状态（与AI托管账号 / 客户会话管理原型一致） ---------- */
 const params=new URLSearchParams(location.search);
 let state={accounts:{},sessions:{}};
 try{const x=JSON.parse(params.get('demo')||localStorage.getItem('aic-v05')||'null');if(x&&typeof x==='object'){state.accounts=x.accounts||{};state.sessions=x.sessions||{};}}catch(_){}
-let h5={currentAccount:'wx_1001',currentSession:'S_0001'};
-try{const y=JSON.parse(localStorage.getItem('aic-h5')||'null');if(y&&typeof y==='object')h5=Object.assign(h5,y);}catch(_){}
+let h5={currentAccount:'wx_1001',activeType:'single',currentSessions:{single:'S_0001',group:'G_0001'}};
+try{const y=JSON.parse(localStorage.getItem('aic-h5')||'null');if(y&&typeof y==='object'){h5=Object.assign(h5,y);if(y.currentSession&&!y.currentSessions)h5.currentSessions.single=y.currentSession;}}catch(_){}
+if(!['single','group'].includes(h5.activeType))h5.activeType='single';
+if(!h5.currentSessions)h5.currentSessions={single:'S_0001',group:'G_0001'};
 
-const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),hosted:[1,2,5,6,8].includes(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
+const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
 const NAMES=['王女士','李先生','张女士','赵先生','刘女士','陈先生','孙女士','周先生','吴女士','郑先生','冯女士','蒋先生'];
 const MIDS=[1,1,2,3,4,4,5,6,7,8,9,5];
 const SUMMARIES=['想了解会员权益。','积分在哪里查看？','我想预约到店看看柜体颜色。','订单的安装进度在哪里看？','积分过期规则是什么？','我能修改预约时间吗？','门店营业时间几点？','怎么样参加本月活动？','发票怎么开具？','运费如何计算？','套餐可以升级吗？','地址可以修改吗？'];
-const singles=NAMES.map((name,i)=>({id:'S_'+String(i+1).padStart(4,'0'),name:name,cid:'C_'+(88001+i),mid:'wx_100'+MIDS[i],kind:'single',summary:SUMMARIES[i],configured:i%3!==1}));
+const GROUP_NAMES=['索菲亚会员服务群','家装方案咨询群','到店预约沟通群','订单安装服务群','会员积分答疑群','预约变更沟通群','门店活动通知群','本月会员活动群','售后发票服务群','物流配送咨询群','套餐升级咨询群','地址变更服务群'];
+const GROUP_SUMMARIES=['群内咨询会员权益与活动。','正在讨论整体家装方案。','多人协同确认到店时间。','同步订单安装进度。','会员积分规则集中答疑。','协调预约时间变更。','门店营业及活动通知。','本月活动报名沟通。','售后发票信息收集。','物流与运费咨询。','套餐升级方案确认。','配送地址变更确认。'];
+const singles=NAMES.map((name,i)=>({id:'S_'+String(i+1).padStart(4,'0'),name,cid:'C_'+(88001+i),mid:'wx_100'+MIDS[i],kind:'single',summary:SUMMARIES[i],configured:i%3!==1}));
+const groups=GROUP_NAMES.map((name,i)=>({id:'G_'+String(i+1).padStart(4,'0'),name,cid:'GC_'+(99001+i),mid:'wx_100'+MIDS[i],kind:'group',summary:GROUP_SUMMARIES[i],configured:i%4===0}));
+const allSessions=[...singles,...groups];
 
-function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{hosted:raw.hosted===true,single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
-function saveShared(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05',value);}catch(_){} params.set('demo',value);try{const u=new URL(location.href);u.searchParams.set('demo',value);history.replaceState(null,'',u.href);}catch(_){}}
+function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
+function saveShared(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05',value);}catch(_){}params.set('demo',value);try{const u=new URL(location.href);u.searchParams.set('demo',value);history.replaceState(null,'',u.href);}catch(_){}}
 function saveH5(){try{localStorage.setItem('aic-h5',JSON.stringify(h5));}catch(_){}}
-function saveAccount(id,cfg){state.accounts[id]={hosted:!!cfg.hosted,single:!!cfg.single,group:!!cfg.group};saveShared();}
-function saveSession(id,val){state.sessions[id]=!!val;saveShared();}
-
-/* ---------- DOM ---------- */
+function saveSession(s,val){state.sessions[s.id]=!!val;saveShared();}
 const $=s=>document.querySelector(s);
-const acctSw=$('#acct-sw'),curSw=$('#cur-sw');
 let checked=new Set(),busy=false;
 function toast(msg,cls){const t=$('#toast');t.textContent=msg;t.className='toast '+(cls||'info');t.style.display='block';clearTimeout(toast._t);toast._t=setTimeout(()=>{t.style.display='none'},2200);}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function fmtName(n){return (n||'').replace(/^会员助理s*/,'').slice(0,2)||'客';}
+function fmtName(n){return (n||'').replace(/^会员助理\s*/,'').slice(0,2)||'客';}
+function typeLabel(){return h5.activeType==='group'?'群聊':'单聊';}
+function typeSessions(type=h5.activeType){return allSessions.filter(s=>s.mid===h5.currentAccount&&s.kind===type);}
+function allowedForType(type,a=account(h5.currentAccount)){return type==='group'?a.group:a.single;}
+function sessionAllowed(s,a){const ok=allowedForType(s.kind,a);return ok?{ok:true}:{ok:false,why:'账号未开启「'+(s.kind==='group'?'群聊':'单聊')+'AI接管」'};}
+function configuredOn(s){return state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured;}
+function sessionOn(s){return sessionAllowed(s,account(s.mid)).ok&&configuredOn(s);}
+function currentSession(){const list=typeSessions(),id=h5.currentSessions[h5.activeType];const s=list.find(x=>x.id===id)||list[0]||null;if(s&&id!==s.id){h5.currentSessions[h5.activeType]=s.id;saveH5();}return s;}
 
-/* ---------- 渲染 ---------- */
 function renderAcct(){
-  const a=account(h5.currentAccount);
-  $('#acct-name').textContent=a.name;
-  $('#acct-meta').textContent='账号ID '+a.id;
-  acctSw.classList.toggle('on',a.hosted);
-  acctSw.setAttribute('aria-checked',String(a.hosted));
-  acctSw.disabled=busy;
-  const tags=[];
-  if(a.hosted)tags.push(a.single?'<span class="tag on">单聊托管</span>':'<span class="tag off">未开启单聊托管</span>');
-  $('#acct-tags').innerHTML=tags.join('');
-  const r=$('#acct-reason');
-  if(a.hosted&&!a.single){r.textContent='账号未开启单聊托管，会话AI接管暂不可用。';r.classList.add('show');}
-  else r.classList.remove('show');
+ const a=account(h5.currentAccount);$('#acct-name').textContent=a.name;$('#acct-meta').textContent='账号ID '+a.id;
+ $('#acct-tags').innerHTML='<span class="tag '+(a.single?'on':'off')+'">单聊AI接管'+(a.single?'已开启':'未开启')+'</span><span class="tag '+(a.group?'on':'off')+'">群聊AI接管'+(a.group?'已开启':'未开启')+'</span>';
 }
-function sessionAllowed(s,a){
-  if(!a.hosted)return {ok:false,why:'账号未开启AI托管'};
-  if(!a.single)return {ok:false,why:'账号未勾选「单聊AI托管」'};
-  return {ok:true};
-}
-function sessionOn(s){return state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured;}
-function setSession(s,val){saveSession(s.id,val);}
-function currentSession(){
-  const a=account(h5.currentAccount);
-  return singles.find(s=>s.id===h5.currentSession)||singles[0];
+function renderTabs(){
+ $('#tab-single').classList.toggle('active',h5.activeType==='single');$('#tab-group').classList.toggle('active',h5.activeType==='group');
+ $('#tab-single').setAttribute('aria-selected',String(h5.activeType==='single'));$('#tab-group').setAttribute('aria-selected',String(h5.activeType==='group'));
+ $('#cnt-single').textContent='（'+typeSessions('single').length+'）';$('#cnt-group').textContent='（'+typeSessions('group').length+'）';
 }
 function renderCurrent(){
-  const a=account(h5.currentAccount),s=currentSession();
-  $('#cur-name').innerHTML=esc(s.name)+' <span class="tag type">单聊</span>';
-  $('#cur-meta').textContent='客户 '+s.cid+' ｜ 成员账号 '+a.name;
-  const allow=sessionAllowed(s,a);
-  curSw.classList.toggle('on',sessionOn(s));
-  curSw.setAttribute('aria-checked',String(sessionOn(s)));
-  curSw.disabled=busy||!allow.ok;
-  const r=$('#cur-reason');
-  if(!allow.ok){r.textContent=allow.why+'，当前会话不可开启AI接管。';r.classList.add('show');}
-  else r.classList.remove('show');
+ const a=account(h5.currentAccount),s=currentSession(),label=typeLabel(),r=$('#cur-reason');
+ if(!s){$('#cur-name').textContent='暂无'+label+'会话';$('#cur-meta').textContent='当前账号暂无可展示会话';$('#cur-sw').classList.remove('on');$('#cur-sw').disabled=true;r.classList.remove('show');return;}
+ $('#cur-name').innerHTML=esc(s.name)+' <span class="tag type">'+label+'</span>';$('#cur-meta').textContent=(s.kind==='group'?'群ID ':'客户 ')+s.cid+' ｜ 成员账号 '+a.name;
+ const allow=sessionAllowed(s,a);$('#cur-sw').classList.toggle('on',sessionOn(s));$('#cur-sw').setAttribute('aria-checked',String(sessionOn(s)));$('#cur-sw').disabled=busy||!allow.ok;
+ if(!allow.ok){r.textContent=allow.why+'，请在后台AI托管账号中开启后再操作。';r.classList.add('show');}else r.classList.remove('show');
 }
-function visibleList(){
-  const kw=($('#q').value||'').trim();
-  let list=singles;
-  if(kw)list=list.filter(s=>s.name.indexOf(kw)>=0);
-  return list.slice().sort((a,b)=>String(b.id).localeCompare(String(a.id)));
-}
+function visibleList(){const kw=($('#q').value||'').trim();let list=typeSessions();if(kw)list=list.filter(s=>s.name.indexOf(kw)>=0);return list.slice().sort((a,b)=>String(b.id).localeCompare(String(a.id)));}
 function renderList(){
-  const a=account(h5.currentAccount),list=visibleList();
-  const el=$('#slist');
-  if(!list.length){
-    el.innerHTML='<div class="empty">'+(($('#q').value||'').trim()?'未找到匹配会话，可修改关键词或重置搜索':'该账号暂无单聊会话')+'</div>';
-  }else{
-    el.innerHTML=list.map(s=>{
-      const allow=sessionAllowed(s,a),on=sessionOn(s);
-      return '<div class="srow'+(s.id===h5.currentSession?' current':'')+'" data-id="'+s.id+'" role="button" tabindex="0">'
-        +'<input type="checkbox" data-chk="'+s.id+'" '+(checked.has(s.id)?'checked':'')+' aria-label="选择 '+esc(s.name)+'"'
-        +(allow.ok?'':' disabled')+'>'
-        +'<span class="avatar">'+esc(fmtName(s.name))+'</span>'
-        +'<span class="body"><span class="n1"><span class="sname">'+esc(s.name)+'</span></span>'
-        +'<span class="n2">'+esc(s.summary)+'</span></span>'
-        +'<button type="button" class="sw'+(on?' on':'')+'" data-sw="'+s.id+'"'+(allow.ok?'':' disabled')+' aria-label="'+esc(s.name)+' AI接管开关"></button>'
-        +(!allow.ok&&a.hosted?'<span class="reason show" style="margin:0 0 0 6px;max-width:96px">'+allow.why+'</span>':'')
-        +'</div>';
-    }).join('');
-  }
-  renderBulk();
-  renderCounts();
+ const a=account(h5.currentAccount),list=visibleList(),el=$('#slist'),label=typeLabel(),cur=currentSession();
+ if(!list.length)el.innerHTML='<div class="empty">'+((($('#q').value||'').trim())?'未找到匹配会话，可修改关键词或重置搜索':'该账号暂无'+label+'会话')+'</div>';
+ else el.innerHTML=list.map(s=>{const allow=sessionAllowed(s,a),on=sessionOn(s);return '<div class="srow '+s.kind+(cur&&s.id===cur.id?' current':'')+'" data-id="'+s.id+'" role="button" tabindex="0"><input type="checkbox" data-chk="'+s.id+'" '+(checked.has(s.id)?'checked ':'')+(allow.ok?'':'disabled ')+'aria-label="选择 '+esc(s.name)+'"><span class="avatar">'+esc(s.kind==='group'?'群':fmtName(s.name))+'</span><span class="body"><span class="n1"><span class="sname">'+esc(s.name)+'</span></span><span class="n2">'+esc(s.summary)+'</span></span><button type="button" class="sw'+(on?' on':'')+'" data-sw="'+s.id+'" '+(allow.ok?'':'disabled ')+'aria-label="'+esc(s.name)+' AI接管开关"></button>'+(!allow.ok?'<span class="reason show" style="margin:0 0 0 6px;max-width:96px">'+esc(allow.why)+'</span>':'')+'</div>';}).join('');
+ renderBulk();renderCounts();
 }
-function renderCounts(){
-  const a=account(h5.currentAccount);
-  const list=singles;
-  $('#cnt-single').textContent='（'+list.length+'）';
-  const eligible=list.filter(s=>sessionAllowed(s,a).ok);
-  const on=eligible.filter(s=>sessionOn(s));
-  $('#all-on').disabled=busy||!a.hosted||eligible.length===on.length||!eligible.length;
-  $('#all-off').disabled=busy||!a.hosted||on.length===0;
-}
-function renderBulk(){
-  const bar=$('#batch-bar'),n=checked.size;
-  bar.classList.toggle('show',n>0);
-  $('#batch-cnt').textContent='已选 '+n+' 项';
-  const a=account(h5.currentAccount);
-  const sel=[...checked].map(id=>singles.find(s=>s.id===id)).filter(Boolean);
-  const el=sel.filter(s=>sessionAllowed(s,a).ok);
-  $('#batch-on').disabled=busy||!el.length||el.every(s=>sessionOn(s));
-  $('#batch-off').disabled=busy||!el.filter(s=>sessionOn(s)).length;
-  $('#batch-on').textContent=el.length&&sel.length!==el.length?('开启接管（'+el.length+'可操作）'):'开启接管';
-  $('#batch-off').textContent=el.length&&sel.length!==el.length?('禁用接管（'+el.length+'可操作）'):'禁用接管';
-}
-function renderAll(){renderAcct();renderCurrent();renderList();}
+function renderCounts(){const a=account(h5.currentAccount),list=typeSessions(),allowed=allowedForType(h5.activeType,a),on=list.filter(sessionOn);$('#all-on').disabled=busy||!allowed||!list.length||on.length===list.length;$('#all-off').disabled=busy||!allowed||on.length===0;}
+function selectedSessions(){return [...checked].map(id=>allSessions.find(s=>s.id===id)).filter(s=>s&&s.mid===h5.currentAccount&&s.kind===h5.activeType);}
+function renderBulk(){const bar=$('#batch-bar'),sel=selectedSessions(),a=account(h5.currentAccount),el=sel.filter(s=>sessionAllowed(s,a).ok);bar.classList.toggle('show',sel.length>0);$('#batch-cnt').textContent='已选 '+sel.length+' 项';$('#batch-on').disabled=busy||!el.length||el.every(sessionOn);$('#batch-off').disabled=busy||!el.some(sessionOn);}
+function renderAll(){renderAcct();renderTabs();renderCurrent();renderList();}
+function openModal(id){$(id).classList.add('active');}function closeModal(id){$(id).classList.remove('active');}
+function setBusy(v){busy=v;renderCurrent();renderCounts();renderBulk();}
+function switchType(type){if(type===h5.activeType)return;h5.activeType=type;checked.clear();$('#q').value='';$('#q-clear').style.display='none';saveH5();renderAll();toast('已切换至'+typeLabel()+'会话','info');}
+$('#tab-single').addEventListener('click',()=>switchType('single'));$('#tab-group').addEventListener('click',()=>switchType('group'));
 
-/* ---------- 弹窗 ---------- */
-function openModal(id){$(id).classList.add('active');}
-function closeModal(id){$(id).classList.remove('active');}
+$('#slist').addEventListener('click',e=>{const sw=e.target.closest('[data-sw]');if(sw){if(busy||sw.disabled)return;const s=allSessions.find(x=>x.id===sw.dataset.sw),next=!sessionOn(s);sw.classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'已开启「'+s.name+'」AI接管':'已禁用「'+s.name+'」AI接管',next?'ok':'info');},260);return;}const row=e.target.closest('.srow');if(row&&!e.target.matches('input[type=checkbox]')){h5.currentSessions[h5.activeType]=row.dataset.id;saveH5();renderAll();toast('已切换当前'+typeLabel()+'会话','info');}});
+$('#slist').addEventListener('change',e=>{const chk=e.target.closest('[data-chk]');if(!chk)return;if(chk.checked)checked.add(chk.dataset.chk);else checked.delete(chk.dataset.chk);renderBulk();});
+$('#cur-sw').addEventListener('click',()=>{if(busy||$('#cur-sw').disabled)return;const s=currentSession(),next=!sessionOn(s);$('#cur-sw').classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'当前会话已开启AI接管':'当前会话已禁用AI接管',next?'ok':'info');},260);});
 
-/* 账号开关 */
-acctSw.addEventListener('click',()=>{
-  if(busy)return;
-  const a=account(h5.currentAccount);
-  if(!a.hosted){
-    $('#opt-single').checked=a.single;$('#opt-group').checked=a.group;$('#modes-err').textContent='';
-    openModal('#m-modes');$('#opt-single').focus();
-  }else{
-    $('#cf-title').textContent='关闭账号AI托管';
-    $('#cf-text').innerHTML='关闭后该账号<b>全部单聊会话</b>将停止AI接管。<br>确定关闭「'+esc(a.name)+'」的AI托管吗？';
-    $('#cf-err').textContent='';$('#cf-ok').dataset.act='acct-off';
-    openModal('#m-confirm');
-  }
-});
-$('#modes-ok').addEventListener('click',()=>{
-  const single=$('#opt-single').checked,group=$('#opt-group').checked;
-  if(!single&&!group){$('#modes-err').textContent='开启AI托管后，请至少勾选一种托管方式';return;}
-  setBusy(true);
-  setTimeout(()=>{
-    saveAccount(h5.currentAccount,{hosted:true,single:single,group:group});
-    setBusy(false);closeModal('#m-modes');renderAll();
-    toast('AI托管已开启','ok');
-  },420);
-});
-$('#modes-cancel').addEventListener('click',()=>closeModal('#m-modes'));
-$('#cf-ok').addEventListener('click',()=>{
-  const act=$('#cf-ok').dataset.act;
-  if(act==='acct-off'){
-    setBusy(true);
-    setTimeout(()=>{
-      saveAccount(h5.currentAccount,{hosted:false,single:false,group:false});
-      setBusy(false);closeModal('#m-confirm');renderAll();
-      toast('AI托管已关闭','ok');
-    },420);
-  }else if(act==='all'){
-    const val=$('#cf-ok').dataset.val==='on';
-    const list=singles.filter(s=>sessionAllowed(s,account(h5.currentAccount)).ok);
-    batchApply(list,val,true);
-  }else if(act==='batch'){
-    const val=$('#cf-ok').dataset.val==='on';
-    const a=account(h5.currentAccount);
-    const list=[...checked].map(id=>singles.find(s=>s.id===id)).filter(s=>s&&sessionAllowed(s,a).ok);
-    batchApply(list,val,false);
-  }
-});
-$('#cf-cancel').addEventListener('click',()=>closeModal('#m-confirm'));
-
-function setBusy(v){busy=v;acctSw.disabled=v||!account(h5.currentAccount).hosted;renderCounts();renderBulk();}
-
-/* 单个会话开关（事件委托） */
-$('#slist').addEventListener('click',e=>{
-  const sw=e.target.closest('[data-sw]');
-  if(sw){
-    if(busy||sw.disabled)return;
-    const id=sw.getAttribute('data-sw');
-    const s=singles.find(x=>x.id===id);
-    const next=!sessionOn(s);
-    sw.classList.add('busy');
-    setTimeout(()=>{
-      setSession(s,next);
-      renderAll();
-      toast(next?'已开启「'+s.name+'」AI接管':'已禁用「'+s.name+'」AI接管',next?'ok':'info');
-    },260);
-    return;
-  }
-  const row=e.target.closest('.srow');
-  if(row&&!e.target.matches('input[type=checkbox]')){
-    h5.currentSession=row.getAttribute('data-id');saveH5();renderAll();
-    toast('已切换当前会话','info');
-  }
-});
-$('#slist').addEventListener('change',e=>{
-  const chk=e.target.closest('[data-chk]');
-  if(!chk)return;
-  const id=chk.getAttribute('data-chk');
-  if(chk.checked)checked.add(id);else checked.delete(id);
-  renderBulk();
-});
-curSw.addEventListener('click',()=>{
-  if(busy||curSw.disabled)return;
-  const s=currentSession(),next=!sessionOn(s);
-  curSw.classList.add('busy');
-  setTimeout(()=>{setSession(s,next);renderAll();toast(next?'当前会话已开启AI接管':'当前会话已禁用AI接管',next?'ok':'info');},260);
-});
-
-/* 一键 */
-$('#all-on').addEventListener('click',()=>{
-  const list=singles.filter(s=>sessionAllowed(s,account(h5.currentAccount)).ok&&!sessionOn(s));
-  if(!list.length)return;
-  $('#cf-title').textContent='全部开启AI接管';
-  $('#cf-text').innerHTML='将对该账号下<b>'+list.length+'个单聊会话</b>一键开启AI接管。<br>确定继续吗？';
-  $('#cf-err').textContent='';$('#cf-ok').dataset.act='all';$('#cf-ok').dataset.val='on';
-  openModal('#m-confirm');
-});
-$('#all-off').addEventListener('click',()=>{
-  const list=singles.filter(s=>sessionAllowed(s,account(h5.currentAccount)).ok&&sessionOn(s));
-  if(!list.length)return;
-  $('#cf-title').textContent='全部禁用AI接管';
-  $('#cf-text').innerHTML='将对该账号下<b>'+list.length+'个单聊会话</b>一键禁用AI接管。<br>确定继续吗？';
-  $('#cf-err').textContent='';$('#cf-ok').dataset.act='all';$('#cf-ok').dataset.val='off';
-  openModal('#m-confirm');
-});
-function batchApply(list,val,clearAfter){
-  if(!list.length){closeModal('#m-confirm');toast('没有可操作的会话','err');return;}
-  setBusy(true);
-  setTimeout(()=>{
-    list.forEach(s=>setSession(s,val));
-    if(clearAfter)checked.clear();else list.forEach(s=>checked.delete(s.id));
-    setBusy(false);closeModal('#m-confirm');renderAll();
-    toast((val?'已开启 ':'已禁用 ')+list.length+' 个会话AI接管','ok');
-  },520);
-}
-
-/* 批量 */
-$('#batch-on').addEventListener('click',()=>{
-  const a=account(h5.currentAccount);
-  const sel=[...checked].map(id=>singles.find(s=>s.id===id)).filter(Boolean);
-  const el=sel.filter(s=>sessionAllowed(s,a).ok&&!sessionOn(s));
-  if(!el.length)return;
-  $('#cf-title').textContent='批量开启AI接管';
-  $('#cf-text').innerHTML='将对勾选的<b>'+el.length+'个会话</b>开启AI接管'+(sel.length!==el.length?'（其余'+(sel.length-el.length)+'个不满足前提已跳过）':'')+'。<br>确定继续吗？';
-  $('#cf-err').textContent='';$('#cf-ok').dataset.act='batch';$('#cf-ok').dataset.val='on';
-  openModal('#m-confirm');
-});
-$('#batch-off').addEventListener('click',()=>{
-  const a=account(h5.currentAccount);
-  const sel=[...checked].map(id=>singles.find(s=>s.id===id)).filter(Boolean);
-  const el=sel.filter(s=>sessionAllowed(s,a).ok&&sessionOn(s));
-  if(!el.length)return;
-  $('#cf-title').textContent='批量禁用AI接管';
-  $('#cf-text').innerHTML='将对勾选的<b>'+el.length+'个会话</b>禁用AI接管'+(sel.length!==el.length?'（其余'+(sel.length-el.length)+'个不满足前提已跳过）':'')+'。<br>确定继续吗？';
-  $('#cf-err').textContent='';$('#cf-ok').dataset.act='batch';$('#cf-ok').dataset.val='off';
-  openModal('#m-confirm');
-});
-$('#batch-cancel').addEventListener('click',()=>{checked.clear();renderAll();});
-
-/* 搜索 */
-$('#q').addEventListener('input',()=>{$('#q-clear').style.display=$('#q').value?'block':'none';renderList();});
-$('#q-clear').addEventListener('click',()=>{$('#q').value='';$('#q-clear').style.display='none';renderList();$('#q').focus();});
-
-/* 键盘可达：Enter/空格切换行 */
-$('#slist').addEventListener('keydown',e=>{
-  if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('srow')){e.preventDefault();e.target.click();}
-});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('#m-modes');closeModal('#m-confirm');}});
-
-/* 首次进入骨架屏 */
-$('#slist').innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-setTimeout(renderAll,380);
+function prepareAll(val){const list=typeSessions();if(!list.length)return;$('#cf-title').textContent=val?'全部开启AI接管':'全部禁用AI接管';$('#cf-text').innerHTML='将对当前账号下<b>'+list.length+'个'+typeLabel()+'会话</b>'+(val?'开启':'禁用')+'AI接管。<br>该操作覆盖当前类型全部会话，不受搜索条件影响。';$('#cf-err').textContent='';$('#cf-ok').dataset.act='all';$('#cf-ok').dataset.val=val?'on':'off';openModal('#m-confirm');}
+$('#all-on').addEventListener('click',()=>prepareAll(true));$('#all-off').addEventListener('click',()=>prepareAll(false));
+function prepareBatch(val){const sel=selectedSessions(),a=account(h5.currentAccount),list=sel.filter(s=>sessionAllowed(s,a).ok&&(val?!sessionOn(s):sessionOn(s)));if(!list.length)return;$('#cf-title').textContent=val?'批量开启AI接管':'批量禁用AI接管';$('#cf-text').innerHTML='将对勾选的<b>'+list.length+'个'+typeLabel()+'会话</b>'+(val?'开启':'禁用')+'AI接管。';$('#cf-err').textContent='';$('#cf-ok').dataset.act='batch';$('#cf-ok').dataset.val=val?'on':'off';openModal('#m-confirm');}
+$('#batch-on').addEventListener('click',()=>prepareBatch(true));$('#batch-off').addEventListener('click',()=>prepareBatch(false));
+function batchApply(list,val){if(!list.length){closeModal('#m-confirm');toast('没有可操作的会话','err');return;}setBusy(true);setTimeout(()=>{list.forEach(s=>{state.sessions[s.id]=!!val;checked.delete(s.id);});saveShared();setBusy(false);closeModal('#m-confirm');renderAll();toast((val?'已开启 ':'已禁用 ')+list.length+' 个'+typeLabel()+'会话AI接管','ok');},520);}
+$('#cf-ok').addEventListener('click',()=>{const val=$('#cf-ok').dataset.val==='on',act=$('#cf-ok').dataset.act;const list=act==='all'?typeSessions():selectedSessions().filter(s=>val?!sessionOn(s):sessionOn(s));batchApply(list,val);});
+$('#cf-cancel').addEventListener('click',()=>closeModal('#m-confirm'));$('#batch-cancel').addEventListener('click',()=>{checked.clear();renderAll();});
+$('#q').addEventListener('input',()=>{$('#q-clear').style.display=$('#q').value?'block':'none';renderList();});$('#q-clear').addEventListener('click',()=>{$('#q').value='';$('#q-clear').style.display='none';renderList();$('#q').focus();});
+$('#slist').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('srow')){e.preventDefault();e.target.click();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal('#m-confirm');});
+$('#slist').innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';setTimeout(renderAll,380);
 })();
 </script>
 </body>

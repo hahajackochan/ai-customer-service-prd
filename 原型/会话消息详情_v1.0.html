@@ -266,7 +266,7 @@ td.strong{color:var(--ink)}
     <nav class="top-tabs">
       <span class="top-tab js-nothing"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>平台端</span>
       <span class="top-tab active"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>租户端</span>
-      <span class="tenant-pill js-nothing">索菲亚会员小程序<span class="caret">▾</span></span>
+      <span class="tenant-pill js-nothing">企微AI客服<span class="caret">▾</span></span>
     </nav>
     <div class="top-right">
       <span class="avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.4" r="3.6" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.4c1.5-3.6 4-5.4 7-5.4s5.5 1.8 7 5.4" stroke="currentColor" stroke-width="1.8"/></svg></span>
@@ -327,7 +327,7 @@ td.strong{color:var(--ink)}
 const REASONS=['用户主动要求人工','意图未识别','意图误判','知识缺失','知识命中但未解决','流程未触发','流程无法完成','系统接口异常','业务规则要求人工','高风险问题兜底'];
 const CODES=['USER_REQUEST','INTENT_UNKNOWN','INTENT_WRONG','KNOWLEDGE_MISSING','KNOWLEDGE_UNRESOLVED','FLOW_NOT_TRIGGERED','FLOW_INCOMPLETE','INTERFACE_ERROR','BUSINESS_RULE','HIGH_RISK'];
 const reasonExamples=['用户明确提出“请帮我转人工”。','当前表达未匹配到可用业务意图。','原识别结果与客户澄清内容不一致，转人工核实。','现有知识库没有覆盖此问题。','已命中知识，但客户反馈仍未解决。','命中场景后未启动对应业务流程。','流程缺少必要资料，无法继续完成。','调用业务接口超时，未取得结果。','此业务按规则必须由人工核实。','涉及高风险诉求，停止自动答复并转人工。'];
-const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),hosted:[1,2,5,6,8].includes(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
+const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
 const NAMES=['王女士','李先生','张女士','赵先生','刘女士','陈先生','孙女士','周先生','吴女士','郑先生','冯女士','蒋先生'];
 const MIDS=[1,1,2,3,4,4,5,6,7,8,9,5];
 const TODAY=new Date(); TODAY.setHours(0,0,0,0);
@@ -339,11 +339,11 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 const params=new URLSearchParams(location.search);
 let state={accounts:{},sessions:{}};
 try{const x=JSON.parse(params.get('demo')||localStorage.getItem('aic-v05')||'null');if(x&&typeof x==='object'){state.accounts=x.accounts||{};state.sessions=x.sessions||{};}}catch(_){}
-function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{hosted:raw.hosted===true,single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
+function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
 function save(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05',value);}catch(_){} params.set('demo',value);const current=new URL(location.href);current.searchParams.set('demo',value);try{history.replaceState(null,'',current.href);}catch(_){} }
-function saveAccount(id,config){state.accounts[id]={hosted:!!config.hosted,single:!!config.single,group:!!config.group};save();}
+function saveAccount(id,config){state.accounts[id]={single:!!config.single,group:!!config.group};save();}
 function url(file,args={}){const u=new URL(file,location.href);u.search='';for(const k of ['embed','sandbox'])if(params.has(k))u.searchParams.set(k,params.get(k));if(Object.keys(state.accounts).length||Object.keys(state.sessions).length)u.searchParams.set('demo',JSON.stringify(state));for(const [k,v]of Object.entries(args))if(v!==null&&v!==undefined&&v!=='')u.searchParams.set(k,String(v));return u.href;}
-const sessions=NAMES.map((name,i)=>({id:'S_'+pad(i+1,4),cid:'C_'+(88001+i),cname:name,mid:'wx_100'+MIDS[i],mname:'会员助理 小菲'+MIDS[i],supplier:'艾客',corp:MIDS[i]%2?'索菲亚家居':'索菲亚精选',configured:i%3!==1,records:[]}));
+const sessions=NAMES.map((name,i)=>({id:'S_'+pad(i+1,4),type:'single',cid:'C_'+(88001+i),cname:name,mid:'wx_100'+MIDS[i],mname:'会员助理 小菲'+MIDS[i],supplier:'艾客',corp:MIDS[i]%2?'索菲亚家居':'索菲亚精选',configured:i%3!==1,records:[]}));
 const templates=[
  ['想了解会员权益。','您可以在会员中心查看当前等级对应的权益。','会员权益咨询','会员权益说明','会员中心 → 我的权益'],
  ['积分在哪里查看？','请进入会员中心的“我的积分”查看余额和明细。','积分查询','积分查询指南','会员中心 → 我的积分'],
@@ -361,7 +361,7 @@ for(let sidx=0;sidx<sessions.length;sidx++){
   else if([2,3,8,10].includes(sidx))kind=j===count-1?'pending':'human';
   else kind=j===count-1?'pending':j%3===1?'transfer':'ai';
   let reasonIndex=-1;
-  if(sidx===0&&j>=6&&j<=15){reasonIndex=j-6;kind=reasonIndex===7?'error':'transfer';}
+  if(sidx===0&&j>=6&&j<=15){reasonIndex=j-6;kind='transfer';}
   else if(kind==='transfer')reasonIndex=(sidx+j)%10;
   const off=sidx===0?(j<14?-2:j<28?-1:0):-(sidx%3);
   const base=day(off);base.setHours(9+Math.floor((j%14)/4),10+(j%4)*10,(j*7)%50,0);
@@ -407,8 +407,9 @@ function messages(s){return s.records.flatMap(r=>{
  if(r.reply)items.push({id:r.replyId,role:'member',text:r.reply,type:r.replyType,at:r.replyAt,ai:r.ai,record:r});
  if(r.reason)items.push({id:r.traceId,role:'event',text:r.kind==='error'?'AI处理异常':'AI转人工',at:r.eventAt,record:r});return items;
 }).sort((a,b)=>a.at-b.at||a.id.localeCompare(b.id));}
-function enabled(s){const a=account(s.mid);return a.hosted&&a.single&&(state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured);}
-function eligible(s){const a=account(s.mid);return a.hosted&&a.single;}
+function modeEnabled(s,a){return (s.type||'single')==='group'?a.group:a.single;}
+function enabled(s){const a=account(s.mid);return modeEnabled(s,a)&&(state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured);}
+function eligible(s){return modeEnabled(s,account(s.mid));}
 function setSession(id,value){const s=sessions.find(x=>x.id===id);if(!s||value&&!eligible(s))return false;state.sessions[id]=!!value;save();return true;}
 const records=sessions.flatMap(s=>s.records).sort((a,b)=>b.sentAt-a.sentAt||a.id.localeCompare(b.id));
 function summary(s){const msgs=messages(s).filter(m=>m.role!=='event');return{count:msgs.length,created:Math.min(...msgs.map(m=>m.at)),last:Math.max(...msgs.map(m=>m.at)),ai:s.records.some(r=>r.ai)};}
@@ -431,7 +432,7 @@ function traceHTML(r){
  const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
  const prompt='系统：仅依据当次有效知识答复，不确定时转人工。\n知识：'+(success?r.knowledge+'（示例快照 v1）':'未取得可直接回复的有效知识。')+'\n上下文：\n'+context+'\n问句：'+r.question;
  return '<div class="trace-summary"><span class="tag online">示例快照</span><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b><small>追溯ID '+esc(r.traceId)+'</small><small>客户消息ID '+esc(r.id)+' · 会话 '+esc(r.sid)+'</small></div>'
- + (r.reason?'<div class="reason-box">'+kv('归因类型',r.reason.type)+kv('原因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
+ + (r.reason?'<div class="reason-box">'+kv('处理类型',r.reason.type)+kv('转人工归因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
  +section('1','输入 · 模型与触发消息',kv('模型','客服模型-示例 v1')+kv('客户消息原文',r.question)+kv('触发时间',fmt(r.receivedAt,true))+kv('触发消息ID',r.id)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
  +section('2','理解 · 意图识别',kv('识别结果说明',r.intentSummary)+results('intent',r.intentResults,'暂无意图结果；识别状态见上方记录。'))
  +section('3','判断与决策 · 知识匹配',kv('检索及过滤说明',r.knowledgeSummary)+results('knowledge',r.knowledgeResults,'暂无知识结果；未检索、无匹配或异常以日志说明为准。')+kv('是否转人工',transfer?'是':failed?'未执行；当前记录为异常':'否'))

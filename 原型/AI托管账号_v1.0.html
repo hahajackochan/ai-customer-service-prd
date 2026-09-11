@@ -63,6 +63,7 @@ body{background:var(--page);color:var(--ink);font:14px/1.6 -apple-system,BlinkMa
 .table-card{background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(31,41,55,.04);overflow:auto}
 table{width:100%;border-collapse:collapse;table-layout:auto}
 td,th{min-width:110px}
+.table-card td,.table-card th{min-width:0}
 th{height:46px;background:var(--head);color:#5b6167;font-weight:600;border-bottom:1px solid var(--line);text-align:left;padding:0 14px;font-size:14px;white-space:nowrap}
 td{height:52px;border-bottom:1px solid var(--line);padding:0 14px;color:var(--muted);vertical-align:middle;font-size:14px;text-align:left;white-space:nowrap}
 tr:last-child td{border-bottom:0}
@@ -118,11 +119,15 @@ td.strong{color:var(--ink)}
 .toast.ok{background:var(--ok)}
 .toast.fail{background:var(--danger)}
 .toast.info{background:#7a8699}
-.hosted-line{display:flex;align-items:center;gap:12px;padding:4px 0 12px}
-.hosted-line .hosted-label{font-weight:600;font-size:13.5px;color:var(--ink)}
 .opt.disabled{opacity:.45;pointer-events:none}
-.modal.hosted-off .opt{opacity:.45;pointer-events:none}
-.modal.hosted-off .opt input{cursor:not-allowed}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.detail-item{min-height:66px;padding:11px 14px;border-bottom:1px solid var(--line);background:#fff}
+.detail-item:nth-child(odd){border-right:1px solid var(--line)}
+.detail-item .k{display:block;color:var(--weak);font-size:12px;margin-bottom:4px}
+.detail-item .v{display:block;color:var(--ink);font-size:14px;overflow-wrap:anywhere;white-space:normal}
+.detail-section{grid-column:1/-1;padding:9px 14px;background:var(--head);color:#5b6167;font-weight:600;border-bottom:1px solid var(--line)}
+.action-links{display:flex;gap:12px;align-items:center}
+@media(max-width:620px){.detail-grid{grid-template-columns:1fr}.detail-item:nth-child(odd){border-right:0}}
 
 /* AI conversation additions; existing console chrome remains unchanged. */
 
@@ -270,7 +275,7 @@ td.strong{color:var(--ink)}
     <nav class="top-tabs">
       <span class="top-tab js-nothing"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>平台端</span>
       <span class="top-tab active"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>租户端</span>
-      <span class="tenant-pill js-nothing">索菲亚会员小程序<span class="caret">▾</span></span>
+      <span class="tenant-pill js-nothing">企微AI客服<span class="caret">▾</span></span>
     </nav>
     <div class="top-right">
       <span class="avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.4" r="3.6" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.4c1.5-3.6 4-5.4 7-5.4s5.5 1.8 7 5.4" stroke="currentColor" stroke-width="1.8"/></svg></span>
@@ -325,18 +330,17 @@ td.strong{color:var(--ink)}
         <div class="filter-bar">
           <span class="fitem"><label>账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
           <span class="fitem"><label>账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
-          <span class="fitem"><label>是否AI托管</label><select id="q-hosted"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
-          <span class="fitem"><label>单聊AI托管</label><select id="q-single"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
-          <span class="fitem"><label>群聊AI托管</label><select id="q-group"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
+          <span class="fitem"><label>单聊AI接管</label><select id="q-single"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
+          <span class="fitem"><label>群聊AI接管</label><select id="q-group"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
           <span class="fitem"><label>是否在线</label><select id="q-online"><option value="">全部</option><option value="1">在线</option><option value="0">离线</option></select></span>
           <span class="factions"><button class="btn primary" id="btn-query">查询</button><button class="btn" id="btn-reset">重置</button></span>
         </div>
         <div class="toolbar"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步账号</button></div>
       </div>
       <div class="table-card">
-        <table style="min-width:1560px">
+        <table style="min-width:1055px">
           <thead><tr>
-            <th style="min-width:80px">供应商</th><th style="min-width:110px">账号ID</th><th style="min-width:170px">账号名称</th><th style="min-width:64px">头像</th><th style="min-width:130px">企业名称</th><th style="min-width:118px">手机号</th><th style="min-width:84px">联系人</th><th style="min-width:120px">开启AI接管联系人数</th><th style="min-width:160px">设备名称</th><th style="min-width:124px">设备保管者</th><th style="min-width:170px">是否AI托管</th><th style="min-width:84px">是否在线</th><th style="min-width:104px">所属组</th><th style="min-width:142px">更新时间</th><th style="min-width:80px">操作</th>
+            <th style="min-width:70px">供应商</th><th style="min-width:100px">账号ID</th><th style="min-width:150px">账号名称</th><th style="min-width:60px">头像</th><th style="min-width:105px">手机号</th><th style="min-width:140px">开启AI接管联系人数</th><th style="min-width:100px">单聊AI接管</th><th style="min-width:100px">群聊AI接管</th><th style="min-width:130px">更新时间</th><th style="min-width:100px">操作</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -348,26 +352,22 @@ td.strong{color:var(--ink)}
 </div>
   <div class="modal" id="mode-modal">
     <div class="modal-box" style="width:480px">
-      <div class="modal-head"><span>编辑AI托管配置</span><button type="button" class="modal-close" id="mode-close" aria-label="关闭">×</button></div>
+      <div class="modal-head"><span>编辑AI接管配置</span><button type="button" class="modal-close" id="mode-close" aria-label="关闭">×</button></div>
       <div class="modal-body">
         <div class="acct-line">账号：<span id="mode-acct"></span></div>
-        <div class="hosted-line">
-          <span class="hosted-label">是否AI托管</span>
-          <label class="switch"><input type="checkbox" id="opt-hosted"><span class="slider"></span></label>
-        </div>
-        <label class="opt"><input type="checkbox" id="opt-single"><span><span class="t">单聊AI托管</span><br><span class="d">AI 自动承接该账号的单聊进线会话</span></span></label>
-        <label class="opt"><input type="checkbox" id="opt-group"><span><span class="t">群聊AI托管</span><br><span class="d">AI 自动承接该账号的客户群聊会话</span></span></label>
-        <div class="opt-err" id="opt-err">开启AI托管后，请至少勾选一种托管方式</div>
+        <label class="opt"><input type="checkbox" id="opt-single"><span><span class="t">单聊AI接管</span><br><span class="d">控制该账号的单聊会话是否允许开启AI接管</span></span></label>
+        <label class="opt"><input type="checkbox" id="opt-group"><span><span class="t">群聊AI接管</span><br><span class="d">控制该账号的群聊会话是否允许开启AI接管</span></span></label>
+        <div class="note">单聊与群聊独立配置，允许两项均关闭。</div>
       </div>
       <div class="modal-foot"><button type="button" class="btn" id="mode-cancel">取消</button><button type="button" class="btn primary" id="mode-submit">保存</button></div>
     </div>
   </div>
 
-  <div class="modal" id="off-modal">
-    <div class="modal-box">
-      <div class="modal-head"><span>关闭AI托管确认</span><button type="button" class="modal-close" id="off-close" aria-label="关闭">×</button></div>
-      <div class="modal-body"><div class="warn-text">确认关闭账号 <b id="off-acct"></b> 的AI托管？<br>关闭后该账号进线会话恢复原有承接方式，单聊、群聊托管配置将被清除。（影响口径待确认）</div></div>
-      <div class="modal-foot"><button type="button" class="btn" id="off-cancel">取消</button><button type="button" class="btn primary" id="off-submit">确认关闭</button></div>
+  <div class="modal" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+    <div class="modal-box" style="width:min(720px,92vw)">
+      <div class="modal-head"><span id="detail-title">账号详情</span><button type="button" class="modal-close" id="detail-close" aria-label="关闭">×</button></div>
+      <div class="modal-body"><div class="detail-grid" id="detail-grid"></div></div>
+      <div class="modal-foot"><button type="button" class="btn primary" id="detail-ok">关闭</button></div>
     </div>
   </div>
   <div class="toast" id="toast"></div>
@@ -386,7 +386,7 @@ function showToast(msg,cls){
 const REASONS=['用户主动要求人工','意图未识别','意图误判','知识缺失','知识命中但未解决','流程未触发','流程无法完成','系统接口异常','业务规则要求人工','高风险问题兜底'];
 const CODES=['USER_REQUEST','INTENT_UNKNOWN','INTENT_WRONG','KNOWLEDGE_MISSING','KNOWLEDGE_UNRESOLVED','FLOW_NOT_TRIGGERED','FLOW_INCOMPLETE','INTERFACE_ERROR','BUSINESS_RULE','HIGH_RISK'];
 const reasonExamples=['用户明确提出“请帮我转人工”。','当前表达未匹配到可用业务意图。','原识别结果与客户澄清内容不一致，转人工核实。','现有知识库没有覆盖此问题。','已命中知识，但客户反馈仍未解决。','命中场景后未启动对应业务流程。','流程缺少必要资料，无法继续完成。','调用业务接口超时，未取得结果。','此业务按规则必须由人工核实。','涉及高风险诉求，停止自动答复并转人工。'];
-const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),hosted:[1,2,5,6,8].includes(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
+const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
 const NAMES=['王女士','李先生','张女士','赵先生','刘女士','陈先生','孙女士','周先生','吴女士','郑先生','冯女士','蒋先生'];
 const MIDS=[1,1,2,3,4,4,5,6,7,8,9,5];
 const TODAY=new Date(); TODAY.setHours(0,0,0,0);
@@ -398,11 +398,11 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 const params=new URLSearchParams(location.search);
 let state={accounts:{},sessions:{}};
 try{const x=JSON.parse(params.get('demo')||localStorage.getItem('aic-v05')||'null');if(x&&typeof x==='object'){state.accounts=x.accounts||{};state.sessions=x.sessions||{};}}catch(_){}
-function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{hosted:raw.hosted===true,single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
+function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
 function save(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05',value);}catch(_){} params.set('demo',value);const current=new URL(location.href);current.searchParams.set('demo',value);try{history.replaceState(null,'',current.href);}catch(_){} }
-function saveAccount(id,config){state.accounts[id]={hosted:!!config.hosted,single:!!config.single,group:!!config.group};save();}
+function saveAccount(id,config){state.accounts[id]={single:!!config.single,group:!!config.group};save();}
 function url(file,args={}){const u=new URL(file,location.href);u.search='';for(const k of ['embed','sandbox'])if(params.has(k))u.searchParams.set(k,params.get(k));if(Object.keys(state.accounts).length||Object.keys(state.sessions).length)u.searchParams.set('demo',JSON.stringify(state));for(const [k,v]of Object.entries(args))if(v!==null&&v!==undefined&&v!=='')u.searchParams.set(k,String(v));return u.href;}
-const sessions=NAMES.map((name,i)=>({id:'S_'+pad(i+1,4),cid:'C_'+(88001+i),cname:name,mid:'wx_100'+MIDS[i],mname:'会员助理 小菲'+MIDS[i],supplier:'艾客',corp:MIDS[i]%2?'索菲亚家居':'索菲亚精选',configured:i%3!==1,records:[]}));
+const sessions=NAMES.map((name,i)=>({id:'S_'+pad(i+1,4),type:'single',cid:'C_'+(88001+i),cname:name,mid:'wx_100'+MIDS[i],mname:'会员助理 小菲'+MIDS[i],supplier:'艾客',corp:MIDS[i]%2?'索菲亚家居':'索菲亚精选',configured:i%3!==1,records:[]}));
 const templates=[
  ['想了解会员权益。','您可以在会员中心查看当前等级对应的权益。','会员权益咨询','会员权益说明','会员中心 → 我的权益'],
  ['积分在哪里查看？','请进入会员中心的“我的积分”查看余额和明细。','积分查询','积分查询指南','会员中心 → 我的积分'],
@@ -420,7 +420,7 @@ for(let sidx=0;sidx<sessions.length;sidx++){
   else if([2,3,8,10].includes(sidx))kind=j===count-1?'pending':'human';
   else kind=j===count-1?'pending':j%3===1?'transfer':'ai';
   let reasonIndex=-1;
-  if(sidx===0&&j>=6&&j<=15){reasonIndex=j-6;kind=reasonIndex===7?'error':'transfer';}
+  if(sidx===0&&j>=6&&j<=15){reasonIndex=j-6;kind='transfer';}
   else if(kind==='transfer')reasonIndex=(sidx+j)%10;
   const off=sidx===0?(j<14?-2:j<28?-1:0):-(sidx%3);
   const base=day(off);base.setHours(9+Math.floor((j%14)/4),10+(j%4)*10,(j*7)%50,0);
@@ -466,8 +466,9 @@ function messages(s){return s.records.flatMap(r=>{
  if(r.reply)items.push({id:r.replyId,role:'member',text:r.reply,type:r.replyType,at:r.replyAt,ai:r.ai,record:r});
  if(r.reason)items.push({id:r.traceId,role:'event',text:r.kind==='error'?'AI处理异常':'AI转人工',at:r.eventAt,record:r});return items;
 }).sort((a,b)=>a.at-b.at||a.id.localeCompare(b.id));}
-function enabled(s){const a=account(s.mid);return a.hosted&&a.single&&(state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured);}
-function eligible(s){const a=account(s.mid);return a.hosted&&a.single;}
+function modeEnabled(s,a){return (s.type||'single')==='group'?a.group:a.single;}
+function enabled(s){const a=account(s.mid);return modeEnabled(s,a)&&(state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured);}
+function eligible(s){return modeEnabled(s,account(s.mid));}
 function setSession(id,value){const s=sessions.find(x=>x.id===id);if(!s||value&&!eligible(s))return false;state.sessions[id]=!!value;save();return true;}
 const records=sessions.flatMap(s=>s.records).sort((a,b)=>b.sentAt-a.sentAt||a.id.localeCompare(b.id));
 function summary(s){const msgs=messages(s).filter(m=>m.role!=='event');return{count:msgs.length,created:Math.min(...msgs.map(m=>m.at)),last:Math.max(...msgs.map(m=>m.at)),ai:s.records.some(r=>r.ai)};}
@@ -490,7 +491,7 @@ function traceHTML(r){
  const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
  const prompt='系统：仅依据当次有效知识答复，不确定时转人工。\n知识：'+(success?r.knowledge+'（示例快照 v1）':'未取得可直接回复的有效知识。')+'\n上下文：\n'+context+'\n问句：'+r.question;
  return '<div class="trace-summary"><span class="tag online">示例快照</span><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b><small>追溯ID '+esc(r.traceId)+'</small><small>客户消息ID '+esc(r.id)+' · 会话 '+esc(r.sid)+'</small></div>'
- + (r.reason?'<div class="reason-box">'+kv('归因类型',r.reason.type)+kv('原因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
+ + (r.reason?'<div class="reason-box">'+kv('处理类型',r.reason.type)+kv('转人工归因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
  +section('1','输入 · 模型与触发消息',kv('模型','客服模型-示例 v1')+kv('客户消息原文',r.question)+kv('触发时间',fmt(r.receivedAt,true))+kv('触发消息ID',r.id)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
  +section('2','理解 · 意图识别',kv('识别结果说明',r.intentSummary)+results('intent',r.intentResults,'暂无意图结果；识别状态见上方记录。'))
  +section('3','判断与决策 · 知识匹配',kv('检索及过滤说明',r.knowledgeSummary)+results('knowledge',r.knowledgeResults,'暂无知识结果；未检索、无匹配或异常以日志说明为准。')+kv('是否转人工',transfer?'是':failed?'未执行；当前记录为异常':'否'))
@@ -513,23 +514,23 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
 })();
 (function(){
   var rows=[
-    {supplier:'艾客',uid:'wx_1001',name:'会员助理 小菲1',corp:'索菲亚家居',phone:'138****0001',contact:'王店长',count:36,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',hosted:true,modes:['单聊','群聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1002',name:'会员助理 小菲2',corp:'索菲亚家居',phone:'138****0002',contact:'王店长',count:12,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',hosted:true,modes:['单聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1003',name:'会员助理 小菲3',corp:'索菲亚家居',phone:'138****0003',contact:'王店长',count:5,device:'iPhone 13（挂机机B）',keeper:'私域运营-小林',hosted:false,modes:[],online:true,group:'售前二组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1004',name:'会员助理 小菲4',corp:'索菲亚家居',phone:'139****0004',contact:'李会员',count:0,device:'iPhone 14（挂机机B）',keeper:'会员服务-阿珍',hosted:false,modes:[],online:false,group:'会员服务组',time:'2026-09-02 21:30'},
-    {supplier:'艾客',uid:'wx_1005',name:'会员助理 小菲5',corp:'索菲亚家居',phone:'139****0005',contact:'李会员',count:48,device:'iPhone 14（挂机机C）',keeper:'售前-大伟',hosted:true,modes:['单聊'],online:true,group:'售前二组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1006',name:'会员助理 小菲6',corp:'索菲亚家居',phone:'137****0006',contact:'张售后',count:21,device:'iPhone 14（挂机机C）',keeper:'售后-琪琪',hosted:true,modes:['单聊','群聊'],online:false,group:'售后一组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1007',name:'会员助理 小菲7',corp:'索菲亚家居',phone:'137****0007',contact:'张售后',count:0,device:'iPhone 15（挂机机D）',keeper:'直播-阿凯',hosted:false,modes:[],online:true,group:'直播运营组',time:'2026-09-02 18:10'},
-    {supplier:'艾客',uid:'wx_1008',name:'会员助理 小菲8',corp:'索菲亚家居',phone:'136****0008',contact:'周活动',count:9,device:'iPhone 15（挂机机D）',keeper:'会员服务-阿珍',hosted:true,modes:['群聊'],online:true,group:'会员服务组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1009',name:'会员助理 小菲9',corp:'索菲亚家居',phone:'136****0009',contact:'周活动',count:0,device:'iPhone 15（挂机机E）',keeper:'私域运营-小林',hosted:false,modes:[],online:false,group:'私域运营组',time:'2026-09-01 20:45'}
+    {supplier:'艾客',uid:'wx_1001',name:'会员助理 小菲1',corp:'索菲亚家居',phone:'138****0001',contact:'王店长',count:36,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',modes:['单聊','群聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1002',name:'会员助理 小菲2',corp:'索菲亚家居',phone:'138****0002',contact:'王店长',count:12,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',modes:['单聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1003',name:'会员助理 小菲3',corp:'索菲亚家居',phone:'138****0003',contact:'王店长',count:5,device:'iPhone 13（挂机机B）',keeper:'私域运营-小林',modes:[],online:true,group:'售前二组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1004',name:'会员助理 小菲4',corp:'索菲亚家居',phone:'139****0004',contact:'李会员',count:0,device:'iPhone 14（挂机机B）',keeper:'会员服务-阿珍',modes:[],online:false,group:'会员服务组',time:'2026-09-02 21:30'},
+    {supplier:'艾客',uid:'wx_1005',name:'会员助理 小菲5',corp:'索菲亚家居',phone:'139****0005',contact:'李会员',count:48,device:'iPhone 14（挂机机C）',keeper:'售前-大伟',modes:['单聊'],online:true,group:'售前二组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1006',name:'会员助理 小菲6',corp:'索菲亚家居',phone:'137****0006',contact:'张售后',count:21,device:'iPhone 14（挂机机C）',keeper:'售后-琪琪',modes:['单聊','群聊'],online:false,group:'售后一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1007',name:'会员助理 小菲7',corp:'索菲亚家居',phone:'137****0007',contact:'张售后',count:0,device:'iPhone 15（挂机机D）',keeper:'直播-阿凯',modes:[],online:true,group:'直播运营组',time:'2026-09-02 18:10'},
+    {supplier:'艾客',uid:'wx_1008',name:'会员助理 小菲8',corp:'索菲亚家居',phone:'136****0008',contact:'周活动',count:9,device:'iPhone 15（挂机机D）',keeper:'会员服务-阿珍',modes:['群聊'],online:true,group:'会员服务组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1009',name:'会员助理 小菲9',corp:'索菲亚家居',phone:'136****0009',contact:'周活动',count:0,device:'iPhone 15（挂机机E）',keeper:'私域运营-小林',modes:[],online:false,group:'私域运营组',time:'2026-09-01 20:45'}
   ];
   /* 由「客户会话管理」的「去配置」跳转：按账号ID自动填入筛选并查询出该账号记录。 */
   var initUid=(AIDemo.params.get('uid')||'').trim();
   var initName=(AIDemo.params.get('name')||'').trim();
   if(initUid)document.getElementById('q-uid').value=initUid;
   else if(initName)document.getElementById('q-name').value=initName;
-  rows.forEach(function(r){var a=AIDemo.account(r.uid);r.hosted=a.hosted;r.modes=[];if(a.single)r.modes.push('单聊');if(a.group)r.modes.push('群聊');});
-  function persistAccount(){AIDemo.saveAccount(current.uid,{hosted:current.hosted,single:current.modes.indexOf('单聊')>=0,group:current.modes.indexOf('群聊')>=0});}
+  rows.forEach(function(r){var a=AIDemo.account(r.uid);r.modes=[];if(a.single)r.modes.push('单聊');if(a.group)r.modes.push('群聊');});
+  function persistAccount(row){AIDemo.saveAccount(row.uid,{single:row.modes.indexOf('单聊')>=0,group:row.modes.indexOf('群聊')>=0});}
   var tbody=document.getElementById('tbody');
   var pager=document.getElementById('pager-info');
   var toastEl=document.getElementById('toast');
@@ -540,116 +541,83 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   function currentList(){
     var kw=(document.getElementById('q-name').value||'').trim();
     var uidKw=(document.getElementById('q-uid').value||'').trim();
-    var h=document.getElementById('q-hosted').value;
     var single=document.getElementById('q-single').value;
     var group=document.getElementById('q-group').value;
     var o=document.getElementById('q-online').value;
     var list=rows;
     if(kw)list=list.filter(function(r){return r.name.indexOf(kw)>=0});
     if(uidKw)list=list.filter(function(r){return r.uid.indexOf(uidKw)>=0});
-    if(h!=='')list=list.filter(function(r){return (r.hosted?'1':'0')===h});
     if(single!=='')list=list.filter(function(r){return (r.modes.indexOf('单聊')>=0?'1':'0')===single});
     if(group!=='')list=list.filter(function(r){return (r.modes.indexOf('群聊')>=0?'1':'0')===group});
     if(o!=='')list=list.filter(function(r){return (r.online?'1':'0')===o});
     return list.slice().sort(function(a,b){return String(b.time).localeCompare(String(a.time))||String(b.uid).localeCompare(String(a.uid))});
   }
+  function switchHTML(r,idx,key,label){var on=r.modes.indexOf(key)>=0;return '<label class="switch"><input type="checkbox" data-mode="'+key+'" data-i="'+idx+'" '+(on?'checked ':'')+'aria-label="'+esc(r.name)+' '+label+'"><span class="slider"></span></label>';}
   function render(){
     var list=currentList();
-    if(!list.length){tbody.innerHTML='<tr class="empty-row"><td colspan="15">暂无数据</td></tr>';pager.textContent='共 0 条';return}
-    tbody.innerHTML=list.map(function(r,i){
+    if(!list.length){tbody.innerHTML='<tr class="empty-row"><td colspan="10">暂无数据</td></tr>';pager.textContent='共 0 条';return}
+    tbody.innerHTML=list.map(function(r){
       var idx=rows.indexOf(r);
       return '<tr'+(initUid&&r.uid===initUid?' class="focus-target"':'')+'>'
         +'<td class="strong">'+esc(r.supplier)+'</td><td class="weak">'+esc(r.uid)+'</td><td class="strong">'+esc(r.name)+'</td>'
         +'<td><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--amber);color:var(--amber-deep);align-items:center;justify-content:center;font-size:12px;font-weight:700">菲</span></td>'
-        +'<td>'+esc(r.corp)+'</td><td>'+esc(r.phone)+'</td><td>'+esc(r.contact)+'</td>'
-        +'<td class="weak">'+r.count+'</td>'
-        +'<td>'+esc(r.device)+'</td><td>'+esc(r.keeper)+'</td>'
-        +'<td><label class="switch"><input type="checkbox" data-i="'+idx+'" '+(r.hosted?'checked':'')+'><span class="slider"></span></label>'+modeBadges(r.modes)+'</td>'
-        +'<td>'+(r.online?'<span class="tag online">在线</span>':'<span class="tag offline">离线</span>')+'</td>'
-        +'<td>'+esc(r.group)+'</td><td class="weak">'+esc(r.time)+'</td>'
-        +'<td><a href="javascript:void(0)" style="color:var(--brand);cursor:pointer" class="lnk-edit" data-i="'+idx+'">编辑</a></td>'
+        +'<td>'+esc(r.phone)+'</td><td class="weak">'+r.count+'</td>'
+        +'<td>'+switchHTML(r,idx,'单聊','单聊AI接管')+'</td><td>'+switchHTML(r,idx,'群聊','群聊AI接管')+'</td>'
+        +'<td class="weak">'+esc(r.time)+'</td>'
+        +'<td><div class="action-links"><button type="button" class="link-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="link-btn lnk-edit" data-i="'+idx+'">编辑</button></div></td>'
       +'</tr>';
     }).join('');
     pager.textContent='共 '+list.length+' 条';
-    Array.prototype.forEach.call(tbody.querySelectorAll('input[data-i]'),function(input){
-      input.addEventListener('click',function(e){e.preventDefault();toggleHost(parseInt(input.getAttribute('data-i'),10))});
+    Array.prototype.forEach.call(tbody.querySelectorAll('input[data-mode]'),function(input){
+      input.addEventListener('change',function(){setMode(parseInt(input.getAttribute('data-i'),10),input.getAttribute('data-mode'),input.checked)});
     });
-    Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-edit'),function(a){
-      a.addEventListener('click',function(){openConfig(parseInt(a.getAttribute('data-i'),10))});
-    });
+    Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-detail'),function(a){a.addEventListener('click',function(){openDetail(parseInt(a.getAttribute('data-i'),10))});});
+    Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-edit'),function(a){a.addEventListener('click',function(){openConfig(parseInt(a.getAttribute('data-i'),10))});});
   }
   var modeModal=document.getElementById('mode-modal');
-  var offModal=document.getElementById('off-modal');
+  var detailModal=document.getElementById('detail-modal');
+  function setMode(i,mode,on){
+    var row=rows[i],pos=row.modes.indexOf(mode);
+    if(on&&pos<0)row.modes.push(mode);
+    if(!on&&pos>=0)row.modes.splice(pos,1);
+    row.time=AIDemo.fmt(Date.now()).slice(0,16);
+    persistAccount(row);render();
+    showToast(mode+'AI接管已'+(on?'开启':'关闭'),'ok');
+  }
   function openConfig(i){
     current=rows[i];
     document.getElementById('mode-acct').textContent=current.name+'（'+current.uid+'）';
     document.getElementById('opt-single').checked=current.modes.indexOf('单聊')>=0;
     document.getElementById('opt-group').checked=current.modes.indexOf('群聊')>=0;
-    document.getElementById('opt-hosted').checked=current.hosted;
-    syncHostedView();
-    document.getElementById('opt-err').classList.remove('show');
     modeModal.classList.add('active');
   }
-  function syncHostedView(){
-    var on=document.getElementById('opt-hosted').checked;
-    document.getElementById('opt-single').disabled=!on;
-    document.getElementById('opt-group').disabled=!on;
-    document.getElementById('mode-modal').classList[on?'remove':'add']('hosted-off');
-  }
-  document.getElementById('opt-hosted').addEventListener('change',function(){
-    syncHostedView();
-    document.getElementById('opt-err').classList.remove('show');
-  });
-  function toggleHost(i){
+  function detailItem(k,v){return '<div class="detail-item"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v==null||v===''?'—':v)+'</span></div>';}
+  function openDetail(i){
     current=rows[i];
-    if(!current.hosted){
-      openConfig(i);
-    }else{
-      document.getElementById('off-acct').textContent=current.name+'（'+current.uid+'）';
-      offModal.classList.add('active');
-    }
-    render();
+    var base='<div class="detail-section">账号基础信息</div>'+detailItem('供应商',current.supplier)+detailItem('账号ID',current.uid)+detailItem('账号名称',current.name)+detailItem('头像','菲')+detailItem('手机号',current.phone)+detailItem('开启AI接管联系人数',current.count)+detailItem('单聊AI接管',current.modes.indexOf('单聊')>=0?'已开启':'未开启')+detailItem('群聊AI接管',current.modes.indexOf('群聊')>=0?'已开启':'未开启')+detailItem('更新时间',current.time);
+    if(current.supplier==='艾客')base+='<div class="detail-section">艾客供应商扩展信息</div>'+detailItem('企业名称',current.corp)+detailItem('联系人',current.contact)+detailItem('设备名称',current.device)+detailItem('设备保管者',current.keeper)+detailItem('是否在线',current.online?'在线':'离线')+detailItem('所属组',current.group);
+    document.getElementById('detail-grid').innerHTML=base;detailModal.classList.add('active');document.getElementById('detail-close').focus();
   }
-  function closeModals(){modeModal.classList.remove('active');offModal.classList.remove('active');render()}
+  function closeModals(){modeModal.classList.remove('active');detailModal.classList.remove('active');render()}
   document.getElementById('mode-close').addEventListener('click',closeModals);
   document.getElementById('mode-cancel').addEventListener('click',closeModals);
-  document.getElementById('off-close').addEventListener('click',closeModals);
-  document.getElementById('off-cancel').addEventListener('click',closeModals);
-  Array.prototype.forEach.call(document.getElementById('tbody'),function(){});
+  document.getElementById('detail-close').addEventListener('click',closeModals);
+  document.getElementById('detail-ok').addEventListener('click',closeModals);
   document.getElementById('btn-query').addEventListener('click',render);
   document.getElementById('btn-reset').addEventListener('click',function(){
     document.getElementById('q-name').value='';
     document.getElementById('q-uid').value='';
-    document.getElementById('q-hosted').value='';
     document.getElementById('q-single').value='';
     document.getElementById('q-group').value='';
     document.getElementById('q-online').value='';
     render();
   });
   document.getElementById('mode-submit').addEventListener('click',function(){
-    var hosted=document.getElementById('opt-hosted').checked;
-    var single=document.getElementById('opt-single').checked;
-    var group=document.getElementById('opt-group').checked;
-    var err=document.getElementById('opt-err');
-    if(hosted&&!single&&!group){err.classList.add('show');return}
-    err.classList.remove('show');
-    var wasHosted=current.hosted;
-    current.hosted=hosted;
     current.modes=[];
-    if(hosted&&single)current.modes.push('单聊');
-    if(hosted&&group)current.modes.push('群聊');
+    if(document.getElementById('opt-single').checked)current.modes.push('单聊');
+    if(document.getElementById('opt-group').checked)current.modes.push('群聊');
     current.time=AIDemo.fmt(Date.now()).slice(0,16);
-    persistAccount();
-    closeModals();
-    showToast(hosted?(wasHosted?'保存成功':'AI托管已开启'):'AI托管已关闭','ok');
-  });
-  document.getElementById('off-submit').addEventListener('click',function(){
-    current.hosted=false;
-    current.modes=[];
-    current.time=AIDemo.fmt(Date.now()).slice(0,16);
-    persistAccount();
-    closeModals();
-    showToast('AI托管已关闭','ok');
+    persistAccount(current);closeModals();showToast('AI接管配置保存成功','ok');
   });
   document.getElementById('btn-sync').addEventListener('click',function(){
     var btn=document.getElementById('btn-sync');
@@ -661,6 +629,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
       showToast('已重新同步托管账号','ok');
     },800);
   });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModals();});
   render();
 })();
 </script>
