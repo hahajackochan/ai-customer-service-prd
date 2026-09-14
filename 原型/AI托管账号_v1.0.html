@@ -640,7 +640,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   var modeModal=document.getElementById('mode-modal');
   var detailModal=document.getElementById('detail-modal');
   function wfOptions(selected){
-    return '<option value="">请选择意图识别工作流</option>'+INTENT_WORKFLOWS.map(function(w){return '<option value="'+w.id+'"'+(w.id===selected?' selected':'')+'>'+esc(w.name)+'</option>';}).join('');
+    return '<option value="">请选择意图识别工作流</option>'+INTENT_WORKFLOWS.map(function(w){return '<option value="'+w.id+'"'+(w.id===selected?' selected':'')+'>'+esc(w.name)+'（'+w.id+'）</option>';}).join('');
   }
   function wfName(id){var hit=INTENT_WORKFLOWS.filter(function(w){return w.id===id;})[0];return hit?hit.name:'—';}
   function syncWfFields(){
