@@ -371,7 +371,7 @@ td.strong{color:var(--ink)}
     </div>
       <div class="page-body">
       <div class="card list-filter-card">
-        <div class="list-toolbar"><div class="list-toolbar-primary"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步账号</button></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div>
+        <div class="list-toolbar"><div class="list-toolbar-primary"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步</button></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div>
         <div class="filter-popover" id="filter-popover" hidden><div class="filter-bar">
           <span class="fitem"><label for="q-name">账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
           <span class="fitem"><label for="q-uid">账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
@@ -528,18 +528,16 @@ function traceHTML(r){
   if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
   return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b><span>记录顺序 · 点击逐条展开</span></div>'+(list.length?list.map((item,i)=>{
    const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
-   return '<details class="trace-result" data-result-index="'+i+'"'+(list.length===1?' open':'')+'><summary><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b>'+(item.scoreScale!==null&&item.scoreScale!==undefined&&item.scoreScale!==''?'<small>尺度：'+esc(item.scoreScale)+'</small>':'')+'</span></summary><div class="trace-result-body">'+kv('评分原因',item.reason)+(intent?kv('业务场景',item.scene)+kv('解决策略',item.strategy):kv('知识来源',item.source)+kv('过滤结果',item.filter))+'</div></details>';
+   return '<details class="trace-result" data-result-index="'+i+'"'+(list.length===1?' open':'')+'><summary><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></summary></details>';
   }).join(''):'<div class="trace-result-empty">'+esc(empty)+'</div>')+'</div>';
  };
- const success=r.ai,failed=r.kind==='error',transfer=r.kind==='transfer';
+ const success=r.ai,failed=r.kind==='error';
  const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
- const prompt='系统：仅依据当次有效知识答复，不确定时转人工。\n知识：'+(success?r.knowledge+'（示例快照 v1）':'未取得可直接回复的有效知识。')+'\n上下文：\n'+context+'\n问句：'+r.question;
- return '<div class="trace-summary"><div class="trace-summary-head"><span class="tag online">示例快照</span><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b></div><div class="trace-summary-meta"><span><em>追溯ID</em>'+esc(r.traceId)+'</span><span><em>客户消息ID</em>'+esc(r.id)+'</span><span><em>会话</em>'+esc(r.sid)+'</span></div></div>'
+ return '<div class="trace-summary"><div class="trace-summary-head"><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b></div><div class="trace-summary-meta"><span><em>客户消息ID</em>'+esc(r.id)+'</span><span><em>会话</em>'+esc(r.sid)+'</span></div></div>'
  + (r.reason?'<div class="reason-box">'+kv('处理类型',r.reason.type)+kv('转人工归因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
  +section('1','输入 · 模型与触发消息',kv('模型','客服模型-示例 v1')+kv('客户消息原文',r.question)+kv('触发时间',fmt(r.receivedAt,true))+kv('触发消息ID',r.id)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
- +section('2','理解 · 意图识别',kv('识别结果说明',r.intentSummary)+results('intent',r.intentResults,'暂无意图结果；识别状态见上方记录。'))
- +section('3','判断与决策 · 知识匹配',kv('检索及过滤说明',r.knowledgeSummary)+results('knowledge',r.knowledgeResults,'暂无知识结果；未检索、无匹配或异常以日志说明为准。')+kv('是否转人工',transfer?'是':failed?'未执行；当前记录为异常':'否'))
- +section('4','输出 · 回复生成与后处理','<details><summary>记录的Prompt（系统＋知识＋上下文＋问句）</summary><pre>'+esc(success?prompt:'本次未进入回复生成；未形成生成Prompt。')+'</pre></details>'+kv('LLM生成结果',success?r.reply:'未生成回复')+kv('格式化 / 合规过滤结果',success?'通过；保留原回复内容，无额外修改。':'未执行')+kv('最终输出回复',success?r.reply:'未发送AI回复')+kv('发送成功时间',success?fmt(r.replyAt,true):'—'));
+ +section('2','理解 · 意图识别',results('intent',r.intentResults,'暂无意图结果'))
+ +section('3','判断与决策 · 知识匹配',results('knowledge',r.knowledgeResults,'暂无知识结果'));
 }
 window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,sessions,records,account,saveAccount,enabled,eligible,setSession,messages,summary,traceHTML,reasonOptions,fmt,date,day,esc,url,params};
 })();
@@ -596,7 +594,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     if(o!=='')list=list.filter(function(r){return (r.online?'1':'0')===o});
     return list.slice().sort(function(a,b){return String(b.time).localeCompare(String(a.time))||String(b.uid).localeCompare(String(a.uid))});
   }
-  function switchHTML(r,idx,key,label){var on=r.modes.indexOf(key)>=0;return '<label class="switch"><input type="checkbox" data-mode="'+key+'" data-i="'+idx+'" '+(on?'checked ':'')+'aria-label="'+esc(r.name)+' '+label+'"><span class="slider"></span></label>';}
+  function modeText(r,key){return '<span class="tag '+(r.modes.indexOf(key)>=0?'yes':'no')+'">'+(r.modes.indexOf(key)>=0?'是':'否')+'</span>';}
   function render(){
     var list=currentList();
     if(!list.length){tbody.innerHTML='<tr class="empty-row"><td colspan="10">暂无数据</td></tr>';pager.textContent='共 0 条';return}
@@ -606,28 +604,17 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
         +'<td class="strong">'+esc(r.supplier)+'</td><td class="weak">'+esc(r.uid)+'</td><td class="strong">'+esc(r.name)+'</td>'
         +'<td><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--amber);color:var(--amber-deep);align-items:center;justify-content:center;font-size:12px;font-weight:700">菲</span></td>'
         +'<td>'+esc(r.phone)+'</td><td class="weak">'+r.count+'</td>'
-        +'<td>'+switchHTML(r,idx,'单聊','单聊AI接管')+'</td><td>'+switchHTML(r,idx,'群聊','群聊AI接管')+'</td>'
+        +'<td>'+modeText(r,'单聊')+'</td><td>'+modeText(r,'群聊')+'</td>'
         +'<td class="weak">'+esc(r.time)+'</td>'
         +'<td><div class="action-links"><button type="button" class="link-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="link-btn lnk-edit" data-i="'+idx+'">编辑</button></div></td>'
       +'</tr>';
     }).join('');
     pager.textContent='共 '+list.length+' 条';
-    Array.prototype.forEach.call(tbody.querySelectorAll('input[data-mode]'),function(input){
-      input.addEventListener('change',function(){setMode(parseInt(input.getAttribute('data-i'),10),input.getAttribute('data-mode'),input.checked)});
-    });
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-detail'),function(a){a.addEventListener('click',function(){openDetail(parseInt(a.getAttribute('data-i'),10))});});
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-edit'),function(a){a.addEventListener('click',function(){openConfig(parseInt(a.getAttribute('data-i'),10))});});
   }
   var modeModal=document.getElementById('mode-modal');
   var detailModal=document.getElementById('detail-modal');
-  function setMode(i,mode,on){
-    var row=rows[i],pos=row.modes.indexOf(mode);
-    if(on&&pos<0)row.modes.push(mode);
-    if(!on&&pos>=0)row.modes.splice(pos,1);
-    row.time=AIDemo.fmt(Date.now()).slice(0,16);
-    persistAccount(row);render();
-    showToast(mode+'AI接管已'+(on?'开启':'关闭'),'ok');
-  }
   function openConfig(i){
     current=rows[i];
     document.getElementById('mode-acct').textContent=current.name+'（'+current.uid+'）';
@@ -673,7 +660,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     if(btn.disabled)return;
     btn.disabled=true;btn.textContent='同步中…';
     setTimeout(function(){
-      btn.disabled=false;btn.textContent='同步账号';
+      btn.disabled=false;btn.textContent='同步';
       render();
       showToast('已重新同步托管账号','ok');
     },800);
