@@ -81,9 +81,10 @@ document.querySelectorAll('.js-nothing').forEach(function(el){el.addEventListene
 var rows=[
 {id:1,agentType:'飞书aily-工作流应用',type:'意图识别',name:'会员服务意图识别',workflowId:'wf_intent_member_service',creator:'陈嘉豪',ctime:'2026-09-08 10:20',updater:'陈嘉豪',utime:'2026-09-09 14:35'},
 {id:2,agentType:'飞书aily-工作流应用',type:'业务API',name:'会员积分查询接口',workflowId:'wf_api_member_points',creator:'李佳',ctime:'2026-09-08 11:05',updater:'李佳',utime:'2026-09-09 16:18'},
-{id:3,agentType:'飞书aily-工作流应用',type:'FAQ知识库',name:'到店预约FAQ',workflowId:'wf_faq_store_booking',creator:'王明',ctime:'2026-09-09 09:12',updater:'陈嘉豪',utime:'2026-09-09 17:30'}
+{id:3,agentType:'飞书aily-工作流应用',type:'FAQ知识库',name:'到店预约FAQ',workflowId:'wf_faq_store_booking',creator:'王明',ctime:'2026-09-09 09:12',updater:'陈嘉豪',utime:'2026-09-09 17:30'},
+{id:4,agentType:'飞书aily-工作流应用',type:'意图识别',name:'售后意图识别',workflowId:'wf_intent_after_sales',creator:'陈嘉豪',ctime:'2026-09-08 10:25',updater:'陈嘉豪',utime:'2026-09-09 14:40'}
 ];
-var nextId=4, editingId=null, filtered=rows.slice();
+var nextId=5, editingId=null, filtered=rows.slice();
 var tbody=document.getElementById('tbody'), pagerInfo=document.getElementById('pager-info');
 function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function ordered(list){return list.slice().sort(function(a,b){return String(b.ctime).localeCompare(String(a.ctime))||b.id-a.id;});}

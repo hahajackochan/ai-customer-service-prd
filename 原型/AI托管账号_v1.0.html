@@ -100,6 +100,14 @@ td.strong{color:var(--ink)}
 .field .tip2{color:var(--weak);font-size:12px;margin-top:4px}
 .acct-line{font-size:12px;color:var(--weak);margin-bottom:12px}
 .opt{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:10px;cursor:pointer}
+.opt-block{border:1px solid var(--line);border-radius:6px;padding:12px 12px 14px;margin-bottom:10px}
+.opt-block .opt{border:0;padding:0;margin-bottom:0}
+.opt-block .field{margin:10px 0 0 27px}
+.opt-block .field.off{opacity:.55}
+.field select{width:100%;height:34px;border:1px solid #dcdfe6;border-radius:4px;padding:0 8px;font-size:13px;color:var(--ink);background:#fff;outline:none;font-family:inherit}
+.field select:focus{border-color:var(--brand)}
+.field select:disabled{background:#f7f8f9;color:var(--weak);cursor:not-allowed}
+.field.invalid select{border-color:var(--danger)}
 .opt input{margin-top:3px;width:15px;height:15px;accent-color:var(--brand);flex:0 0 auto}
 .opt:has(input:checked){border-color:var(--brand);background:#fdf9f0;box-shadow:0 0 0 2px rgba(168,97,21,.10)}
 .opt:has(input:checked) .t{color:#7c4a03}
@@ -395,13 +403,27 @@ td.strong{color:var(--ink)}
   </div>
 </div>
   <div class="modal" id="mode-modal">
-    <div class="modal-box" style="width:480px">
+    <div class="modal-box" style="width:560px">
       <div class="modal-head"><span>编辑AI接管配置</span><button type="button" class="modal-close" id="mode-close" aria-label="关闭">×</button></div>
       <div class="modal-body">
         <div class="acct-line">账号：<span id="mode-acct"></span></div>
-        <label class="opt"><input type="checkbox" id="opt-single"><span><span class="t">单聊AI接管</span><br><span class="d">控制该账号的单聊会话是否允许开启AI接管</span></span></label>
-        <label class="opt"><input type="checkbox" id="opt-group"><span><span class="t">群聊AI接管</span><br><span class="d">控制该账号的群聊会话是否允许开启AI接管</span></span></label>
-        <div class="note">单聊与群聊独立配置，允许两项均关闭。</div>
+        <div class="opt-block">
+          <label class="opt"><input type="checkbox" id="opt-single"><span><span class="t">单聊AI接管</span><br><span class="d">控制该账号的单聊会话是否允许开启AI接管</span></span></label>
+          <div class="field" id="field-single">
+            <label for="wf-single"><i>*</i>意图识别工作流</label>
+            <select id="wf-single" disabled></select>
+            <div class="err" id="err-single">开启单聊AI接管后，必须选择一个意图识别类型的工作流</div>
+          </div>
+        </div>
+        <div class="opt-block">
+          <label class="opt"><input type="checkbox" id="opt-group"><span><span class="t">群聊AI接管</span><br><span class="d">控制该账号的群聊会话是否允许开启AI接管</span></span></label>
+          <div class="field" id="field-group">
+            <label for="wf-group"><i>*</i>意图识别工作流</label>
+            <select id="wf-group" disabled></select>
+            <div class="err" id="err-group">开启群聊AI接管后，必须选择一个意图识别类型的工作流</div>
+          </div>
+        </div>
+        <div class="note">单聊与群聊独立配置，允许两项同时关闭；开启后必须各自选择一个「意图识别」类型的工作流，单聊与群聊可选择不同的工作流。</div>
       </div>
       <div class="modal-foot"><button type="button" class="btn" id="mode-cancel">取消</button><button type="button" class="btn primary" id="mode-submit">保存</button></div>
     </div>
@@ -442,9 +464,9 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 const params=new URLSearchParams(location.search);
 let state={accounts:{},sessions:{}};
 try{const x=JSON.parse(params.get('demo')||localStorage.getItem('aic-v05')||'null');if(x&&typeof x==='object'){state.accounts=x.accounts||{};state.sessions=x.sessions||{};}}catch(_){}
-function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{single:raw.single===true,group:raw.group===true}):Object.assign({},base);}
+function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];const wf=raw&&typeof raw==='object'?{singleWf:raw.singleWf||'',groupWf:raw.groupWf||''}:{singleWf:'',groupWf:''};return raw&&typeof raw==='object'?Object.assign({},base,{single:raw.single===true,group:raw.group===true},wf):Object.assign({},base,wf);}
 function save(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05',value);}catch(_){} params.set('demo',value);const current=new URL(location.href);current.searchParams.set('demo',value);try{history.replaceState(null,'',current.href);}catch(_){} }
-function saveAccount(id,config){state.accounts[id]={single:!!config.single,group:!!config.group};save();}
+function saveAccount(id,config){state.accounts[id]={single:!!config.single,group:!!config.group,singleWf:config.singleWf||'',groupWf:config.groupWf||''};save();}
 function url(file,args={}){const u=new URL(file,location.href);u.search='';for(const k of ['embed','sandbox'])if(params.has(k))u.searchParams.set(k,params.get(k));if(Object.keys(state.accounts).length||Object.keys(state.sessions).length)u.searchParams.set('demo',JSON.stringify(state));for(const [k,v]of Object.entries(args))if(v!==null&&v!==undefined&&v!=='')u.searchParams.set(k,String(v));return u.href;}
 const sessions=NAMES.map((name,i)=>({id:'S_'+pad(i+1,4),type:'single',cid:'C_'+(88001+i),cname:name,mid:'wx_100'+MIDS[i],mname:'会员助理 小菲'+MIDS[i],supplier:'艾客',corp:MIDS[i]%2?'索菲亚家居':'索菲亚精选',configured:i%3!==1,records:[]}));
 const templates=[
@@ -571,8 +593,10 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   var initName=(AIDemo.params.get('name')||'').trim();
   if(initUid)document.getElementById('q-uid').value=initUid;
   else if(initName)document.getElementById('q-name').value=initName;
-  rows.forEach(function(r){var a=AIDemo.account(r.uid);r.modes=[];if(a.single)r.modes.push('单聊');if(a.group)r.modes.push('群聊');});
-  function persistAccount(row){AIDemo.saveAccount(row.uid,{single:row.modes.indexOf('单聊')>=0,group:row.modes.indexOf('群聊')>=0});}
+  /* 可选工作流：仅「意图识别」类型（与工作流管理一致）。 */
+  var INTENT_WORKFLOWS=[{id:'wf_intent_member_service',name:'会员服务意图识别'},{id:'wf_intent_after_sales',name:'售后意图识别'}];
+  rows.forEach(function(r){var a=AIDemo.account(r.uid);r.modes=[];if(a.single)r.modes.push('单聊');if(a.group)r.modes.push('群聊');r.singleWf=a.singleWf||(r.modes.indexOf('单聊')>=0?INTENT_WORKFLOWS[0].id:'');r.groupWf=a.groupWf||(r.modes.indexOf('群聊')>=0?INTENT_WORKFLOWS[1].id:'');});
+  function persistAccount(row){AIDemo.saveAccount(row.uid,{single:row.modes.indexOf('单聊')>=0,group:row.modes.indexOf('群聊')>=0,singleWf:row.singleWf,groupWf:row.groupWf});}
   var tbody=document.getElementById('tbody');
   var pager=document.getElementById('pager-info');
   var toastEl=document.getElementById('toast');
@@ -615,18 +639,46 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   }
   var modeModal=document.getElementById('mode-modal');
   var detailModal=document.getElementById('detail-modal');
+  function wfOptions(selected){
+    return '<option value="">请选择意图识别工作流</option>'+INTENT_WORKFLOWS.map(function(w){return '<option value="'+w.id+'"'+(w.id===selected?' selected':'')+'>'+esc(w.name)+'</option>';}).join('');
+  }
+  function wfName(id){var hit=INTENT_WORKFLOWS.filter(function(w){return w.id===id;})[0];return hit?hit.name:'—';}
+  function syncWfFields(){
+    [['opt-single','wf-single','field-single'],['opt-group','wf-group','field-group']].forEach(function(ids){
+      var on=document.getElementById(ids[0]).checked,field=document.getElementById(ids[2]);
+      document.getElementById(ids[1]).disabled=!on;
+      field.classList.toggle('off',!on);
+      if(!on)field.classList.remove('invalid');
+    });
+  }
+  function validateWf(key){
+    var on=document.getElementById('opt-'+key).checked,sel=document.getElementById('wf-'+key);
+    var ok=!on||!!sel.value;
+    document.getElementById('field-'+key).classList.toggle('invalid',!ok);
+    return ok;
+  }
+  ['single','group'].forEach(function(key){
+    document.getElementById('opt-'+key).addEventListener('change',syncWfFields);
+    document.getElementById('wf-'+key).addEventListener('change',function(){validateWf(key);});
+  });
   function openConfig(i){
     current=rows[i];
     document.getElementById('mode-acct').textContent=current.name+'（'+current.uid+'）';
-    document.getElementById('opt-single').checked=current.modes.indexOf('单聊')>=0;
-    document.getElementById('opt-group').checked=current.modes.indexOf('群聊')>=0;
+    var single=current.modes.indexOf('单聊')>=0,group=current.modes.indexOf('群聊')>=0;
+    document.getElementById('opt-single').checked=single;
+    document.getElementById('opt-group').checked=group;
+    document.getElementById('wf-single').innerHTML=wfOptions(current.singleWf);
+    document.getElementById('wf-group').innerHTML=wfOptions(current.groupWf);
+    syncWfFields();
     modeModal.classList.add('active');
+    document.getElementById(single?'wf-single':group?'wf-group':'opt-single').focus();
   }
   function detailItem(k,v){return '<div class="detail-item"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v==null||v===''?'—':v)+'</span></div>';}
   function openDetail(i){
     current=rows[i];
     var base='<div class="detail-section">账号基础信息</div>'+detailItem('供应商',current.supplier)+detailItem('账号ID',current.uid)+detailItem('账号名称',current.name)+detailItem('头像','菲')+detailItem('手机号',current.phone)+detailItem('开启AI接管联系人数',current.count)+detailItem('单聊AI接管',current.modes.indexOf('单聊')>=0?'已开启':'未开启')+detailItem('群聊AI接管',current.modes.indexOf('群聊')>=0?'已开启':'未开启')+detailItem('更新时间',current.time);
     if(current.supplier==='艾客')base+='<div class="detail-section">艾客供应商扩展信息</div>'+detailItem('企业名称',current.corp)+detailItem('联系人',current.contact)+detailItem('设备名称',current.device)+detailItem('设备保管者',current.keeper)+detailItem('是否在线',current.online?'在线':'离线')+detailItem('所属组',current.group);
+    base+='<div class="detail-section">AI接管配置</div>'+detailItem('单聊AI接管',current.modes.indexOf('单聊')>=0?'已开启':'未开启')+detailItem('单聊 · 意图识别工作流',current.modes.indexOf('单聊')>=0?wfName(current.singleWf):'—')+detailItem('群聊AI接管',current.modes.indexOf('群聊')>=0?'已开启':'未开启')+detailItem('群聊 · 意图识别工作流',current.modes.indexOf('群聊')>=0?wfName(current.groupWf):'—');
     document.getElementById('detail-grid').innerHTML=base;detailModal.classList.add('active');document.getElementById('detail-close').focus();
   }
   function closeModals(){modeModal.classList.remove('active');detailModal.classList.remove('active');render()}
@@ -649,9 +701,17 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   });
   filterPopover.addEventListener('click',function(e){e.stopPropagation();});document.addEventListener('click',function(){setFilterOpen(false);});
   document.getElementById('mode-submit').addEventListener('click',function(){
+    if(!validateWf('single')||!validateWf('group')){
+      showToast('请为已开启的AI接管选择意图识别工作流','fail');
+      var bad=document.querySelector('#mode-modal .field.invalid select');if(bad)bad.focus();
+      return;
+    }
+    var single=document.getElementById('opt-single').checked,group=document.getElementById('opt-group').checked;
     current.modes=[];
-    if(document.getElementById('opt-single').checked)current.modes.push('单聊');
-    if(document.getElementById('opt-group').checked)current.modes.push('群聊');
+    if(single)current.modes.push('单聊');
+    if(group)current.modes.push('群聊');
+    current.singleWf=single?document.getElementById('wf-single').value:'';
+    current.groupWf=group?document.getElementById('wf-group').value:'';
     current.time=AIDemo.fmt(Date.now()).slice(0,16);
     persistAccount(current);closeModals();showToast('AI接管配置保存成功','ok');
   });

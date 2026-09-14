@@ -242,6 +242,10 @@ td.strong{color:var(--ink)}
 .heading-label{display:inline-flex;align-items:center;gap:8px}
 .heading-label svg{width:16px;height:16px;flex:0 0 auto;color:var(--brand)}
 .chat-stream{overflow-y:auto;overscroll-behavior:contain;overflow-anchor:none;flex:1;min-height:0;padding:12px 20px 22px;background:#fafbfc}
+.chat-more{display:flex;justify-content:center;align-items:center;padding:2px 0 10px;font-size:12px;color:var(--weak)}
+.chat-more.loadable{cursor:pointer;color:var(--brand)}
+.chat-more.loadable:hover{text-decoration:underline}
+.chat-more.loading{color:var(--weak)}
 .trace-content{overflow:auto;flex:1;padding:16px;min-height:0}
 .conversation-meta{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;font-size:13px}
 .conversation-meta b{font-size:14px}
@@ -504,21 +508,56 @@ if(!session){root.innerHTML='<div class="card"><div class="empty-panel">未找�
 else{
  const msgs=D.messages(session),summary=D.summary(session);
  const ACTION_ICON={trace:'<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="3.6" cy="3.6" r="1.7" stroke="currentColor" stroke-width="1.4"/><circle cx="12.4" cy="8" r="1.7" stroke="currentColor" stroke-width="1.4"/><circle cx="3.6" cy="12.4" r="1.7" stroke="currentColor" stroke-width="1.4"/><path d="M5.2 4.3c3 .5 4.5 1.8 5.8 3.1M5.2 11.7c3-.5 4.5-1.8 5.8-3.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',latency:'<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 4.4V8l2.5 1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
- let stream=msgs.map(function(m){const rec=m.record||{},selected=m.id===focusId;
+ function rowHTML(m){const rec=m.record||{},selected=m.id===focusId;
   if(m.role==='event')return '<div class="message-row event'+(selected?' selected':'')+'" data-id="'+E(m.id)+'"><div class="bubble">'+E(m.text)+'<small> · '+E(D.fmt(m.at,true))+'</small></div></div>';
   const role=m.role==='customer'?'customer':'member',ai=m.role==='member'&&m.ai;
   let body=m.type==='图片'?'<button class="picture-preview" type="button" data-picture="1">'+pictureSvg()+'</button>':'<div class="bubble">'+E(m.text)+'</div>';
   let actions='';if(m.role==='member'&&ai&&rec.trace)actions+='<button type="button" class="msg-action" data-trace="'+E(rec.id)+'">'+ACTION_ICON.trace+'AI决策追溯</button>';if(m.role==='member'&&rec.ai)actions+='<button type="button" class="msg-action" data-latency="'+E(rec.id)+'">'+ACTION_ICON.latency+'耗时详情</button>';
   return '<div class="message-row '+role+(ai?' ai':'')+(selected?' selected':'')+'" data-id="'+E(m.id)+'"><div><div class="meta"><span class="meta-who">'+(role==='customer'?E(session.cname):E(session.mname))+'</span><span class="meta-time">'+E(D.fmt(m.at,true))+'</span>'+(ai?'<span class="tag online">AI回复</span>':'')+(actions?'<span class="msg-actions">'+actions+'</span>':'')+'</div>'+body+'</div></div>';
- }).join('');
- root.innerHTML='<div class="conversation-meta"><b>'+E(session.cname)+' × '+E(session.mname)+'</b><span>会话ID：'+E(session.id)+'</span><span>最后聊天：'+E(D.fmt(summary.last,true))+'</span><a class="return" href="'+backUrl()+'"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.6 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>返回</a></div><div class="chat-layout single"><div class="chat-card"><div class="chat-heading"><span>会话消息</span><span class="tag '+(D.enabled(session)?'online':'offline')+'">'+(D.enabled(session)?'AI接管中':'未接管')+'</span></div><div class="chat-stream">'+(stream||'<div class="empty-panel">暂无聊天记录</div>')+'</div></div></div>';
- document.querySelectorAll('[data-trace]').forEach(function(b){b.addEventListener('click',function(){const r=D.records.find(x=>x.id===b.dataset.trace);openTrace(r)})});
- document.querySelectorAll('[data-latency]').forEach(function(b){b.addEventListener('click',function(){const r=D.records.find(x=>x.id===b.dataset.latency);openLatency(r)})});
- document.querySelectorAll('[data-picture]').forEach(function(b){b.addEventListener('click',function(){const stage=document.getElementById('image-stage');stage.innerHTML=pictureSvg();document.getElementById('image-modal').classList.add('active')})});
+ }
+ const PAGE=10;
+ let shown=Math.min(PAGE,msgs.length);
+ if(focusId){const idx=msgs.findIndex(function(m){return m.id===focusId;});if(idx>=0&&idx<msgs.length-shown)shown=msgs.length-idx;}
+ function moreText(){const rest=msgs.length-shown;if(!rest)return '已加载全部记录（共 '+msgs.length+' 条）';return '上滑加载更早的记录 · 已加载最新 '+shown+' / '+msgs.length+' 条';}
+ function windowHTML(){return msgs.slice(msgs.length-shown).map(rowHTML).join('');}
+ root.innerHTML='<div class="conversation-meta"><b>'+E(session.cname)+' × '+E(session.mname)+'</b><span>会话ID：'+E(session.id)+'</span><span>最后聊天：'+E(D.fmt(summary.last,true))+'</span><a class="return" href="'+backUrl()+'"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.6 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>返回</a></div><div class="chat-layout single"><div class="chat-card"><div class="chat-heading"><span>会话消息</span><span class="tag '+(D.enabled(session)?'online':'offline')+'">'+(D.enabled(session)?'AI接管中':'未接管')+'</span></div><div class="chat-stream" id="chat-stream">'+(msgs.length?'<div class="chat-more'+(msgs.length-shown>0?' loadable':'')+'" id="chat-more">'+moreText()+'</div>'+windowHTML():'<div class="empty-panel">暂无聊天记录</div>')+'</div></div></div>';
+ let streamEl=document.getElementById('chat-stream'),moreEl=document.getElementById('chat-more'),loading=false;
+ function bindActions(scope){
+  scope.querySelectorAll('[data-trace]').forEach(function(b){b.addEventListener('click',function(){const r=D.records.find(x=>x.id===b.dataset.trace);openTrace(r)})});
+  scope.querySelectorAll('[data-latency]').forEach(function(b){b.addEventListener('click',function(){const r=D.records.find(x=>x.id===b.dataset.latency);openLatency(r)})});
+  scope.querySelectorAll('[data-picture]').forEach(function(b){b.addEventListener('click',function(){const stage=document.getElementById('image-stage');stage.innerHTML=pictureSvg();document.getElementById('image-modal').classList.add('active')})});
+ }
+ if(streamEl){
+  bindActions(streamEl);
+  streamEl.scrollTop=streamEl.scrollHeight;
+  function loadOlder(){
+   if(loading)return;
+   const rest=msgs.length-shown;if(rest<=0)return;
+   loading=true;moreEl.classList.remove('loadable');moreEl.classList.add('loading');moreEl.textContent='正在加载更早的记录…';
+   setTimeout(function(){
+    const add=Math.min(PAGE,rest),prevH=streamEl.scrollHeight,prevTop=streamEl.scrollTop;
+    const holder=document.createElement('div');
+    holder.innerHTML=msgs.slice(msgs.length-shown-add,msgs.length-shown).map(rowHTML).join('');
+    const frag=document.createDocumentFragment();while(holder.firstChild)frag.appendChild(holder.firstChild);
+    bindActions(frag);
+    moreEl.parentNode.insertBefore(frag,moreEl.nextSibling);
+    shown+=add;loading=false;
+    streamEl.scrollTop=prevTop+(streamEl.scrollHeight-prevH);
+    moreEl.classList.remove('loading');
+    moreEl.textContent=moreText();
+    moreEl.classList.toggle('loadable',msgs.length-shown>0);
+   },260);
+  }
+  streamEl.addEventListener('scroll',function(){if(streamEl.scrollTop<=8)loadOlder();});
+  moreEl.addEventListener('click',function(){loadOlder();});
+  requestAnimationFrame(function(){
+   const sel=streamEl.querySelector('.message-row.selected');
+   if(sel)sel.scrollIntoView({block:'center'});else streamEl.scrollTop=streamEl.scrollHeight;
+  });
+ }
  const closeImage=document.getElementById('image-close');if(closeImage)closeImage.addEventListener('click',function(){document.getElementById('image-modal').classList.remove('active')});
  const resetImage=document.getElementById('image-reset');if(resetImage)resetImage.addEventListener('click',function(){const s=document.querySelector('#image-stage svg');if(s)s.style.transform='scale(1)' });
  document.addEventListener('keydown',function(e){if(e.key==='Escape'){const m=document.getElementById('image-modal');if(m)m.classList.remove('active')}});
- const selected=document.querySelector('.message-row.selected');if(selected)selected.scrollIntoView({block:'center'});
  const traceId=D.params.get('trace');if(traceId){const r=D.records.find(x=>x.id===traceId);if(r)openTrace(r)}
 }
 })();
