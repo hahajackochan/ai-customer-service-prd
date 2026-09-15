@@ -383,8 +383,8 @@ td.strong{color:var(--ink)}
         <div class="filter-popover" id="filter-popover" hidden><div class="filter-bar">
           <span class="fitem"><label for="q-name">账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
           <span class="fitem"><label for="q-uid">账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
-          <span class="fitem"><label for="q-single">单聊AI接管</label><select id="q-single"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
-          <span class="fitem"><label for="q-group">群聊AI接管</label><select id="q-group"><option value="">全部</option><option value="1">已开启</option><option value="0">未开启</option></select></span>
+          <span class="fitem"><label for="q-single">单聊AI接管</label><select id="q-single"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></span>
+          <span class="fitem"><label for="q-group">群聊AI接管</label><select id="q-group"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></span>
           <span class="fitem"><label for="q-online">是否在线</label><select id="q-online"><option value="">全部</option><option value="1">在线</option><option value="0">离线</option></select></span>
           <div class="filter-footer"><button class="btn" id="btn-reset" type="button">重置</button><button class="btn" id="btn-filter-close" type="button">关闭</button><button class="btn primary" id="btn-query" type="button">提交</button></div>
         </div></div>
@@ -594,7 +594,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   if(initUid)document.getElementById('q-uid').value=initUid;
   else if(initName)document.getElementById('q-name').value=initName;
   /* 可选工作流：仅「意图识别」类型（与工作流管理一致）。 */
-  var INTENT_WORKFLOWS=[{id:'wf_intent_member_service',name:'会员服务意图识别'},{id:'wf_intent_after_sales',name:'售后意图识别'}];
+  var INTENT_WORKFLOWS=[{id:'wf_intent_member_service',name:'会员部门-意图识别'},{id:'wf_intent_after_sales',name:'内容部门-意图识别'}];
   rows.forEach(function(r){var a=AIDemo.account(r.uid);r.modes=[];if(a.single)r.modes.push('单聊');if(a.group)r.modes.push('群聊');r.singleWf=a.singleWf||(r.modes.indexOf('单聊')>=0?INTENT_WORKFLOWS[0].id:'');r.groupWf=a.groupWf||(r.modes.indexOf('群聊')>=0?INTENT_WORKFLOWS[1].id:'');});
   function persistAccount(row){AIDemo.saveAccount(row.uid,{single:row.modes.indexOf('单聊')>=0,group:row.modes.indexOf('群聊')>=0,singleWf:row.singleWf,groupWf:row.groupWf});}
   var tbody=document.getElementById('tbody');
