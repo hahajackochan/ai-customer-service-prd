@@ -41,7 +41,10 @@ button,input{font:inherit}
 .filter-popover:before{content:"";position:absolute;right:34px;top:-7px;width:12px;height:12px;background:#fff;border-left:1px solid #e4e7ed;border-top:1px solid #e4e7ed;transform:rotate(45deg)}
 .filter-popover .filter-bar,.filter-popover .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px;align-items:center}
 .filter-popover .filter-bar .fitem,.filter-popover .form-grid label{display:grid;grid-template-columns:96px minmax(0,1fr);align-items:center;gap:10px;margin:0}
+.form-grid label{font-size:13px;color:var(--muted)}
 .filter-popover .filter-bar .fitem input,.filter-popover .filter-bar .fitem select,.filter-popover .form-grid input,.filter-popover .form-grid select{width:100%;max-width:none}
+.form-grid input,.form-grid select,.filter-popover .form-grid input,.filter-popover .form-grid select{height:32px;border:1px solid #dcdfe6;border-radius:4px;padding:0 10px;color:var(--ink);font:inherit;background:#fff;min-width:0}
+.form-grid input:focus,.form-grid select:focus,.filter-popover .form-grid input:focus,.filter-popover .form-grid select:focus{border-color:var(--brand);outline:none}
 .filter-popover .filter-footer,.filter-popover .form-actions{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin-top:14px;padding-top:18px;border-top:1px solid #f0f1f3}
 .filter-popover .filter-footer .btn,.filter-popover .form-actions .btn{min-width:72px}
 @media(max-width:900px){.filter-popover,.filter-popover.medium{right:10px;width:calc(100vw - 270px);min-width:360px}.filter-popover .filter-bar,.filter-popover .form-grid{grid-template-columns:1fr}}
