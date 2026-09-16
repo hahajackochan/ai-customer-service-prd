@@ -70,7 +70,7 @@ button,input{font:inherit}
   <div class="nav-children" id="third-children"><div class="nav-children-inner"><div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div><div class="nav-item child js-nav" data-page="艾客坐席管理"><span class="dot-ic">•</span><span class="lbl">艾客坐席管理</span></div><div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div></div></div>
 
   <div class="nav-item nav-group" data-target="ai-children" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
-  <div class="nav-children" id="ai-children"><div class="nav-children-inner"><div class="nav-item child ai-child js-nav" data-page="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div><div class="nav-item child ai-child js-nav" data-page="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div><div class="nav-item child ai-child js-nav" data-page="AI回复响应管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应管理</span></div></div></div>
+  <div class="nav-children" id="ai-children"><div class="nav-children-inner"><div class="nav-item child ai-child js-nav" data-page="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div><div class="nav-item child ai-child js-nav" data-page="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div><div class="nav-item child ai-child js-nav" data-page="AI响应明细"><span class="dot-ic">•</span><span class="lbl">AI响应明细</span></div></div></div>
 
   <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
   <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
@@ -119,7 +119,7 @@ var PAGES={
   'AI托管账号':'AI托管账号_v1.0.html',
   '客户会话管理':'客户会话管理_v1.0.html',
   '会话消息管理':'会话消息管理_v1.0.html',
-  'AI回复响应管理':'AI回复响应管理_v1.0.html'
+  'AI响应明细':'AI响应明细_v1.0.html'
 };
 function pageUrl(file){
   var target=new URL(file,location.href);target.search='';

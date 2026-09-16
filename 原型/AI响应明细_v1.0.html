@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>原型 · AI回复响应管理 v1.0</title>
+<title>原型 · AI响应明细 v1.0</title>
 <style>
 :root{--brand:#a86115;--amber:#f9ecc9;--amber-deep:#8a5a1e;--ink:#303133;--text:#4a4f55;--muted:#606266;--weak:#909399;--line:#ebeef4;--head:#f2f5f9;--page:#f0f1f2;--danger:#f56c6c;--ok:#67c23a;--blue:#6f8db5}
 *{box-sizing:border-box}
@@ -304,6 +304,16 @@ body[data-view="latency"] .wide-table td:nth-last-child(2){position:sticky;right
 .filter-popover .form-grid label.duration-filter{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .filter-popover .form-grid label.duration-filter>select{width:92px}.filter-popover .form-grid label.duration-filter>input{width:150px}.filter-popover .form-grid label.duration-filter .totalMaxWrap{display:inline-flex;align-items:center;gap:8px}.filter-popover .form-grid label.duration-filter .totalMaxWrap[hidden]{display:none}
 </style>
+<style>
+.trace-result.static{cursor:default}
+.trace-result-line{display:flex;align-items:center;gap:10px;padding:12px 14px;min-width:0}
+.trace-result-detail{border-top:1px solid var(--line);padding:8px 14px 10px;background:#fafbfc;font-size:12px;line-height:1.7;color:var(--muted);overflow-wrap:anywhere}
+.trace-sub{margin:2px 0 10px;color:var(--weak);font-size:13px}
+.trace-msg-list{display:flex;flex-direction:column;gap:8px;margin:0 0 6px}
+.trace-msg{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;font-size:13px;line-height:1.7}
+.trace-msg>b{flex:0 0 20px;height:20px;border-radius:50%;background:#f1f3f7;color:var(--muted);font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:600}
+.trace-msg small{display:block;color:var(--weak);font-size:11px;margin-top:3px;font-variant-numeric:tabular-nums}
+</style>
 </head>
 <body data-view="latency">
   <header class="topbar">
@@ -333,7 +343,7 @@ body[data-view="latency"] .wide-table td:nth-last-child(2){position:sticky;right
       <div class="nav-item open" id="nav-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
 <div class="nav-item child ai-child js-nav" data-page="客户会话管理" title="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div>
 <div class="nav-item child ai-child js-nav" data-page="会话消息管理" title="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div>
-<div class="nav-item child ai-child js-nav active" data-page="AI回复响应管理" title="AI回复响应管理"><span class="dot-ic">•</span><span class="lbl">AI回复响应管理</span></div>
+<div class="nav-item child ai-child js-nav active" data-page="AI响应明细" title="AI响应明细"><span class="dot-ic">•</span><span class="lbl">AI响应明细</span></div>
       <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
       <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
       <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 10h16M10 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">京东模块</span><span class="chev">▾</span></div>
@@ -354,11 +364,11 @@ body[data-view="latency"] .wide-table td:nth-last-child(2){position:sticky;right
     <main style="flex:1;min-width:0;display:flex;flex-direction:column">
     <div class="crumb-bar">
       <span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <span class="crumb">AI会话管理 / <b>AI回复响应管理</b></span>
+      <span class="crumb">AI会话管理 / <b>AI响应明细</b></span>
     </div>
     <div class="tab-bar">
       <span class="tab-nav">‹</span>
-      <span class="tab"><span class="dot"></span>AI回复响应管理<span class="x" title="关闭（演示）">×</span></span>
+      <span class="tab"><span class="dot"></span>AI响应明细<span class="x" title="关闭（演示）">×</span></span>
       <span class="tab-nav" style="margin-left:auto">›</span>
     </div>
       <div class="page-body" id="view-root"></div></main></div>
@@ -447,9 +457,32 @@ for(let sidx=0;sidx<sessions.length;sidx++){
   s.records.push(r);
  }
 }
+// 客户连续发送多条消息时，AI 基于这一组消息一并接管：把紧邻的前 1~2 条客户消息并入后一条 AI 决策追溯
+for(const s of sessions){
+ const rs=s.records;
+ for(let j=1;j<rs.length;j++){
+  const r=rs[j];if(!(r.ai&&r.trace))continue;
+  const take=(j%4===1)?1:(j%7===3?2:0);if(!take)continue;
+  const prev=rs.slice(Math.max(0,j-take),j);
+  if(prev.length!==take||prev.some(function(p){return p.grouped||p.traceOwner||p.traceInputs||p.reason||p.kind==='human';}))continue;
+  prev.forEach(function(p,i){p.grouped=true;p.traceOwner=r.id;p.traceId=r.traceId;p.trace=true;p.reply=null;p.replyId=null;p.replyAt=null;p.ai=false;p.total=null;p.kind='grouped';p.reason=null;p.stages=[];p.sentAt=r.sentAt-(prev.length-i)*23000;p.receivedAt=p.sentAt+120;});
+  r.traceInputs=prev.map(function(p){return{id:p.id,text:p.question,at:p.sentAt};}).concat([{id:r.id,text:r.question,at:r.sentAt}]);
+  const wait=r.receivedAt-prev[0].receivedAt;
+  if(wait>0){r.stages=[{name:'等待客户补充消息',duration:wait,at:r.receivedAt}].concat(r.stages);r.receivedAt=prev[0].receivedAt;}
+  r.total=r.replyAt-r.receivedAt;
+ }
+}
+// 一次 AI 决策追溯可能产出多条 AI 回复消息
+for(const s of sessions)for(const r of s.records){
+ if(!r.ai||!r.reply)continue;
+ const extra=(+r.id.slice(-3))%5===2?[{id:r.replyId+'_B',text:'如需我继续为您处理，回复「继续」即可。',at:r.replyAt+3200}]:[];
+ r.replies=[{id:r.replyId,text:r.reply,at:r.replyAt}].concat(extra);
+ if(extra.length){const last=r.stages[r.stages.length-1];if(last)last.duration+=extra[extra.length-1].at-r.replyAt;r.replyAt=extra[extra.length-1].at;r.total=r.replyAt-r.receivedAt;}
+}
 function messages(s){return s.records.flatMap(r=>{
  const items=[{id:r.id,role:'customer',text:r.question,type:r.type,at:r.sentAt,record:r}];
  if(r.reply)items.push({id:r.replyId,role:'member',text:r.reply,type:r.replyType,at:r.replyAt,ai:r.ai,record:r});
+ (r.replies||[]).forEach(function(x){if(x.id!==r.replyId)items.push({id:x.id,role:'member',text:x.text,type:r.replyType,at:x.at,ai:true,record:r});});
  if(r.reason)items.push({id:r.traceId,role:'event',text:r.kind==='error'?'AI处理异常':'AI转人工',at:r.eventAt,record:r});return items;
 }).sort((a,b)=>a.at-b.at||a.id.localeCompare(b.id));}
 function modeEnabled(s,a){return (s.type||'single')==='group'?a.group:a.single;}
@@ -468,18 +501,23 @@ function traceHTML(r){
  const results=(type,items,empty)=>{
   const known=Array.isArray(items),list=known?items:[],intent=type==='intent';
   if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
-  return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b><span>记录顺序 · 点击逐条展开</span></div>'+(list.length?list.map((item,i)=>{
+  return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b></div>'+(list.length?list.map((item,i)=>{
    const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
-   return '<details class="trace-result" data-result-index="'+i+'"'+(list.length===1?' open':'')+'><summary><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></summary></details>';
+   const notes=[item.reason,item.scene?'场景：'+item.scene:'',item.strategy?'策略：'+item.strategy:'',item.source?'来源：'+item.source:'',item.filter?'筛选：'+item.filter:''].filter(Boolean);
+   return '<div class="trace-result static" data-result-index="'+i+'"><div class="trace-result-line"><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></div>'+(notes.length?'<div class="trace-result-detail">'+notes.map(esc).join(' · ')+'</div>':'')+'</div>';
   }).join(''):'<div class="trace-result-empty">'+esc(empty)+'</div>')+'</div>';
  };
  const success=r.ai,failed=r.kind==='error';
  const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
- return '<div class="trace-summary"><div class="trace-summary-head"><b>'+esc(success?'AI回复成功':failed?'异常':'转人工')+'</b></div><div class="trace-summary-meta"><span><em>客户消息ID</em>'+esc(r.id)+'</span><span><em>会话</em>'+esc(r.sid)+'</span></div></div>'
+ const inputs=Array.isArray(r.traceInputs)&&r.traceInputs.length?r.traceInputs:[{id:r.id,text:r.question,at:r.sentAt}];
+ const replies=Array.isArray(r.replies)&&r.replies.length?r.replies:(r.reply?[{id:r.replyId,text:r.reply,at:r.replyAt}]:[]);
+ const msgList=list=>'<div class="trace-msg-list">'+list.map((m,i)=>'<div class="trace-msg"><b>'+(i+1)+'</b><div><span class="trace-msg-text">'+esc(m.text)+'</span><small>'+esc(m.id)+' · '+esc(fmt(m.at,true))+'</small></div></div>').join('')+'</div>';
+ return '<div class="trace-summary">'+(success?'':'<div class="trace-summary-head"><b>'+esc(failed?'异常':'转人工')+'</b></div>')+'<div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+esc(r.traceId)+'</span><span><em>会话</em>'+esc(r.sid)+'</span><span><em>触发客户消息</em>'+inputs.length+' 条</span><span><em>AI回复消息</em>'+replies.length+' 条</span></div></div>'
  + (r.reason?'<div class="reason-box">'+kv('处理类型',r.reason.type)+kv('转人工归因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
- +section('1','输入 · 模型与触发消息',kv('模型','客服模型-示例 v1')+kv('客户消息原文',r.question)+kv('触发时间',fmt(r.receivedAt,true))+kv('触发消息ID',r.id)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
+ +section('1','输入 · 触发消息','<div class="trace-sub">客户消息原文'+(inputs.length>1?'（共 '+inputs.length+' 条，AI 一并接管）':'')+'</div>'+msgList(inputs)+kv('触发时间',fmt(inputs[inputs.length-1].at,true))+kv('触发消息ID',inputs[inputs.length-1].id)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
  +section('2','理解 · 意图识别',results('intent',r.intentResults,'暂无意图结果'))
- +section('3','判断与决策 · 知识匹配',results('knowledge',r.knowledgeResults,'暂无知识结果'));
+ +section('3','判断与决策 · 知识匹配',results('knowledge',r.knowledgeResults,'暂无知识结果'))
+ +section('4','输出 · AI回复消息',replies.length?msgList(replies):'<div class="trace-result-empty">本次追溯未产出AI回复消息（转人工 / 异常）。</div>');
 }
 window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,sessions,records,account,saveAccount,enabled,eligible,setSession,messages,summary,traceHTML,reasonOptions,fmt,date,day,esc,url,params};
 })();
@@ -487,7 +525,7 @@ window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,sessions,records,account,saveAccoun
 (function(){
 'use strict';const D=window.AIDemo;
 window.showToast=function(msg,cls){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='toast '+(cls||'ok');t.style.display='block';clearTimeout(window.showToast.timer);window.showToast.timer=setTimeout(()=>t.style.display='none',2300);};
-const PAGES={'艾客坐席管理':'艾客坐席管理_v1.0.html','供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI回复响应管理':'AI回复响应管理_v1.0.html','智能体管理':'智能体管理_v1.0.html','工作流管理':'工作流管理_v1.0.html'};
+const PAGES={'艾客坐席管理':'艾客坐席管理_v1.0.html','供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI响应明细':'AI响应明细_v1.0.html','智能体管理':'智能体管理_v1.0.html','工作流管理':'工作流管理_v1.0.html'};
 document.querySelectorAll('.js-nav').forEach(el=>{el.tabIndex=0;el.setAttribute('role','link');const go=()=>{const file=PAGES[el.dataset.page];if(file)location.href=D.url(file);};el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go();}});});
 for(const [id,selector]of [['nav-third','.nav-item.child:not(.ai-child):not(.agent-child)'],['nav-ai','.nav-item.ai-child'],['nav-agent','.nav-item.agent-child']]){const el=document.getElementById(id);if(el){el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-expanded','true');const toggle=()=>{const open=el.classList.toggle('open');el.setAttribute('aria-expanded',String(open));document.querySelectorAll(selector).forEach(c=>c.style.display=open?'flex':'none');};el.addEventListener('click',toggle);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});}}
 document.querySelectorAll('.js-nothing').forEach(el=>el.addEventListener('click',()=>showToast('本次原型仅包含三方账号管理、AI会话管理与智能体管理相关页面。','info')));
@@ -505,8 +543,8 @@ const select=(label,key,opts)=>'<label>'+label+'<select name="'+key+'" id="q-'+k
 const yesno='<option value="1">是</option><option value="0">否</option>';
 let fields=input('会话ID','sid')+input('客户ID','cid')+input('客户名称','cname')+input('成员ID','mid')+input('成员名称','mname');
 if(kind==='sessions')fields=select('供应商','supplier','<option>艾客</option>')+select('企业','corp','<option>索菲亚家居</option><option>索菲亚精选</option>')+fields+select('AI接管状态','enabled',yesno)+select('涉及AI回复','ai',yesno)+input('最后聊天时间','start','date')+input('至','end','date');
-else if(kind==='messages')fields=input('客户消息ID','id')+fields+select('AI回复','ai',yesno)+select('处理结果','kind','<option value="pending">待回复</option><option value="ai">AI回复</option><option value="human">人工回复</option><option value="transfer">转人工</option><option value="error">异常</option>')+select('转人工归因','reason',D.reasonOptions())+input('发送时间','start','date')+input('至','end','date');
-else fields=input('消息ID','id')+fields+input('成员回复时间','start','date')+input('至','end','date')+'<label class="duration-filter">总响应时长<select name="totalOp" id="q-totalOp"><option value="gt">大于</option><option value="lt">小于</option><option value="between">介于</option></select><input type="number" step="0.01" min="0" name="total" id="q-total" placeholder="秒"><span class="totalMaxWrap" hidden>至 <input type="number" min="0" step="0.01" name="totalMax" id="q-totalMax" placeholder="秒"></span>秒</label>';
+else if(kind==='messages')fields=input('客户消息ID','id')+fields+select('转人工','transfer',yesno)+select('处理结果','kind','<option value="pending">待回复</option><option value="ai">AI回复</option><option value="human">人工回复</option><option value="transfer">转人工</option><option value="error">异常</option>')+select('转人工归因','reason',D.reasonOptions())+input('发送时间','start','date')+input('至','end','date');
+else fields=input('AI决策追溯ID','id')+fields+input('成员回复时间','start','date')+input('至','end','date')+'<label class="duration-filter">总响应时长<select name="totalOp" id="q-totalOp"><option value="gt">大于</option><option value="lt">小于</option><option value="between">介于</option></select><input type="number" step="0.01" min="0" name="total" id="q-total" placeholder="秒"><span class="totalMaxWrap" hidden>至 <input type="number" min="0" step="0.01" name="totalMax" id="q-totalMax" placeholder="秒"></span>秒</label>';
 root.innerHTML='<div class="card list-filter-card"><div class="list-toolbar"><div class="list-toolbar-primary"></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div><div class="filter-popover" id="filter-popover" hidden><form id="filters" class="form-grid">'+fields+'<div class="form-actions"><button class="btn" type="button" id="reset">重置</button><button class="btn" type="button" id="filter-close">关闭</button><button class="btn primary" type="submit">提交</button></div><div class="query-error" role="alert" id="query-error" style="grid-column:1/-1"></div></form></div></div><div class="table-card"><div class="table-scroll"><table class="wide-table"><thead id="columns"></thead><tbody id="tbody"></tbody></table></div><div class="pager" id="pager"></div></div>';
 const form=document.getElementById('filters');for(const [k,v]of D.params)if(form.elements[k])form.elements[k].value=v;
 function stateForm(){return Object.fromEntries(new FormData(form));}
@@ -519,9 +557,10 @@ function matching(){const q=applied;let data=kind==='sessions'?D.sessions.slice(
   const session=kind==='sessions',sm=session?D.summary(r):null;
   for(const key of ['cid','cname','mid','mname','supplier','corp'])if(q[key]&&!String(r[key]).toLowerCase().includes(q[key].toLowerCase()))return false;
   if(q.sid&&String(session?r.id:r.sid).indexOf(q.sid)<0)return false;
-  if(q.id&&String(kind==='latency'?r.replyId:r.id).indexOf(q.id)<0)return false;
+  if(q.id&&String(kind==='latency'?r.traceId:r.id).indexOf(q.id)<0)return false;
   if(session&&q.enabled!==''&&(D.enabled(r)?'1':'0')!==q.enabled)return false;
-  if(kind!=='latency'&&q.ai!==''&&((session?sm.ai:r.ai)?'1':'0')!==q.ai)return false;
+  if(session&&q.ai!==''&&(sm.ai?'1':'0')!==q.ai)return false;
+  if(kind==='messages'&&q.transfer!==''&&(r.reason?'1':'0')!==q.transfer)return false;
   if(kind==='messages'&&q.kind&&r.kind!==q.kind)return false;
   if(q.reason&&r.reason?.code!==q.reason)return false;
   const d=D.date(session?sm.last:kind==='latency'?r.replyAt:r.sentAt);
@@ -531,14 +570,14 @@ function matching(){const q=applied;let data=kind==='sessions'?D.sessions.slice(
  });
  return data.sort((a,b)=>kind==='sessions'?D.summary(b).last-D.summary(a).last:kind==='latency'?b.replyAt-a.replyAt:b.sentAt-a.sentAt);
 }
-const headers=kind==='sessions'?['供应商','企业','会话ID','客户ID','客户名称','成员ID','成员名称','AI接管状态','涉及AI回复','累计对话记录数','会话创建时间','最后聊天时间','操作']:kind==='messages'?['客户消息ID','会话ID','客户ID','客户名称','成员ID','成员名称','客户消息内容','消息类型','发送时间','成员回复内容','成员回复消息类型','成员回复时间','AI回复','转人工归因','操作']:['消息ID','会话ID','客户ID','客户名称','成员ID','成员名称','客户消息内容','成员回复内容','成员回复时间','AI响应总时长','操作'];
+const headers=kind==='sessions'?['供应商','企业','会话ID','客户ID','客户名称','成员ID','成员名称','AI接管状态','涉及AI回复','累计对话记录数','会话创建时间','最后聊天时间','操作']:kind==='messages'?['客户消息ID','会话ID','客户ID','客户名称','成员ID','成员名称','客户消息内容','消息类型','发送时间','成员回复内容','转人工','转人工归因','AI决策追溯ID','操作']:['AI决策追溯ID','会话ID','客户ID','客户名称','成员ID','成员名称','成员回复时间','AI响应总时长','操作'];
 document.getElementById('columns').innerHTML='<tr>'+headers.map((h,i)=>'<th class="'+(i===headers.length-1?'action-col':'')+'">'+h+'</th>').join('')+'</tr>';
 const td=(v,cls='')=>'<td class="'+cls+'">'+v+'</td>',tag=(v)=>'<span class="tag '+(v?'online':'no')+'">'+(v?'是':'否')+'</span>';
 const text=v=>'<span class="cell-long" title="'+E(v)+'">'+E(v)+'</span>';
 function row(r){if(kind==='sessions'){const sm=D.summary(r),on=D.enabled(r),can=D.eligible(r),acct=D.account(r.mid);return '<tr data-id="'+r.id+'">'+[E(r.supplier),E(r.corp),E(r.id),E(r.cid),E(r.cname),E(r.mid),E(r.mname)].map(v=>td(v)).join('')+td('<div class="switch-label"><label class="switch"><input aria-label="'+E(r.id)+' AI接管状态" data-switch="'+r.id+'" type="checkbox" '+(on?'checked ':'')+(!can?'disabled ':'')+'><span class="slider"></span></label><span>'+(on?'是':'否')+'</span></div>'+(!can?'<small class="small-status">'+'账号未开启单聊AI接管'+' <a class="link-btn" href="'+D.url('AI托管账号_v1.0.html',{uid:acct.id})+'">去配置</a></small>':''))+td(tag(sm.ai))+td(sm.count)+td(D.fmt(sm.created),'time-col muted')+td(D.fmt(sm.last),'time-col muted')+td('<a class="link-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.id})+'">聊天内容</a>','action-col')+'</tr>';}
- const metadata=[kind==='latency'?r.replyId:r.id,r.sid,r.cid,r.cname,r.mid,r.mname].map(v=>td(E(v))).join('');
- if(kind==='messages'){const result={pending:'待回复',transfer:'已转人工',error:'处理异常'}[r.kind];return '<tr data-id="'+r.id+'">'+metadata+td(text(r.question),'cell-text')+td(E(r.type))+td(D.fmt(r.sentAt),'time-col muted')+td(r.reply?text(r.reply):'<span class="tag '+(r.kind==='error'?'error':r.kind==='transfer'?'transfer':'waiting')+'">'+result+'</span>','cell-text')+td(r.reply?E(r.replyType):'—')+td(D.fmt(r.replyAt),'time-col muted')+td(tag(r.ai))+td(r.reason?'<button class="link-btn" data-trace="'+r.id+'">'+E(r.reason.label)+'</button><small class="small-status">'+r.reason.type+'</small>':'—')+td('<div class="row-tools">'+(r.trace?'<button class="link-btn" data-trace="'+r.id+'">AI决策追溯</button>':'<span class="muted">无AI追溯</span>')+'<a class="link-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.sid,message:r.id})+'">聊天内容</a></div>','action-col')+'</tr>';}
- return '<tr data-id="'+r.replyId+'">'+metadata+td(text(r.question),'cell-text')+td(text(r.reply),'cell-text')+td(D.fmt(r.replyAt),'time-col muted')+td('<b>'+sec(r.total)+'</b> 秒')+td('<button class="link-btn" data-latency="'+r.id+'">耗时详情</button>','action-col')+'</tr>';
+ const metadata=[kind==='latency'?r.traceId:r.id,r.sid,r.cid,r.cname,r.mid,r.mname].map(v=>td(E(v))).join('');
+ if(kind==='messages'){const result={pending:'待回复',transfer:'已转人工',error:'处理异常'}[r.kind];return '<tr data-id="'+r.id+'">'+metadata+td(text(r.question),'cell-text')+td(E(r.type))+td(D.fmt(r.sentAt),'time-col muted')+td(r.reply?text(r.reply):'<span class="tag '+(r.kind==='error'?'error':r.kind==='transfer'?'transfer':'waiting')+'">'+result+'</span>','cell-text')+td(tag(!!r.reason))+td(r.reason?'<button class="link-btn" data-trace="'+r.id+'">'+E(r.reason.label)+'</button><small class="small-status">'+r.reason.type+'</small>':'—')+td(r.trace?'<button class="link-btn" data-trace="'+E(r.traceOwner||r.id)+'">'+E(r.traceId)+'</button>':'—')+td('<div class="row-tools">'+(r.trace?'<button class="link-btn" data-trace="'+r.id+'">AI决策追溯</button>':'<span class="muted">无AI追溯</span>')+'<a class="link-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.sid,message:r.id})+'">聊天内容</a></div>','action-col')+'</tr>';}
+ return '<tr data-id="'+r.traceId+'">'+metadata+td(D.fmt(r.replyAt),'time-col muted')+td('<b>'+sec(r.total)+'</b> 秒')+td('<button class="link-btn" data-latency="'+r.id+'">耗时详情</button>','action-col')+'</tr>';
 }
 function render(){const all=matching();page=Math.max(1,Math.min(page,Math.ceil(all.length/size)||1));document.getElementById('tbody').innerHTML=all.length?all.slice((page-1)*size,page*size).map(row).join(''):'<tr><td colspan="'+headers.length+'" style="text-align:center;height:180px;color:var(--weak)">暂无符合条件的记录</td></tr>';document.getElementById('pager').innerHTML='<span>共 '+all.length+' 条</span><select id="page-size" aria-label="每页条数">'+[10,20,50].map(n=>'<option '+(n===size?'selected':'')+'>'+n+'条/页</option>').join('')+'</select><button class="page-num" id="prev" '+(page===1?'disabled':'')+'>‹</button><span>第 '+page+' / '+(Math.ceil(all.length/size)||1)+' 页</span><button class="page-num" id="next" '+(page*size>=all.length?'disabled':'')+'>›</button>';document.getElementById('prev').onclick=()=>{page--;render();};document.getElementById('next').onclick=()=>{page++;render();};document.getElementById('page-size').onchange=e=>{size=parseInt(e.target.value,10);page=1;render();};}
 function apply(){const q=stateForm(),err=validate(q);error(err);if(err)return false;applied=q;page=1;render();return true;}
@@ -551,8 +590,8 @@ form.addEventListener('change',syncRanges);syncRanges();
 let pending=null;
 document.getElementById('tbody').addEventListener('change',e=>{if(!e.target.dataset.switch)return;const s=D.sessions.find(s=>s.id===e.target.dataset.switch),target=e.target.checked;e.target.checked=D.enabled(s);if(!D.eligible(s))return;pending={s,target};const modal=document.getElementById('session-modal');modal.querySelector('#session-title').textContent=target?'开启会话AI接管':'关闭会话AI接管';modal.querySelector('#session-copy').textContent=s.cname+' × '+s.mname+'（'+s.id+'）';modal.querySelector('#session-effect').textContent=target?'账号已开启单聊AI接管，本次仅为该会话开启AI接管。':'仅关闭该会话的AI接管，不改变账号的单聊AI接管配置，也不清除历史AI回复及追溯。';modal.classList.add('active');modal.querySelector('#session-confirm').focus();});
 const cancel=()=>{pending=null;document.getElementById('session-modal').classList.remove('active');};document.getElementById('session-cancel').onclick=cancel;document.getElementById('session-close').onclick=cancel;document.getElementById('session-confirm').onclick=()=>{if(!pending)return;const ok=D.setSession(pending.s.id,pending.target);cancel();render();showToast(ok?'保存成功':'账号未开启单聊AI接管，请先配置账号',ok?'ok':'fail');};
-function trace(r){openDrawer('AI决策追溯',D.traceHTML(r),'<a class="link-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.sid,message:r.id,trace:r.id})+'">在聊天记录中定位</a>'+(r.ai?'<a class="link-btn" href="'+D.url('AI回复响应管理_v1.0.html',{id:r.replyId})+'">查看响应时长</a>':''));}
-function latency(r){const timeline=[{name:'消费者发出问题',at:r.sentAt,reference:true},{name:'系统接收到问题',at:r.receivedAt,origin:true},...r.stages];openDrawer('AI回复响应详情','<div class="trace-summary"><div class="trace-summary-head"><b>发送成功</b></div><div class="trace-summary-meta"><span><em>消息ID</em>'+E(r.replyId)+'</span><span><em>客户消息ID</em>'+E(r.id)+'</span><span><em>会话</em>'+E(r.sid)+' · '+E(r.cname)+' × '+E(r.mname)+'</span></div></div><div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+sec(r.total)+'</b><span>秒</span></div><div class="duration-range">系统收到消息 '+D.fmt(r.receivedAt)+' → 最终回复发送成功 '+D.fmt(r.replyAt)+'</div><div class="duration-share">'+r.stages.map(n=>'<i style="width:'+Math.max(3,n.duration/r.total*100)+'%"></i>').join('')+'</div></div><div class="timeline">'+timeline.map(n=>'<div class="timeline-item'+(n.reference?' reference':'')+(n.origin?' origin':'')+'"><div class="row"><b>'+n.name+'</b><span class="tl-dur">'+(n.reference?'参考节点，不计入总时长':n.origin?'总时长起点':sec(n.duration)+' 秒')+'</span></div><small>'+D.fmt(n.at)+'</small>'+(!n.reference&&!n.origin?'<div class="time-track"><i style="width:'+Math.max(3,n.duration/r.total*100)+'%"></i></div>':'')+'</div>').join('')+'</div><div class="trace-kv"><span>各环节耗时合计</span><div>'+sec(r.stages.reduce((s,n)=>s+n.duration,0))+' 秒</div></div>','<button class="link-btn" id="latency-trace">查看AI决策追溯</button><a class="link-btn" href="'+D.url('会话消息管理_v1.0.html',{id:r.id})+'">查看客户消息</a>');document.getElementById('latency-trace').onclick=()=>trace(r);}
+function trace(r){openDrawer('AI决策追溯',D.traceHTML(r),'<a class="link-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.sid,message:r.id,trace:r.id})+'">在聊天记录中定位</a>'+(r.ai?'<a class="link-btn" href="'+D.url('AI响应明细_v1.0.html',{id:r.traceId})+'">查看AI响应明细</a>':''));}
+function latency(r){const timeline=[{name:'消费者发出问题',at:r.sentAt,reference:true},{name:'系统接收到问题',at:r.receivedAt,origin:true},...r.stages];openDrawer('AI回复响应详情','<div class="trace-summary"><div class="trace-summary-head"><b>发送成功</b></div><div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+E(r.traceId)+'</span><span><em>会话</em>'+E(r.sid)+' · '+E(r.cname)+' × '+E(r.mname)+'</span></div></div><div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+sec(r.total)+'</b><span>秒</span></div><div class="duration-range">系统收到消息 '+D.fmt(r.receivedAt)+' → 最终回复发送成功 '+D.fmt(r.replyAt)+'</div><div class="duration-share">'+r.stages.map(n=>'<i style="width:'+Math.max(3,n.duration/r.total*100)+'%"></i>').join('')+'</div></div><div class="timeline">'+timeline.map(n=>'<div class="timeline-item'+(n.reference?' reference':'')+(n.origin?' origin':'')+'"><div class="row"><b>'+n.name+'</b><span class="tl-dur">'+(n.reference?'参考节点，不计入总时长':n.origin?'总时长起点':sec(n.duration)+' 秒')+'</span></div><small>'+D.fmt(n.at)+'</small>'+(!n.reference&&!n.origin?'<div class="time-track"><i style="width:'+Math.max(3,n.duration/r.total*100)+'%"></i></div>':'')+'</div>').join('')+'</div><div class="trace-kv"><span>各环节耗时合计</span><div>'+sec(r.stages.reduce((s,n)=>s+n.duration,0))+' 秒</div></div>','<button class="link-btn" id="latency-trace">查看AI决策追溯</button><a class="link-btn" href="'+D.url('会话消息管理_v1.0.html',{id:r.id})+'">查看客户消息</a>');document.getElementById('latency-trace').onclick=()=>trace(r);}
 document.getElementById('tbody').addEventListener('click',e=>{const a=e.target.closest('[data-trace],[data-latency]');if(!a)return;const r=D.records.find(r=>r.id===(a.dataset.trace||a.dataset.latency));if(a.dataset.trace)trace(r);else latency(r);});
 if(D.params.get('filters')){try{const q=JSON.parse(D.params.get('filters'));for(const[k,v]of Object.entries(q))if(form.elements[k])form.elements[k].value=v;}catch(_){} }
 applied=stateForm();page=Math.max(1,Math.floor(+D.params.get('page')||1));size=[10,20,50].includes(+D.params.get('size'))?+D.params.get('size'):10;syncRanges();
