@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>原型 · 会话接待插件H5 v1.0（艾客客服端内嵌面板）</title>
+<title>原型 · 会话接待插件H5 v1.0（账号单聊AI接管禁用态）</title>
 <style>
 :root{--ink:#303133;--muted:#606266;--weak:#909399;--line:#ebeef4;--head:#f5f7fa;--brand:#a86115;--brand-soft:#fcebd8;--green:#18aa92;--blue:#409eff;--danger:#f56c6c;--bg:#eef1f5}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -133,7 +133,7 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
     <div class="slist" id="slist"></div>
   </section>
 
-  <div class="p-foot">原型演示 · 数据为模拟示例，与AI托管账号 / 客户会话管理原型共享状态</div>
+  <div class="p-foot">原型演示 · 账号「单聊AI接管」禁用态：数据为模拟示例</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -143,9 +143,10 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
 'use strict';
 const params=new URLSearchParams(location.search);
 let state={accounts:{},sessions:{}};
-try{const x=JSON.parse(params.get('demo')||localStorage.getItem('aic-v05')||'null');if(x&&typeof x==='object'){state.accounts=x.accounts||{};state.sessions=x.sessions||{};}}catch(_){}
+try{const x=JSON.parse(params.get('demo')||localStorage.getItem('aic-v05-off')||'null');if(x&&typeof x==='object'){state.accounts=x.accounts||{};state.sessions=x.sessions||{};}}catch(_){}
+state.accounts['wx_1001']={single:false}; /* 演示态：当前账号「单聊AI接管」固定为禁用，仅写入本原型自己的存储，不影响共享状态 */
 let h5={currentAccount:'wx_1001',currentSessions:{single:'S_0001'}};
-try{const y=JSON.parse(localStorage.getItem('aic-h5')||'null');if(y&&typeof y==='object'){h5=Object.assign(h5,y);if(y.currentSession&&!y.currentSessions)h5.currentSessions.single=y.currentSession;}}catch(_){}
+try{const y=JSON.parse(localStorage.getItem('aic-h5-off')||'null');if(y&&typeof y==='object'){h5=Object.assign(h5,y);if(y.currentSession&&!y.currentSessions)h5.currentSessions.single=y.currentSession;}}catch(_){}
 if(!h5.currentSessions)h5.currentSessions={single:'S_0001'};
 
 const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),single:[1,2,5,6].includes(i+1)}));
@@ -155,8 +156,8 @@ const SUMMARIES=['想了解会员权益。','积分在哪里查看？','我想�
 const allSessions=NAMES.map((name,i)=>({id:'S_'+String(i+1).padStart(4,'0'),name,cid:'C_'+(88001+i),mid:'wx_100'+MIDS[i],kind:'single',summary:SUMMARIES[i],configured:i%3!==1}));
 
 function account(id){const base=ACCOUNTS.find(a=>a.id===id);const raw=state.accounts[id];return raw&&typeof raw==='object'?Object.assign({},base,{single:raw.single===true}):Object.assign({},base);}
-function saveShared(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05',value);}catch(_){}params.set('demo',value);try{const u=new URL(location.href);u.searchParams.set('demo',value);history.replaceState(null,'',u.href);}catch(_){}}
-function saveH5(){try{localStorage.setItem('aic-h5',JSON.stringify(h5));}catch(_){}}
+function saveShared(){const value=JSON.stringify(state);try{localStorage.setItem('aic-v05-off',value);}catch(_){}params.set('demo',value);try{const u=new URL(location.href);u.searchParams.set('demo',value);history.replaceState(null,'',u.href);}catch(_){}}
+function saveH5(){try{localStorage.setItem('aic-h5-off',JSON.stringify(h5));}catch(_){}}
 function saveSession(s,val){state.sessions[s.id]=!!val;saveShared();}
 const $=s=>document.querySelector(s);
 let busy=false;
