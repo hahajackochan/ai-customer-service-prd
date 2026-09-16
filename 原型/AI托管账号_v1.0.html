@@ -400,8 +400,8 @@ td.strong{color:var(--ink)}
           <span class="fitem"><label for="q-name">账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
           <span class="fitem"><label for="q-uid">账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
           <span class="fitem"><label for="q-phone">手机号</label><input id="q-phone" placeholder="请输入手机号"></span>
-          <span class="fitem"><label for="q-single">单聊AI接管</label><select id="q-single"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></span>
-          <span class="fitem"><label for="q-group">群聊AI接管</label><select id="q-group"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></span>
+          <span class="fitem"><label for="q-single">单聊AI接管</label><select id="q-single"><option value="">全部</option><option value="1">启用</option><option value="0">禁用</option></select></span>
+          <span class="fitem"><label for="q-group">群聊AI接管</label><select id="q-group"><option value="">全部</option><option value="1">启用</option><option value="0">禁用</option></select></span>
           <span class="fitem"><label for="q-online">是否在线</label><select id="q-online"><option value="">全部</option><option value="1">在线</option><option value="0">离线</option></select></span>
           <div class="filter-footer"><button class="btn" id="btn-reset" type="button">重置</button><button class="btn" id="btn-filter-close" type="button">关闭</button><button class="btn primary" id="btn-query" type="button">提交</button></div>
         </div></div>
@@ -641,7 +641,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     if(o!=='')list=list.filter(function(r){return (r.online?'1':'0')===o});
     return list.slice().sort(function(a,b){return String(b.time).localeCompare(String(a.time))||String(b.uid).localeCompare(String(a.uid))});
   }
-  function modeText(r,key){return '<span class="tag '+(r.modes.indexOf(key)>=0?'yes':'no')+'">'+(r.modes.indexOf(key)>=0?'是':'否')+'</span>';}
+  function modeText(r,key){return '<span class="tag '+(r.modes.indexOf(key)>=0?'yes':'no')+'">'+(r.modes.indexOf(key)>=0?'启用':'禁用')+'</span>';}
   function render(){
     var list=currentList();
     if(!list.length){tbody.innerHTML='<tr class="empty-row"><td colspan="10">暂无数据</td></tr>';pager.textContent='共 0 条';return}

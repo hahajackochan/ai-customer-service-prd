@@ -128,7 +128,7 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
       <button type="button" class="clear" id="q-clear" aria-label="清空搜索">×</button>
     </div>
     <div class="bulk-acts">
-      <button type="button" class="btn green mini" id="all-on">全部开启AI接管</button>
+      <button type="button" class="btn green mini" id="all-on">全部启用AI接管</button>
       <button type="button" class="btn danger-soft mini" id="all-off">全部禁用AI接管</button>
     </div>
     <div class="slist" id="slist"></div>
@@ -188,7 +188,7 @@ function currentSession(){const list=typeSessions(),id=h5.currentSessions[h5.act
 
 function renderAcct(){
  const a=account(h5.currentAccount);$('#acct-name').textContent=a.name;$('#acct-meta').textContent='账号ID '+a.id;
- const tags=[];if(a.single)tags.push('<span class="tag on">单聊AI接管已开启</span>');if(a.group)tags.push('<span class="tag on">群聊AI接管已开启</span>');$('#acct-tags').innerHTML=tags.join('');
+ const tags=[];if(a.single)tags.push('<span class="tag on">单聊AI接管已启用</span>');if(a.group)tags.push('<span class="tag on">群聊AI接管已启用</span>');$('#acct-tags').innerHTML=tags.join('');
 }
 function renderTabs(){
  $('#tab-single').classList.toggle('active',h5.activeType==='single');$('#tab-group').classList.toggle('active',h5.activeType==='group');
@@ -215,12 +215,12 @@ function setBusy(v){busy=v;renderCurrent();renderCounts();}
 function switchType(type){if(type===h5.activeType)return;h5.activeType=type;$('#q').value='';$('#q-clear').style.display='none';saveH5();renderAll();toast('已切换至'+typeLabel()+'会话','info');}
 $('#tab-single').addEventListener('click',()=>switchType('single'));$('#tab-group').addEventListener('click',()=>switchType('group'));
 
-$('#slist').addEventListener('click',e=>{const sw=e.target.closest('[data-sw]');if(!sw||busy||sw.disabled)return;const s=allSessions.find(x=>x.id===sw.dataset.sw),next=!sessionOn(s);sw.classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'已开启「'+s.name+'」AI接管':'已禁用「'+s.name+'」AI接管',next?'ok':'info');},260);});
-$('#cur-sw').addEventListener('click',()=>{if(busy||$('#cur-sw').disabled)return;const s=currentSession(),next=!sessionOn(s);$('#cur-sw').classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'当前会话已开启AI接管':'当前会话已禁用AI接管',next?'ok':'info');},260);});
+$('#slist').addEventListener('click',e=>{const sw=e.target.closest('[data-sw]');if(!sw||busy||sw.disabled)return;const s=allSessions.find(x=>x.id===sw.dataset.sw),next=!sessionOn(s);sw.classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'已启用「'+s.name+'」AI接管':'已禁用「'+s.name+'」AI接管',next?'ok':'info');},260);});
+$('#cur-sw').addEventListener('click',()=>{if(busy||$('#cur-sw').disabled)return;const s=currentSession(),next=!sessionOn(s);$('#cur-sw').classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'当前会话已启用AI接管':'当前会话已禁用AI接管',next?'ok':'info');},260);});
 
-function prepareAll(val){const list=typeSessions();if(!list.length)return;$('#cf-title').textContent=val?'全部开启AI接管':'全部禁用AI接管';$('#cf-text').innerHTML='将对当前账号下<b>'+list.length+'个'+typeLabel()+'会话</b>'+(val?'开启':'禁用')+'AI接管。<br>该操作覆盖当前类型全部会话，不受搜索条件影响。';$('#cf-err').textContent='';$('#cf-ok').dataset.act='all';$('#cf-ok').dataset.val=val?'on':'off';openModal('#m-confirm');}
+function prepareAll(val){const list=typeSessions();if(!list.length)return;$('#cf-title').textContent=val?'全部启用AI接管':'全部禁用AI接管';$('#cf-text').innerHTML='将对当前账号下<b>'+list.length+'个'+typeLabel()+'会话</b>'+(val?'启用':'禁用')+'AI接管。<br>该操作覆盖当前类型全部会话，不受搜索条件影响。';$('#cf-err').textContent='';$('#cf-ok').dataset.act='all';$('#cf-ok').dataset.val=val?'on':'off';openModal('#m-confirm');}
 $('#all-on').addEventListener('click',()=>prepareAll(true));$('#all-off').addEventListener('click',()=>prepareAll(false));
-function applyAll(list,val){if(!list.length){closeModal('#m-confirm');toast('没有可操作的会话','err');return;}setBusy(true);setTimeout(()=>{list.forEach(s=>{state.sessions[s.id]=!!val;});saveShared();setBusy(false);closeModal('#m-confirm');renderAll();toast((val?'已开启 ':'已禁用 ')+list.length+' 个'+typeLabel()+'会话AI接管','ok');},520);}
+function applyAll(list,val){if(!list.length){closeModal('#m-confirm');toast('没有可操作的会话','err');return;}setBusy(true);setTimeout(()=>{list.forEach(s=>{state.sessions[s.id]=!!val;});saveShared();setBusy(false);closeModal('#m-confirm');renderAll();toast((val?'已启用 ':'已禁用 ')+list.length+' 个'+typeLabel()+'会话AI接管','ok');},520);}
 $('#cf-ok').addEventListener('click',()=>{const val=$('#cf-ok').dataset.val==='on';applyAll(typeSessions(),val);});
 $('#cf-cancel').addEventListener('click',()=>closeModal('#m-confirm'));
 $('#q').addEventListener('input',()=>{$('#q-clear').style.display=$('#q').value?'block':'none';renderList();});$('#q-clear').addEventListener('click',()=>{$('#q').value='';$('#q-clear').style.display='none';renderList();$('#q').focus();});
