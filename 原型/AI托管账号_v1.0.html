@@ -81,7 +81,7 @@ td.strong{color:var(--ink)}
 .page-size{height:30px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;display:inline-flex;align-items:center;padding:0 12px;color:var(--muted);font-size:13px}
 .page-num{min-width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;color:var(--muted);border:1px solid transparent;cursor:pointer;background:#fff}
 .page-num.active{background:var(--brand);color:#fff}
-.note{margin-top:12px;font-size:12px;color:var(--weak)}
+
 .modal{position:fixed;inset:0;background:rgba(31,35,41,.45);display:none;align-items:center;justify-content:center;z-index:100}
 .modal.active{display:flex}
 .modal-box{width:440px;background:#fff;border-radius:8px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden}
@@ -330,6 +330,12 @@ td.strong{color:var(--ink)}
 .trace-msg>b{flex:0 0 20px;height:20px;border-radius:50%;background:#f1f3f7;color:var(--muted);font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:600}
 .trace-msg small{display:block;color:var(--weak);font-size:11px;margin-top:3px;font-variant-numeric:tabular-nums}
 </style>
+<style>
+.op-btn{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 18px;border:0;border-radius:6px;background:#f4f5f7;color:var(--brand);font:inherit;font-size:13px;line-height:1;cursor:pointer;text-decoration:none;white-space:nowrap}
+.op-btn:hover{background:#eceef2}
+.op-btn.danger{color:#c0392b}
+.row-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+</style>
 </head>
 <body>
   <header class="topbar">
@@ -393,6 +399,7 @@ td.strong{color:var(--ink)}
         <div class="filter-popover" id="filter-popover" hidden><div class="filter-bar">
           <span class="fitem"><label for="q-name">账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
           <span class="fitem"><label for="q-uid">账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
+          <span class="fitem"><label for="q-phone">手机号</label><input id="q-phone" placeholder="请输入手机号"></span>
           <span class="fitem"><label for="q-single">单聊AI接管</label><select id="q-single"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></span>
           <span class="fitem"><label for="q-group">群聊AI接管</label><select id="q-group"><option value="">全部</option><option value="1">是</option><option value="0">否</option></select></span>
           <span class="fitem"><label for="q-online">是否在线</label><select id="q-online"><option value="">全部</option><option value="1">在线</option><option value="0">离线</option></select></span>
@@ -433,7 +440,6 @@ td.strong{color:var(--ink)}
             <div class="err" id="err-group">开启群聊AI接管后，必须选择一个意图识别类型的工作流</div>
           </div>
         </div>
-        <div class="note">单聊与群聊独立配置，允许两项同时关闭；开启后必须各自选择一个「意图识别」类型的工作流，单聊与群聊可选择不同的工作流。</div>
       </div>
       <div class="modal-foot"><button type="button" class="btn" id="mode-cancel">取消</button><button type="button" class="btn primary" id="mode-submit">保存</button></div>
     </div>
@@ -593,15 +599,15 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
 })();
 (function(){
   var rows=[
-    {supplier:'艾客',uid:'wx_1001',name:'会员助理 小菲1',corp:'索菲亚家居',phone:'138****0001',contact:'王店长',count:36,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',modes:['单聊','群聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1002',name:'会员助理 小菲2',corp:'索菲亚家居',phone:'138****0002',contact:'王店长',count:12,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',modes:['单聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1003',name:'会员助理 小菲3',corp:'索菲亚家居',phone:'138****0003',contact:'王店长',count:5,device:'iPhone 13（挂机机B）',keeper:'私域运营-小林',modes:[],online:true,group:'售前二组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1004',name:'会员助理 小菲4',corp:'索菲亚家居',phone:'139****0004',contact:'李会员',count:0,device:'iPhone 14（挂机机B）',keeper:'会员服务-阿珍',modes:[],online:false,group:'会员服务组',time:'2026-09-02 21:30'},
-    {supplier:'艾客',uid:'wx_1005',name:'会员助理 小菲5',corp:'索菲亚家居',phone:'139****0005',contact:'李会员',count:48,device:'iPhone 14（挂机机C）',keeper:'售前-大伟',modes:['单聊'],online:true,group:'售前二组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1006',name:'会员助理 小菲6',corp:'索菲亚家居',phone:'137****0006',contact:'张售后',count:21,device:'iPhone 14（挂机机C）',keeper:'售后-琪琪',modes:['单聊','群聊'],online:false,group:'售后一组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1007',name:'会员助理 小菲7',corp:'索菲亚家居',phone:'137****0007',contact:'张售后',count:0,device:'iPhone 15（挂机机D）',keeper:'直播-阿凯',modes:[],online:true,group:'直播运营组',time:'2026-09-02 18:10'},
-    {supplier:'艾客',uid:'wx_1008',name:'会员助理 小菲8',corp:'索菲亚家居',phone:'136****0008',contact:'周活动',count:9,device:'iPhone 15（挂机机D）',keeper:'会员服务-阿珍',modes:['群聊'],online:true,group:'会员服务组',time:'2026-09-03 08:00'},
-    {supplier:'艾客',uid:'wx_1009',name:'会员助理 小菲9',corp:'索菲亚家居',phone:'136****0009',contact:'周活动',count:0,device:'iPhone 15（挂机机E）',keeper:'私域运营-小林',modes:[],online:false,group:'私域运营组',time:'2026-09-01 20:45'}
+    {supplier:'艾客',uid:'wx_1001',name:'会员助理 小菲1',corp:'索菲亚家居',phone:'13800000001',contact:'王店长',count:36,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',modes:['单聊','群聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1002',name:'会员助理 小菲2',corp:'索菲亚家居',phone:'13800000002',contact:'王店长',count:12,device:'iPhone 13（挂机机A）',keeper:'私域运营-小林',modes:['单聊'],online:true,group:'售前一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1003',name:'会员助理 小菲3',corp:'索菲亚家居',phone:'13800000003',contact:'王店长',count:5,device:'iPhone 13（挂机机B）',keeper:'私域运营-小林',modes:[],online:true,group:'售前二组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1004',name:'会员助理 小菲4',corp:'索菲亚家居',phone:'13900000004',contact:'李会员',count:0,device:'iPhone 14（挂机机B）',keeper:'会员服务-阿珍',modes:[],online:false,group:'会员服务组',time:'2026-09-02 21:30'},
+    {supplier:'艾客',uid:'wx_1005',name:'会员助理 小菲5',corp:'索菲亚家居',phone:'13900000005',contact:'李会员',count:48,device:'iPhone 14（挂机机C）',keeper:'售前-大伟',modes:['单聊'],online:true,group:'售前二组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1006',name:'会员助理 小菲6',corp:'索菲亚家居',phone:'13700000006',contact:'张售后',count:21,device:'iPhone 14（挂机机C）',keeper:'售后-琪琪',modes:['单聊','群聊'],online:false,group:'售后一组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1007',name:'会员助理 小菲7',corp:'索菲亚家居',phone:'13700000007',contact:'张售后',count:0,device:'iPhone 15（挂机机D）',keeper:'直播-阿凯',modes:[],online:true,group:'直播运营组',time:'2026-09-02 18:10'},
+    {supplier:'艾客',uid:'wx_1008',name:'会员助理 小菲8',corp:'索菲亚家居',phone:'13600000008',contact:'周活动',count:9,device:'iPhone 15（挂机机D）',keeper:'会员服务-阿珍',modes:['群聊'],online:true,group:'会员服务组',time:'2026-09-03 08:00'},
+    {supplier:'艾客',uid:'wx_1009',name:'会员助理 小菲9',corp:'索菲亚家居',phone:'13600000009',contact:'周活动',count:0,device:'iPhone 15（挂机机E）',keeper:'私域运营-小林',modes:[],online:false,group:'私域运营组',time:'2026-09-01 20:45'}
   ];
   /* 由「客户会话管理」的「去配置」跳转：按账号ID自动填入筛选并查询出该账号记录。 */
   var initUid=(AIDemo.params.get('uid')||'').trim();
@@ -622,12 +628,14 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   function currentList(){
     var kw=(document.getElementById('q-name').value||'').trim();
     var uidKw=(document.getElementById('q-uid').value||'').trim();
+    var phoneKw=(document.getElementById('q-phone').value||'').trim();
     var single=document.getElementById('q-single').value;
     var group=document.getElementById('q-group').value;
     var o=document.getElementById('q-online').value;
     var list=rows;
     if(kw)list=list.filter(function(r){return r.name.indexOf(kw)>=0});
     if(uidKw)list=list.filter(function(r){return r.uid.indexOf(uidKw)>=0});
+    if(phoneKw)list=list.filter(function(r){return String(r.phone||'').indexOf(phoneKw)>=0});
     if(single!=='')list=list.filter(function(r){return (r.modes.indexOf('单聊')>=0?'1':'0')===single});
     if(group!=='')list=list.filter(function(r){return (r.modes.indexOf('群聊')>=0?'1':'0')===group});
     if(o!=='')list=list.filter(function(r){return (r.online?'1':'0')===o});
@@ -645,7 +653,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
         +'<td>'+esc(r.phone)+'</td><td class="weak">'+r.count+'</td>'
         +'<td>'+modeText(r,'单聊')+'</td><td>'+modeText(r,'群聊')+'</td>'
         +'<td class="weak">'+esc(r.time)+'</td>'
-        +'<td><div class="action-links"><button type="button" class="link-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="link-btn lnk-edit" data-i="'+idx+'">编辑</button></div></td>'
+        +'<td><div class="action-links row-actions"><button type="button" class="op-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="op-btn lnk-edit" data-i="'+idx+'">编辑</button></div></td>'
       +'</tr>';
     }).join('');
     pager.textContent='共 '+list.length+' 条';
@@ -657,7 +665,6 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   function wfOptions(selected){
     return '<option value="">请选择意图识别工作流</option>'+INTENT_WORKFLOWS.map(function(w){return '<option value="'+w.id+'"'+(w.id===selected?' selected':'')+'>'+esc(w.name)+'（'+w.id+'）</option>';}).join('');
   }
-  function wfName(id){var hit=INTENT_WORKFLOWS.filter(function(w){return w.id===id;})[0];return hit?hit.name:'—';}
   function syncWfFields(){
     [['opt-single','wf-single','field-single'],['opt-group','wf-group','field-group']].forEach(function(ids){
       var on=document.getElementById(ids[0]).checked,field=document.getElementById(ids[2]);
@@ -691,9 +698,8 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   function detailItem(k,v){return '<div class="detail-item"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v==null||v===''?'—':v)+'</span></div>';}
   function openDetail(i){
     current=rows[i];
-    var base='<div class="detail-section">账号基础信息</div>'+detailItem('供应商',current.supplier)+detailItem('账号ID',current.uid)+detailItem('账号名称',current.name)+detailItem('头像','菲')+detailItem('手机号',current.phone)+detailItem('开启AI接管联系人数',current.count)+detailItem('单聊AI接管',current.modes.indexOf('单聊')>=0?'已开启':'未开启')+detailItem('群聊AI接管',current.modes.indexOf('群聊')>=0?'已开启':'未开启')+detailItem('更新时间',current.time);
+    var base='<div class="detail-section">账号基础信息</div>'+detailItem('供应商',current.supplier)+detailItem('账号ID',current.uid)+detailItem('账号名称',current.name)+detailItem('头像','菲')+detailItem('手机号',current.phone)+detailItem('开启AI接管联系人数',current.count);
     if(current.supplier==='艾客')base+='<div class="detail-section">艾客供应商扩展信息</div>'+detailItem('企业名称',current.corp)+detailItem('联系人',current.contact)+detailItem('设备名称',current.device)+detailItem('设备保管者',current.keeper)+detailItem('是否在线',current.online?'在线':'离线')+detailItem('所属组',current.group);
-    base+='<div class="detail-section">AI接管配置</div>'+detailItem('单聊AI接管',current.modes.indexOf('单聊')>=0?'已开启':'未开启')+detailItem('单聊 · 意图识别工作流',current.modes.indexOf('单聊')>=0?wfName(current.singleWf):'—')+detailItem('群聊AI接管',current.modes.indexOf('群聊')>=0?'已开启':'未开启')+detailItem('群聊 · 意图识别工作流',current.modes.indexOf('群聊')>=0?wfName(current.groupWf):'—');
     document.getElementById('detail-grid').innerHTML=base;detailModal.classList.add('active');document.getElementById('detail-close').focus();
   }
   function closeModals(){modeModal.classList.remove('active');detailModal.classList.remove('active');render()}
@@ -709,6 +715,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   document.getElementById('btn-reset').addEventListener('click',function(){
     document.getElementById('q-name').value='';
     document.getElementById('q-uid').value='';
+    document.getElementById('q-phone').value='';
     document.getElementById('q-single').value='';
     document.getElementById('q-group').value='';
     document.getElementById('q-online').value='';

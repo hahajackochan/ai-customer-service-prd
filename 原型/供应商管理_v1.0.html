@@ -309,6 +309,12 @@ td.strong{color:var(--ink)}
 .trace-msg>b{flex:0 0 20px;height:20px;border-radius:50%;background:#f1f3f7;color:var(--muted);font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:600}
 .trace-msg small{display:block;color:var(--weak);font-size:11px;margin-top:3px;font-variant-numeric:tabular-nums}
 </style>
+<style>
+.op-btn{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 18px;border:0;border-radius:6px;background:#f4f5f7;color:var(--brand);font:inherit;font-size:13px;line-height:1;cursor:pointer;text-decoration:none;white-space:nowrap}
+.op-btn:hover{background:#eceef2}
+.op-btn.danger{color:#c0392b}
+.row-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+</style>
 </head>
 <body>
   <header class="topbar">
@@ -401,7 +407,7 @@ td.strong{color:var(--ink)}
     <div class="modal-box">
       <div class="modal-head"><span>新增供应商</span><button type="button" class="modal-close" id="add-close" aria-label="关闭">×</button></div>
       <div class="modal-body">
-        <div class="field" id="f-type"><label><i>*</i>供应商类型</label><select id="i-type"><option value="">请选择供应商类型</option><option value="艾客">艾客</option></select><div class="err" id="e-type"></div><div class="tip2">当前仅支持接入艾客，更多类型后续扩展。</div></div>
+        <div class="field" id="f-type"><label><i>*</i>供应商类型</label><select id="i-type"><option value="">请选择供应商类型</option><option value="艾客">艾客</option></select><div class="err" id="e-type"></div></div>
         <div class="cfgbox" id="cfgbox">
           <div class="cfghead">艾客接入配置</div>
           <div class="field" id="f-cfg-url"><label><i>*</i>服务地址</label><input id="cfg-url" placeholder="请输入服务地址"></div>
@@ -420,7 +426,7 @@ td.strong{color:var(--ink)}
     <div class="modal-box">
       <div class="modal-head"><span>编辑供应商</span><button type="button" class="modal-close" id="edit-close" aria-label="关闭">×</button></div>
       <div class="modal-body">
-        <div class="field" id="f-e-type"><label><i>*</i>供应商类型</label><input id="edit-type" readonly style="background:#f5f7fa;color:var(--muted)"><div class="tip2">创建后不可更换；如需更换请删除后重新新增。</div></div>
+        <div class="field" id="f-e-type"><label><i>*</i>供应商类型</label><input id="edit-type" readonly style="background:#f5f7fa;color:var(--muted)"></div>
         <div class="cfgbox show" id="ecfgbox">
           <div class="cfghead" id="e-cfghead">接入配置</div>
           <div class="field" id="f-e-url"><label><i>*</i>服务地址</label><input id="e-url" placeholder="请输入服务地址"></div>
@@ -598,7 +604,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   function render(){
     var list=currentList();
     if(!list.length){tbody.innerHTML='<tr class="empty-row"><td colspan="9">暂无数据</td></tr>';pager.textContent='共 0 条';return}
-    tbody.innerHTML=list.map(function(r){var cfg=r.cfg||{};return '<tr><td class="weak">'+r.id+'</td><td>'+esc(r.type||'—')+'</td><td class="weak">'+esc(cfg.appid||'—')+'</td><td class="weak">'+esc(cfg.key||'—')+'</td><td>'+esc(r.creator)+'</td><td class="weak">'+r.time+'</td><td>'+esc(r.updator)+'</td><td class="weak">'+r.utime+'</td><td><a href="javascript:void(0)" style="color:var(--brand);cursor:pointer" class="lnk-edit" data-id="'+r.id+'">编辑</a></td></tr>'}).join('');
+    tbody.innerHTML=list.map(function(r){var cfg=r.cfg||{};return '<tr><td class="weak">'+r.id+'</td><td>'+esc(r.type||'—')+'</td><td class="weak">'+esc(cfg.appid||'—')+'</td><td class="weak">'+esc(cfg.key||'—')+'</td><td>'+esc(r.creator)+'</td><td class="weak">'+r.time+'</td><td>'+esc(r.updator)+'</td><td class="weak">'+r.utime+'</td><td><a href="javascript:void(0)" class="op-btn lnk-edit" data-id="'+r.id+'">编辑</a></td></tr>'}).join('');
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-edit'),function(a){
       a.addEventListener('click',function(){openEdit(parseInt(a.getAttribute('data-id'),10))});
     });
