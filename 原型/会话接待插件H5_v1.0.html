@@ -22,10 +22,15 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
 .kv{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .kv .name{font-size:15px;font-weight:700}
 .kv .meta{font-size:12px;color:var(--muted);margin-top:2px}
-.tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;min-height:22px}
+.acct-modes{margin-top:10px}
+.mode-row{display:flex;align-items:center;gap:16px}
+.mode-item{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.mode-item .lbl{font-size:12px;color:var(--muted);white-space:nowrap}
+.mode-item .st{font-size:11px;color:var(--weak)}
+.mode-item .st.on{color:#0e8a76}
 .tag{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;font-size:11px}
-.tag.on{background:#e7f7f4;color:#0e8a76;border:1px solid #bfe9e0}
-.tag.off{background:#f4f4f5;color:#909399;border:1px solid #e5e7eb}
+
+
 .tag.type{background:#fdf1e8;color:#a86115;border:1px solid #f3ddc2}
 /* 开关 */
 .sw{position:relative;width:44px;height:24px;border-radius:12px;background:#dcdfe6;border:none;cursor:pointer;transition:background .2s;flex:0 0 auto}
@@ -64,19 +69,19 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
 @keyframes sk{0%{background-position:100% 0}100%{background-position:-100% 0}}
 .p-foot{padding:10px 14px 18px;text-align:center;font-size:11px;color:#b0b6bf}
 /* 弹窗 */
-.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:50}
-.modal.active{display:flex}
-.mbox{width:min(88vw,360px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.3)}
-.mhead{padding:14px 16px 6px;font-size:15px;font-weight:700}
-.mbody{padding:6px 16px 4px;font-size:14px;color:var(--muted)}
+
+
+
+
+
 .opt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;cursor:pointer}
 .opt input{width:16px;height:16px;accent-color:var(--brand)}
 .opt .t{font-weight:600;color:var(--ink)}
 .opt .d{font-size:12px;color:var(--weak)}
 .opt input:disabled+span{color:var(--weak)}
-.merr{color:var(--danger);font-size:12px;min-height:18px;margin-top:2px}
-.mfoot{display:flex;gap:10px;padding:10px 16px 16px}
-.mfoot .btn{flex:1;height:38px;font-size:14px}
+
+
+
 /* toast */
 .toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:rgba(15,23,42,.88);color:#fff;font-size:13px;padding:8px 14px;border-radius:8px;display:none;z-index:99;max-width:86vw;text-align:center}
 .toast.ok{background:rgba(14,138,118,.92)}
@@ -103,7 +108,12 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
         <div class="meta" id="acct-meta">—</div>
       </div>
     </div>
-    <div class="tags" id="acct-tags"></div>
+    <div class="acct-modes">
+      <div class="mode-row">
+        <span class="mode-item"><span class="lbl">单聊AI接管</span><span class="st" id="acct-st-single">禁用</span><button type="button" class="sw" id="acct-sw-single" role="switch" aria-checked="false" aria-label="单聊AI接管开关"></button></span>
+        <span class="mode-item"><span class="lbl">群聊AI接管</span><span class="st" id="acct-st-group">禁用</span><button type="button" class="sw" id="acct-sw-group" role="switch" aria-checked="false" aria-label="群聊AI接管开关"></button></span>
+      </div>
+    </div>
   </section>
 
   <section class="card" aria-label="当前会话AI接管">
@@ -135,15 +145,6 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
   </section>
 
   <div class="p-foot">原型演示 · 数据为模拟示例，与AI托管账号 / 客户会话管理原型共享状态</div>
-</div>
-
-<div class="modal" id="m-confirm">
-  <div class="mbox">
-    <div class="mhead" id="cf-title">确认操作</div>
-    <div class="mbody" id="cf-text"></div>
-    <div class="merr" id="cf-err" style="padding:0 16px"></div>
-    <div class="mfoot"><button type="button" class="btn" id="cf-cancel">取消</button><button type="button" class="btn primary" id="cf-ok">确定</button></div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -188,7 +189,16 @@ function currentSession(){const list=typeSessions(),id=h5.currentSessions[h5.act
 
 function renderAcct(){
  const a=account(h5.currentAccount);$('#acct-name').textContent=a.name;$('#acct-meta').textContent='账号ID '+a.id;
- const tags=[];if(a.single)tags.push('<span class="tag on">单聊AI接管已启用</span>');if(a.group)tags.push('<span class="tag on">群聊AI接管已启用</span>');$('#acct-tags').innerHTML=tags.join('');
+ setModeSw('single',a.single);setModeSw('group',a.group);
+}
+function setModeSw(type,on){const b=$('#acct-sw-'+type),s=$('#acct-st-'+type);b.classList.toggle('on',!!on);b.setAttribute('aria-checked',String(!!on));b.disabled=busy;s.textContent=on?'启用':'禁用';s.classList.toggle('on',!!on);}
+function toggleAcctMode(type){
+ if(busy)return;
+ const a=account(h5.currentAccount),next=!(type==='group'?a.group:a.single),v={single:a.single,group:a.group},list=typeSessions(type);
+ v[type]=next;state.accounts[a.id]={single:v.single,group:v.group};
+ list.forEach(function(s){state.sessions[s.id]=next;});
+ saveShared();renderAll();
+ toast((next?'已启用「':'已禁用「')+(type==='group'?'群聊':'单聊')+'AI接管」，'+list.length+' 个会话已同步'+(next?'启用':'禁用'),next?'ok':'info');
 }
 function renderTabs(){
  $('#tab-single').classList.toggle('active',h5.activeType==='single');$('#tab-group').classList.toggle('active',h5.activeType==='group');
@@ -208,23 +218,20 @@ function renderList(){
  else el.innerHTML=list.map(s=>{const allow=sessionAllowed(s,a),on=sessionOn(s);return '<div class="srow '+s.kind+'" data-id="'+s.id+'"><span class="avatar">'+esc(s.kind==='group'?'群':fmtName(s.name))+'</span><span class="body"><span class="n1"><span class="sname">'+esc(s.name)+'</span></span><span class="n2">'+esc(s.summary)+'</span></span><button type="button" class="sw'+(on?' on':'')+'" data-sw="'+s.id+'" '+(allow.ok?'':'disabled ')+'aria-label="'+esc(s.name)+' AI接管开关"></button></div>';}).join('');
  renderCounts();
 }
-function renderCounts(){const a=account(h5.currentAccount),list=typeSessions(),allowed=allowedForType(h5.activeType,a),on=list.filter(sessionOn);$('#all-on').disabled=busy||!allowed||!list.length||on.length===list.length;$('#all-off').disabled=busy||!allowed||on.length===0;}
+function renderCounts(){const a=account(h5.currentAccount),list=typeSessions(),allowed=allowedForType(h5.activeType,a);$('#all-on').disabled=busy||!allowed||!list.length;$('#all-off').disabled=busy||!allowed||!list.length;}
 function renderAll(){renderAcct();renderTabs();renderCurrent();renderList();}
-function openModal(id){$(id).classList.add('active');}function closeModal(id){$(id).classList.remove('active');}
-function setBusy(v){busy=v;renderCurrent();renderCounts();}
+function setBusy(v){busy=v;renderAcct();renderCurrent();renderCounts();}
 function switchType(type){if(type===h5.activeType)return;h5.activeType=type;$('#q').value='';$('#q-clear').style.display='none';saveH5();renderAll();toast('已切换至'+typeLabel()+'会话','info');}
 $('#tab-single').addEventListener('click',()=>switchType('single'));$('#tab-group').addEventListener('click',()=>switchType('group'));
 
 $('#slist').addEventListener('click',e=>{const sw=e.target.closest('[data-sw]');if(!sw||busy||sw.disabled)return;const s=allSessions.find(x=>x.id===sw.dataset.sw),next=!sessionOn(s);sw.classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'已启用「'+s.name+'」AI接管':'已禁用「'+s.name+'」AI接管',next?'ok':'info');},260);});
 $('#cur-sw').addEventListener('click',()=>{if(busy||$('#cur-sw').disabled)return;const s=currentSession(),next=!sessionOn(s);$('#cur-sw').classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'当前会话已启用AI接管':'当前会话已禁用AI接管',next?'ok':'info');},260);});
 
-function prepareAll(val){const list=typeSessions();if(!list.length)return;$('#cf-title').textContent=val?'全部启用AI接管':'全部禁用AI接管';$('#cf-text').innerHTML='将对当前账号下<b>'+list.length+'个'+typeLabel()+'会话</b>'+(val?'启用':'禁用')+'AI接管。<br>该操作覆盖当前类型全部会话，不受搜索条件影响。';$('#cf-err').textContent='';$('#cf-ok').dataset.act='all';$('#cf-ok').dataset.val=val?'on':'off';openModal('#m-confirm');}
-$('#all-on').addEventListener('click',()=>prepareAll(true));$('#all-off').addEventListener('click',()=>prepareAll(false));
-function applyAll(list,val){if(!list.length){closeModal('#m-confirm');toast('没有可操作的会话','err');return;}setBusy(true);setTimeout(()=>{list.forEach(s=>{state.sessions[s.id]=!!val;});saveShared();setBusy(false);closeModal('#m-confirm');renderAll();toast((val?'已启用 ':'已禁用 ')+list.length+' 个'+typeLabel()+'会话AI接管','ok');},520);}
-$('#cf-ok').addEventListener('click',()=>{const val=$('#cf-ok').dataset.val==='on';applyAll(typeSessions(),val);});
-$('#cf-cancel').addEventListener('click',()=>closeModal('#m-confirm'));
+$('#all-on').addEventListener('click',()=>applyAll(typeSessions(),true));$('#all-off').addEventListener('click',()=>applyAll(typeSessions(),false));
+$('#acct-sw-single').addEventListener('click',()=>toggleAcctMode('single'));
+$('#acct-sw-group').addEventListener('click',()=>toggleAcctMode('group'));
+function applyAll(list,val){if(!list.length){toast('没有可操作的会话','err');return;}setBusy(true);setTimeout(()=>{list.forEach(s=>{state.sessions[s.id]=!!val;});saveShared();setBusy(false);renderAll();toast((val?'已启用 ':'已禁用 ')+list.length+' 个'+typeLabel()+'会话AI接管','ok');},520);}
 $('#q').addEventListener('input',()=>{$('#q-clear').style.display=$('#q').value?'block':'none';renderList();});$('#q-clear').addEventListener('click',()=>{$('#q').value='';$('#q-clear').style.display='none';renderList();$('#q').focus();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal('#m-confirm');});
 $('#slist').innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';setTimeout(renderAll,380);
 })();
 </script>
