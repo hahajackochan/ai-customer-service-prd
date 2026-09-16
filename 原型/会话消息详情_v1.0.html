@@ -411,7 +411,7 @@ for(let sidx=0;sidx<sessions.length;sidx++){
   else if([2,3,8,10].includes(sidx))kind=j===count-1?'pending':'human';
   else kind=j===count-1?'pending':j%3===1?'transfer':'ai';
   let reasonIndex=-1;
-  if(sidx===0&&j>=6&&j<=15){reasonIndex=j-6;kind='transfer';}
+  if(sidx===0&&((j>=6&&j<=15)||j===41)){reasonIndex=j===41?0:j-6;kind='transfer';} // j=41：列表第2条示例，用户主动要求人工
   else if(kind==='transfer')reasonIndex=(sidx+j)%10;
   const off=sidx===0?(j<14?-2:j<28?-1:0):-(sidx%3);
   const base=day(off);base.setHours(9+Math.floor((j%14)/4),10+(j%4)*10,(j*7)%50,0);
@@ -457,7 +457,7 @@ for(const s of sessions){
  const rs=s.records;
  for(let j=1;j<rs.length;j++){
   const r=rs[j];if(!(r.ai&&r.trace))continue;
-  const take=(j%4===1)?1:(j%7===3?2:0);if(!take)continue;
+  const take=(j%3===1)?1:(j%8===3?2:0);if(!take)continue;
   const prev=rs.slice(Math.max(0,j-take),j);
   if(prev.length!==take||prev.some(function(p){return p.grouped||p.traceOwner||p.traceInputs||p.reason||p.kind==='human';}))continue;
   prev.forEach(function(p,i){p.grouped=true;p.traceOwner=r.id;p.traceId=r.traceId;p.trace=true;p.reply=null;p.replyId=null;p.replyAt=null;p.ai=false;p.total=null;p.kind='grouped';p.reason=null;p.stages=[];p.sentAt=r.sentAt-(prev.length-i)*23000;p.receivedAt=p.sentAt+120;});
@@ -470,7 +470,7 @@ for(const s of sessions){
 // 一次 AI 决策追溯可能产出多条 AI 回复消息
 for(const s of sessions)for(const r of s.records){
  if(!r.ai||!r.reply)continue;
- const extra=(+r.id.slice(-3))%2===0?[{id:r.replyId+'_B',text:'如需我继续为您处理，回复「继续」即可。',at:r.replyAt+3200}]:[];
+ const extra=(((+r.id.slice(-3))%2===0)||(r.traceInputs&&r.traceInputs.length>1))?[{id:r.replyId+'_B',text:'如需我继续为您处理，回复「继续」即可。',at:r.replyAt+3200}]:[];
  r.replies=[{id:r.replyId,text:r.reply,at:r.replyAt}].concat(extra);
  if(extra.length){const last=r.stages[r.stages.length-1];if(last)last.duration+=extra[extra.length-1].at-r.replyAt;r.replyAt=extra[extra.length-1].at;r.total=r.replyAt-r.receivedAt;}
 }
@@ -505,7 +505,7 @@ function traceHTML(r){
  const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
  const inputs=Array.isArray(r.traceInputs)&&r.traceInputs.length?r.traceInputs:[{id:r.id,text:r.question,at:r.sentAt}];
  const replies=Array.isArray(r.replies)&&r.replies.length?r.replies:(r.reply?[{id:r.replyId,text:r.reply,at:r.replyAt}]:[]);
- const msgList=list=>'<div class="trace-msg-list">'+list.map((m,i)=>'<div class="trace-msg"><b>'+(i+1)+'</b><div><span class="trace-msg-text">'+esc(m.text)+'</span><small>消息ID：'+esc(m.id)+' · '+esc(fmt(m.at,true))+'</small></div></div>').join('')+'</div>';
+ const msgList=list=>'<div class="trace-msg-list">'+list.map((m,i)=>'<div class="trace-msg"><b>'+(i+1)+'</b><div><span class="trace-msg-text">'+esc(m.text)+'</span><small>消息ID：'+esc(m.id)+' · '+esc(fmt(m.at))+'</small></div></div>').join('')+'</div>';
  return '<div class="trace-summary">'+(success?'':'<div class="trace-summary-head"><b>'+esc(failed?'异常':'转人工')+'</b></div>')+'<div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+esc(r.traceId)+'</span><span><em>会话ID</em>'+esc(r.sid)+'</span></div></div>'
  + (r.reason?'<div class="reason-box">'+kv('处理类型',r.reason.type)+kv('转人工归因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
  +section('1','输入 · 触发消息','<div class="trace-sub">客户消息原文'+(inputs.length>1?'（共 '+inputs.length+' 条，AI 一并接管）':'')+'</div>'+msgList(inputs)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
@@ -550,7 +550,7 @@ else{
   const role=m.role==='customer'?'customer':'member',ai=m.role==='member'&&m.ai;
   let body=m.type==='图片'?'<button class="picture-preview" type="button" data-picture="1">'+pictureSvg()+'</button>':'<div class="bubble">'+E(m.text)+'</div>';
   let actions='';if(m.role==='member'&&ai&&rec.trace)actions+='<button type="button" class="msg-action" data-trace="'+E(rec.id)+'">'+ACTION_ICON.trace+'AI决策追溯</button>';if(m.role==='member'&&rec.ai)actions+='<button type="button" class="msg-action" data-latency="'+E(rec.id)+'">'+ACTION_ICON.latency+'耗时详情</button>';
-  return '<div class="message-row '+role+(ai?' ai':'')+(selected?' selected':'')+'" data-id="'+E(m.id)+'"><div><div class="meta"><span class="meta-who">'+(role==='customer'?E(session.cname):E(session.mname))+'</span><span class="meta-time">'+E(D.fmt(m.at,true))+'</span>'+(ai?'<span class="tag online">AI回复</span>':'')+(actions?'<span class="msg-actions">'+actions+'</span>':'')+'</div>'+body+'</div></div>';
+  return '<div class="message-row '+role+(ai?' ai':'')+(selected?' selected':'')+'" data-id="'+E(m.id)+'"><div><div class="meta"><span class="meta-who">'+(role==='customer'?E(session.cname):E(session.mname))+'</span><span class="meta-time">'+E(D.fmt(m.at))+'</span>'+(ai?'<span class="tag online">AI回复</span>':'')+(actions?'<span class="msg-actions">'+actions+'</span>':'')+'</div>'+body+'</div></div>';
  }
  const PAGE=10;
  let shown=Math.min(PAGE,msgs.length);
