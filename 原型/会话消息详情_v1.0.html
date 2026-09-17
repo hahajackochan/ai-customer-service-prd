@@ -171,7 +171,7 @@ td.strong{color:var(--ink)}
 .trace-summary{padding:14px 16px;border:1px solid #f0e2cc;border-radius:10px;background:linear-gradient(180deg,#fffaf2,#fffdfa)}
 
 
-.trace-summary-meta{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;padding-top:10px;font-size:12px;color:var(--muted)}
+.trace-summary-meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:12px;color:var(--muted)}
 .trace-summary-meta span{display:inline-flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
 .trace-summary-meta em{font-style:normal;color:var(--weak)}
 .trace-step{border-top:1px solid var(--line);padding:16px 0 2px;margin-top:16px}
@@ -210,7 +210,7 @@ td.strong{color:var(--ink)}
 .chat-layout{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
 .chat-card,.trace-card{min-width:0}
 .empty-panel{color:var(--weak);text-align:center;padding:64px 14px;font-size:13px;line-height:1.9}
-.duration-hero{padding:16px 18px;background:linear-gradient(180deg,#fffaf2,#fffdfa);border:1px solid #f0e2cc;border-radius:10px;margin-bottom:18px}
+.duration-hero{padding:16px 18px;background:linear-gradient(180deg,#fffaf2,#fffdfa);border:1px solid #f0e2cc;border-radius:10px;margin:14px 0 18px}
 .duration-hero .duration-label{display:block;font-size:12px;color:var(--weak)}
 .duration-hero .duration-value{display:flex;align-items:baseline;gap:6px;margin:6px 0 4px}
 .duration-hero .duration-value b{color:var(--brand);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
@@ -247,7 +247,7 @@ td.strong{color:var(--ink)}
 .chat-more.loadable:hover{text-decoration:underline}
 .chat-more.loading{color:var(--weak)}
 .trace-content{overflow:auto;flex:1;padding:16px;min-height:0}
-.conversation-meta{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;font-size:13px}
+.conversation-meta{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;font-size:13px;margin-bottom:14px}
 .conversation-meta b{font-size:14px}
 .conversation-meta .return{margin-left:auto;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 16px!important;border:1px solid #dcdfe6!important;border-radius:4px;background:#fff;color:var(--muted)!important;font-size:13px;text-decoration:none}
 .conversation-meta .return:hover{color:var(--brand)!important;border-color:#e3c692!important}
@@ -478,7 +478,7 @@ function messages(s){return s.records.flatMap(r=>{
  const items=[{id:r.id,role:'customer',text:r.question,type:r.type,at:r.sentAt,record:r}];
  if(r.reply)items.push({id:r.replyId,role:'member',text:r.reply,type:r.replyType,at:r.replyAt,ai:r.ai,record:r});
  (r.replies||[]).forEach(function(x){if(x.id!==r.replyId)items.push({id:x.id,role:'member',text:x.text,type:r.replyType,at:x.at,ai:true,record:r});});
- if(r.reason)items.push({id:r.traceId,role:'event',text:r.kind==='error'?'AI处理异常':'AI转人工',at:r.eventAt,record:r});return items;
+ return items;
 }).sort((a,b)=>a.at-b.at||a.id.localeCompare(b.id));}
 function modeEnabled(s,a){return (s.type||'single')==='group'?a.group:a.single;}
 function enabled(s){const a=account(s.mid);return modeEnabled(s,a)&&(state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured);}
@@ -539,7 +539,7 @@ const meta=pageMap[back]||pageMap.sessions;
 function backUrl(){const o={};['filters','page','size'].forEach(k=>{if(D.params.get(k))o[k]=D.params.get(k)});return D.url(meta[1],o)}
 const session=D.sessions.find(x=>x.id===sid);
 function pictureSvg(){return '<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="180" rx="8" fill="#fff4dc"/><ellipse cx="150" cy="92" rx="90" ry="48" fill="#e7bb78"/><rect x="62" y="92" width="176" height="52" rx="8" fill="#bc7e35"/><rect x="78" y="66" width="42" height="28" rx="5" fill="#d99b53"/><rect x="180" y="66" width="42" height="28" rx="5" fill="#d99b53"/><text x="150" y="163" text-anchor="middle" font-size="14" fill="#8a632c">柜体颜色参考图（示例）</text></svg>'}
-function openTrace(r){if(r&&r.traceOwner)r=D.records.find(x=>x.id===r.traceOwner)||r;if(r&&r.trace)window.openDrawer('AI决策追溯',D.traceHTML(r),'<a class="link-btn" href="'+D.url('会话消息管理_v1.0.html',{sid:r.sid,message:r.id})+'">查看关联消息</a>')}
+function openTrace(r){if(r&&r.traceOwner)r=D.records.find(x=>x.id===r.traceOwner)||r;if(r&&r.trace)window.openDrawer('AI决策追溯',D.traceHTML(r))}
 function openLatency(r){const stages=r&&r.stages||[],total=stages.reduce((n,x)=>n+(+x.duration||0),0);const hero='<div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+sec(total)+'</b><span>秒</span></div><div class="duration-range">系统收到消息 '+E(D.fmt(r.receivedAt))+' → 成员回复时间 '+E(D.fmt(r.replyAt))+'</div>'+(total>0?'<div class="duration-share">'+stages.map(function(x){return '<i style="width:'+Math.max(3,(+x.duration||0)/total*100)+'%"></i>'}).join('')+'</div>':'')+'</div>';const body=hero+'<div class="timeline">'+stages.map(function(x){return '<div class="timeline-item"><div class="row"><b>'+E(x.name)+'</b><span class="tl-dur">'+sec(x.duration)+' 秒</span></div><small>'+E(D.fmt(x.at))+'</small></div>'}).join('')+'</div>';window.openDrawer('AI回复响应详情',body,'<a class="link-btn" href="'+D.url('AI响应明细_v1.0.html',{sid:r.sid,id:r.replyId})+'">查看AI响应明细</a>')}
 if(!session){root.innerHTML='<div class="card"><div class="empty-panel">未找到会话记录（示例数据范围外或参数缺失）。<div style="margin-top:12px"><a class="btn primary" href="'+backUrl()+'"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.6 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>返回</a></div></div></div>'}
 else{
@@ -557,7 +557,7 @@ else{
  if(focusId){const idx=msgs.findIndex(function(m){return m.id===focusId;});if(idx>=0&&idx<msgs.length-shown)shown=msgs.length-idx;}
  function moreText(){const rest=msgs.length-shown;if(!rest)return '已加载全部记录（共 '+msgs.length+' 条）';return '上滑加载更早的记录 · 已加载最新 '+shown+' / '+msgs.length+' 条';}
  function windowHTML(){return msgs.slice(msgs.length-shown).map(rowHTML).join('');}
- root.innerHTML='<div class="conversation-meta"><b>'+E(session.cname)+' × '+E(session.mname)+'</b><span>会话ID：'+E(session.id)+'</span><span>最后聊天：'+E(D.fmt(summary.last,true))+'</span><a class="return" href="'+backUrl()+'"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.6 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>返回</a></div><div class="chat-layout single"><div class="chat-card"><div class="chat-heading"><span>会话消息</span><span class="tag '+(D.enabled(session)?'online':'offline')+'">'+(D.enabled(session)?'AI接管中':'未接管')+'</span></div><div class="chat-stream" id="chat-stream">'+(msgs.length?'<div class="chat-more'+(msgs.length-shown>0?' loadable':'')+'" id="chat-more">'+moreText()+'</div>'+windowHTML():'<div class="empty-panel">暂无聊天记录</div>')+'</div></div></div>';
+ root.innerHTML='<div class="conversation-meta"><b>'+E(session.cname)+' × '+E(session.mname)+'</b><span>会话ID：'+E(session.id)+'</span><span>最后聊天：'+E(D.fmt(summary.last))+'</span><a class="return" href="'+backUrl()+'"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.6 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>返回</a></div><div class="chat-layout single"><div class="chat-card"><div class="chat-heading"><span>会话消息</span><span class="tag '+(D.enabled(session)?'online':'offline')+'">'+(D.enabled(session)?'AI接管中':'未接管')+'</span></div><div class="chat-stream" id="chat-stream">'+(msgs.length?'<div class="chat-more'+(msgs.length-shown>0?' loadable':'')+'" id="chat-more">'+moreText()+'</div>'+windowHTML():'<div class="empty-panel">暂无聊天记录</div>')+'</div></div></div>';
  let streamEl=document.getElementById('chat-stream'),moreEl=document.getElementById('chat-more'),loading=false;
  function bindActions(scope){
  scope.querySelectorAll('[data-trace]').forEach(function(b){b.addEventListener('click',function(){const r=D.records.find(x=>x.id===b.dataset.trace);openTrace(r)})});

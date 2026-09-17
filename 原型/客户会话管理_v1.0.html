@@ -175,7 +175,7 @@ td.strong{color:var(--ink)}
 .trace-summary{padding:14px 16px;border:1px solid #f0e2cc;border-radius:10px;background:linear-gradient(180deg,#fffaf2,#fffdfa)}
 
 
-.trace-summary-meta{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;padding-top:10px;font-size:12px;color:var(--muted)}
+.trace-summary-meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:12px;color:var(--muted)}
 .trace-summary-meta span{display:inline-flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
 .trace-summary-meta em{font-style:normal;color:var(--weak)}
 .trace-step{border-top:1px solid var(--line);padding:16px 0 2px;margin-top:16px}
@@ -214,7 +214,7 @@ td.strong{color:var(--ink)}
 .chat-layout{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
 .chat-card,.trace-card{min-width:0}
 .empty-panel{color:var(--weak);text-align:center;padding:64px 14px;font-size:13px;line-height:1.9}
-.duration-hero{padding:16px 18px;background:linear-gradient(180deg,#fffaf2,#fffdfa);border:1px solid #f0e2cc;border-radius:10px;margin-bottom:18px}
+.duration-hero{padding:16px 18px;background:linear-gradient(180deg,#fffaf2,#fffdfa);border:1px solid #f0e2cc;border-radius:10px;margin:14px 0 18px}
 .duration-hero .duration-label{display:block;font-size:12px;color:var(--weak)}
 .duration-hero .duration-value{display:flex;align-items:baseline;gap:6px;margin:6px 0 4px}
 .duration-hero .duration-value b{color:var(--brand);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
@@ -245,7 +245,7 @@ td.strong{color:var(--ink)}
 .chat-heading{height:46px;flex-shrink:0;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-weight:600}
 .chat-stream{overflow-y:auto;overscroll-behavior:contain;overflow-anchor:none;flex:1;min-height:0;padding:12px 20px 22px;background:#fafbfc}
 .trace-content{overflow:auto;flex:1;padding:16px;min-height:0}
-.conversation-meta{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;font-size:13px}
+.conversation-meta{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;font-size:13px;margin-bottom:14px}
 .conversation-meta b{font-size:14px}
 .conversation-meta .return{margin-left:auto}
 .date-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px}
@@ -470,7 +470,7 @@ for(const s of sessions)for(const r of s.records){
 function messages(s){return s.records.flatMap(r=>{
  const items=[{id:r.id,role:'customer',text:r.question,type:r.type,at:r.sentAt,record:r}];
  if(r.reply)items.push({id:r.replyId,role:'member',text:r.reply,type:r.replyType,at:r.replyAt,ai:r.ai,record:r});
- if(r.reason)items.push({id:r.traceId,role:'event',text:r.kind==='error'?'AI处理异常':'AI转人工',at:r.eventAt,record:r});return items;
+ return items;
 }).sort((a,b)=>a.at-b.at||a.id.localeCompare(b.id));}
 function modeEnabled(s,a){return (s.type||'single')==='group'?a.group:a.single;}
 function enabled(s){const a=account(s.mid);return modeEnabled(s,a)&&(state.sessions[s.id]!==undefined?state.sessions[s.id]===true:s.configured);}
