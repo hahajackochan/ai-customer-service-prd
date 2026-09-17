@@ -178,10 +178,6 @@ td.strong{color:var(--ink)}
 .trace-step:first-of-type{border-top:0;margin-top:14px;padding-top:0}
 .trace-step h4{display:flex;align-items:center;gap:9px;margin:0 0 12px;color:#634314;font-size:14px;font-weight:700}
 .trace-step h4 i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--amber);color:var(--amber-deep);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
-.trace-kv{display:grid;grid-template-columns:126px minmax(0,1fr);gap:6px 14px;margin:0;padding:9px 0;font-size:13px;line-height:1.75;border-bottom:1px dashed #f2f4f8}
-.trace-kv:last-child{border-bottom:0}
-.trace-kv>span{color:var(--weak)}
-.trace-kv>div{overflow-wrap:anywhere;white-space:pre-wrap;color:var(--text)}
 
 .trace-step pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;border:1px solid var(--line);padding:12px;border-radius:6px;font-size:12px;line-height:1.8;color:var(--muted)}
 .trace-step summary{cursor:pointer;font-size:13px;color:var(--brand);padding:6px 0;font-weight:600}
@@ -204,9 +200,7 @@ td.strong{color:var(--ink)}
 .trace-result-score b{font-size:16px;color:var(--brand);line-height:1.2}
 .trace-result-score.missing b{font-size:12px;color:var(--weak);font-weight:400}
 .trace-result-body{border-top:1px solid var(--line);padding:6px 14px 10px;background:#fafbfc}
-.trace-result-body .trace-kv{grid-template-columns:76px minmax(0,1fr);gap:4px 12px;font-size:12px;padding:6px 0}
 .trace-result-empty{border:1px dashed #e3e6ec;background:#fafbfc;padding:18px 14px;border-radius:8px;color:var(--weak);font-size:12px;line-height:1.8;text-align:center}
-.trace-kv{grid-template-columns:104px minmax(0,1fr)}
 .chat-layout{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
 .chat-card,.trace-card{min-width:0}
 .empty-panel{color:var(--weak);text-align:center;padding:64px 14px;font-size:13px;line-height:1.9}
@@ -216,9 +210,9 @@ td.strong{color:var(--ink)}
 .duration-hero .duration-value b{color:var(--brand);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
 .duration-hero .duration-value span{font-size:13px;color:var(--brand);font-weight:700}
 .duration-hero p{margin:2px 0;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.duration-hero .duration-range{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.duration-share{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;background:#f1f3f6;margin-top:12px}
-.duration-share i{display:block;height:100%;background:#d3a25a}
+.duration-hero 
+
+
 .timeline{padding-top:2px}
 .timeline-item{border-left:2px solid #f0e2cc;margin-left:9px;padding:0 0 18px 22px;position:relative}
 .timeline-item:last-child{border-left-color:transparent;padding-bottom:0}
@@ -491,12 +485,11 @@ function traceHTML(r){
  if(!r||!r.trace)return '<div class="empty-panel">暂无AI决策追溯记录</div>';
  const s=sessions.find(s=>s.id===r.sid),history=messages(s).filter(x=>x.role!=='event'&&x.at<r.sentAt).slice(-6);
  const recorded=v=>v===null||v===undefined||v===''?'未记录':v;
- const kv=(k,v)=>'<div class="trace-kv"><span>'+esc(k)+'</span><div>'+esc(recorded(v))+'</div></div>';
  const section=(n,title,body)=>'<section class="trace-step"><h4><i>'+n+'</i>'+title+'</h4>'+body+'</section>';
  const results=(type,items,empty)=>{
  const known=Array.isArray(items),list=known?items:[],intent=type==='intent';
  if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
- return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b></div>'+(list.length?list.map((item,i)=>{
+ return '<div class="trace-results" data-results="'+type+'">'+(list.length?list.map((item,i)=>{
  const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
  return '<div class="trace-result static" data-result-index="'+i+'"><div class="trace-result-line"><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></div>'+'</div>';
  }).join(''):'<div class="trace-result-empty">'+esc(empty)+'</div>')+'</div>';
@@ -540,7 +533,7 @@ function backUrl(){const o={};['filters','page','size'].forEach(k=>{if(D.params.
 const session=D.sessions.find(x=>x.id===sid);
 function pictureSvg(){return '<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="180" rx="8" fill="#fff4dc"/><ellipse cx="150" cy="92" rx="90" ry="48" fill="#e7bb78"/><rect x="62" y="92" width="176" height="52" rx="8" fill="#bc7e35"/><rect x="78" y="66" width="42" height="28" rx="5" fill="#d99b53"/><rect x="180" y="66" width="42" height="28" rx="5" fill="#d99b53"/><text x="150" y="163" text-anchor="middle" font-size="14" fill="#8a632c">柜体颜色参考图（示例）</text></svg>'}
 function openTrace(r){if(r&&r.traceOwner)r=D.records.find(x=>x.id===r.traceOwner)||r;if(r&&r.trace)window.openDrawer('AI决策追溯',D.traceHTML(r))}
-function openLatency(r){const stages=r&&r.stages||[],total=stages.reduce((n,x)=>n+(+x.duration||0),0);const hero='<div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+sec(total)+'</b><span>秒</span></div><div class="duration-range">系统收到消息 '+E(D.fmt(r.receivedAt))+' → 成员回复时间 '+E(D.fmt(r.replyAt))+'</div>'+(total>0?'<div class="duration-share">'+stages.map(function(x){return '<i style="width:'+Math.max(3,(+x.duration||0)/total*100)+'%"></i>'}).join('')+'</div>':'')+'</div>';const body=hero+'<div class="timeline">'+stages.map(function(x){return '<div class="timeline-item"><div class="row"><b>'+E(x.name)+'</b><span class="tl-dur">'+sec(x.duration)+' 秒</span></div><small>'+E(D.fmt(x.at))+'</small></div>'}).join('')+'</div>';window.openDrawer('AI回复响应详情',body,'<a class="link-btn" href="'+D.url('AI响应明细_v1.0.html',{sid:r.sid,id:r.replyId})+'">查看AI响应明细</a>')}
+function openLatency(r){const stages=r&&r.stages||[],total=stages.reduce((n,x)=>n+(+x.duration||0),0);const hero='<div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+sec(total)+'</b><span>秒</span></div>'+'</div>';const body=hero+'<div class="timeline">'+stages.map(function(x){return '<div class="timeline-item"><div class="row"><b>'+E(x.name)+'</b><span class="tl-dur">'+sec(x.duration)+' 秒</span></div><small>'+E(D.fmt(x.at))+'</small></div>'}).join('')+'</div>';window.openDrawer('AI回复响应详情',body,'<a class="link-btn" href="'+D.url('AI响应明细_v1.0.html',{sid:r.sid,id:r.replyId})+'">查看AI响应明细</a>')}
 if(!session){root.innerHTML='<div class="card"><div class="empty-panel">未找到会话记录（示例数据范围外或参数缺失）。<div style="margin-top:12px"><a class="btn primary" href="'+backUrl()+'"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.6 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>返回</a></div></div></div>'}
 else{
  const msgs=D.messages(session),summary=D.summary(session);

@@ -178,10 +178,6 @@ td.strong{color:var(--ink)}
 .trace-step:first-of-type{border-top:0;margin-top:14px;padding-top:0}
 .trace-step h4{display:flex;align-items:center;gap:9px;margin:0 0 12px;color:#634314;font-size:14px;font-weight:700}
 .trace-step h4 i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--amber);color:var(--amber-deep);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
-.trace-kv{display:grid;grid-template-columns:126px minmax(0,1fr);gap:6px 14px;margin:0;padding:9px 0;font-size:13px;line-height:1.75;border-bottom:1px dashed #f2f4f8}
-.trace-kv:last-child{border-bottom:0}
-.trace-kv>span{color:var(--weak)}
-.trace-kv>div{overflow-wrap:anywhere;white-space:pre-wrap;color:var(--text)}
 
 .trace-step pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;border:1px solid var(--line);padding:12px;border-radius:6px;font-size:12px;line-height:1.8;color:var(--muted)}
 .trace-step summary{cursor:pointer;font-size:13px;color:var(--brand);padding:6px 0;font-weight:600}
@@ -204,9 +200,7 @@ td.strong{color:var(--ink)}
 .trace-result-score b{font-size:16px;color:var(--brand);line-height:1.2}
 .trace-result-score.missing b{font-size:12px;color:var(--weak);font-weight:400}
 .trace-result-body{border-top:1px solid var(--line);padding:6px 14px 10px;background:#fafbfc}
-.trace-result-body .trace-kv{grid-template-columns:76px minmax(0,1fr);gap:4px 12px;font-size:12px;padding:6px 0}
 .trace-result-empty{border:1px dashed #e3e6ec;background:#fafbfc;padding:18px 14px;border-radius:8px;color:var(--weak);font-size:12px;line-height:1.8;text-align:center}
-.trace-kv{grid-template-columns:104px minmax(0,1fr)}
 .chat-layout{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
 .chat-card,.trace-card{min-width:0}
 .empty-panel{color:var(--weak);text-align:center;padding:64px 14px;font-size:13px;line-height:1.9}
@@ -216,9 +210,9 @@ td.strong{color:var(--ink)}
 .duration-hero .duration-value b{color:var(--brand);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
 .duration-hero .duration-value span{font-size:13px;color:var(--brand);font-weight:700}
 .duration-hero p{margin:2px 0;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.duration-hero .duration-range{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.duration-share{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;background:#f1f3f6;margin-top:12px}
-.duration-share i{display:block;height:100%;background:#d3a25a}
+.duration-hero 
+
+
 .timeline{padding-top:2px}
 .timeline-item{border-left:2px solid #f0e2cc;margin-left:9px;padding:0 0 18px 22px;position:relative}
 .timeline-item:last-child{border-left-color:transparent;padding-bottom:0}
@@ -302,7 +296,7 @@ body[data-view="latency"] .wide-table td:nth-last-child(2){position:sticky;right
 <style>
 .filter-popover.compact .filter-bar{grid-template-columns:1fr}
 .filter-popover .form-grid label.duration-filter{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-.filter-popover .form-grid label.duration-filter>select{width:92px}.filter-popover .form-grid label.duration-filter>input{width:150px}.filter-popover .form-grid label.duration-filter .totalMaxWrap{display:inline-flex;align-items:center;gap:8px}.filter-popover .form-grid label.duration-filter .totalMaxWrap[hidden]{display:none}
+.filter-popover .form-grid label.duration-filter>select{width:92px}.filter-popover .form-grid label.duration-filter>input{width:150px}.filter-popover .form-grid label.duration-filter .filter-popover .form-grid label.duration-filter 
 </style>
 <style>
 .trace-result.static{cursor:default}
@@ -496,12 +490,11 @@ function traceHTML(r){
  if(!r||!r.trace)return '<div class="empty-panel">暂无AI决策追溯记录</div>';
  const s=sessions.find(s=>s.id===r.sid),history=messages(s).filter(x=>x.role!=='event'&&x.at<r.sentAt).slice(-6);
  const recorded=v=>v===null||v===undefined||v===''?'未记录':v;
- const kv=(k,v)=>'<div class="trace-kv"><span>'+esc(k)+'</span><div>'+esc(recorded(v))+'</div></div>';
  const section=(n,title,body)=>'<section class="trace-step"><h4><i>'+n+'</i>'+title+'</h4>'+body+'</section>';
  const results=(type,items,empty)=>{
  const known=Array.isArray(items),list=known?items:[],intent=type==='intent';
  if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
- return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b></div>'+(list.length?list.map((item,i)=>{
+ return '<div class="trace-results" data-results="'+type+'">'+(list.length?list.map((item,i)=>{
  const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
  return '<div class="trace-result static" data-result-index="'+i+'"><div class="trace-result-line"><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></div>'+'</div>';
  }).join(''):'<div class="trace-result-empty">'+esc(empty)+'</div>')+'</div>';
@@ -544,14 +537,14 @@ const yesno='<option value="1">是</option><option value="0">否</option>';
 let fields=input('会话ID','sid')+input('客户ID','cid')+input('客户名称','cname')+input('成员ID','mid')+input('成员名称','mname');
 if(kind==='sessions')fields=select('供应商','supplier','<option>艾客</option>')+select('企业','corp','<option>索菲亚家居</option><option>索菲亚精选</option>')+fields+select('AI接管状态','enabled',yesno)+select('涉及AI回复','ai',yesno)+rangeField('最后聊天时间');
 else if(kind==='messages')fields=input('客户消息ID','id')+fields+select('转人工','transfer',yesno)+select('转人工归因','reason',D.reasonOptions())+rangeField('发送时间');
-else fields=input('AI决策追溯ID','id')+fields+rangeField('成员回复时间')+'<label class="duration-filter">总响应时长<select name="totalOp" id="q-totalOp"><option value="gt">大于</option><option value="lt">小于</option><option value="between">介于</option></select><input type="number" step="0.01" min="0" name="total" id="q-total" placeholder="秒"><span class="totalMaxWrap" hidden>至 <input type="number" min="0" step="0.01" name="totalMax" id="q-totalMax" placeholder="秒"></span>秒</label>';
+else fields=input('AI决策追溯ID','id')+fields+rangeField('成员回复时间')+'<label class="duration-filter">总响应时长<select name="totalOp" id="q-totalOp"><option value="gt">大于</option><option value="lt">小于</option></select><input type="number" step="0.01" min="0" name="total" id="q-total" placeholder="秒">秒</label>';
 root.innerHTML='<div class="card list-filter-card"><div class="list-toolbar"><div class="list-toolbar-primary"></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div><div class="filter-popover" id="filter-popover" hidden><form id="filters" class="form-grid">'+fields+'<div class="form-actions"><button class="btn" type="button" id="reset">重置</button><button class="btn" type="button" id="filter-close">关闭</button><button class="btn primary" type="submit">提交</button></div><div class="query-error" role="alert" id="query-error" style="grid-column:1/-1"></div></form></div></div><div class="table-card"><div class="table-scroll"><table class="wide-table"><thead id="columns"></thead><tbody id="tbody"></tbody></table></div><div class="pager" id="pager"></div></div>';
 const form=document.getElementById('filters');for(const [k,v]of D.params)if(form.elements[k])form.elements[k].value=v;
 function stateForm(){return Object.fromEntries(new FormData(form));}
 function listContext(){return {back:kind,filters:JSON.stringify(applied),page,size};}
 function error(msg){document.getElementById('query-error').textContent=msg;}
-function validate(q){if(q.start&&q.end&&q.start>q.end)return '开始日期不能晚于结束日期';for(const key of ['total','totalMax']){if(q[key]!==undefined&&q[key]!==''&&(!Number.isFinite(+q[key])||+q[key]<0))return '响应时长必须是大于或等于0的有效秒数';}if(q.totalOp==='between'&&(q.total!==''||q.totalMax!=='')){if(q.total===''||q.totalMax==='')return '请填写时长范围的上下限';if(+q.total>+q.totalMax)return '时长范围下限不能大于上限';}return '';}
-function threshold(value,op,lo,hi){if(lo==='')return true;const min=+lo*1000,max=+hi*1000;return op==='lt'?value<min:op==='between'?value>=min&&value<=max:value>min;}
+function validate(q){if(q.start&&q.end&&q.start>q.end)return '开始日期不能晚于结束日期';for(const key of ['total']){if(q[key]!==undefined&&q[key]!==''&&(!Number.isFinite(+q[key])||+q[key]<0))return '响应时长必须是大于或等于0的有效秒数';}return '';}
+function threshold(value,op,lo){if(lo==='')return true;const min=+lo*1000;return op==='lt'?value<min:value>min;}
 function matching(){const q=applied;let data=kind==='sessions'?D.sessions.slice():D.records.filter(r=>kind!=='latency'||r.ai&&r.replyAt!==null);
  data=data.filter(r=>{
  const session=kind==='sessions',sm=session?D.summary(r):null;
@@ -565,37 +558,37 @@ function matching(){const q=applied;let data=kind==='sessions'?D.sessions.slice(
  if(q.reason&&r.reason?.code!==q.reason)return false;
  const d=D.date(session?sm.last:kind==='latency'?r.replyAt:r.sentAt);
  if(q.start&&d<q.start||q.end&&d>q.end)return false;
- if(kind==='latency'&&!threshold(r.total,q.totalOp,q.total,q.totalMax))return false;
+ if(kind==='latency'&&!threshold(r.total,q.totalOp,q.total))return false;
  return true;
  });
  return data.sort((a,b)=>kind==='sessions'?D.summary(b).last-D.summary(a).last:kind==='latency'?b.replyAt-a.replyAt:b.sentAt-a.sentAt);
 }
-const headers=kind==='sessions'?['供应商','企业','会话ID','客户ID','客户名称','成员ID','成员名称','AI接管状态','涉及AI回复','累计对话记录数','会话创建时间','最后聊天时间','操作']:kind==='messages'?['客户消息ID','会话ID','客户ID','客户名称','成员ID','成员名称','客户消息内容','消息类型','发送时间','成员回复内容','转人工','转人工归因','AI决策追溯ID','操作']:['AI决策追溯ID','会话ID','客户ID','客户名称','成员ID','成员名称','AI响应总时长','操作'];
+const headers=kind==='sessions'?['供应商','企业','会话ID','客户ID','客户名称','成员ID','成员名称','AI接管状态','涉及AI回复','累计对话记录数','会话创建时间','最后聊天时间','操作']:kind==='messages'?['客户消息ID','会话ID','客户ID','客户名称','成员ID','成员名称','客户消息内容','消息类型','发送时间','成员回复内容','转人工','转人工归因','AI决策追溯ID','操作']:['AI决策追溯ID','会话ID','客户ID','客户名称','成员ID','成员名称','创建时间','AI响应总时长','操作'];
 document.getElementById('columns').innerHTML='<tr>'+headers.map((h,i)=>'<th class="'+(i===headers.length-1?'action-col':'')+'">'+h+'</th>').join('')+'</tr>';
 const td=(v,cls='')=>'<td class="'+cls+'">'+v+'</td>',tag=(v)=>'<span class="tag '+(v?'online':'no')+'">'+(v?'是':'否')+'</span>';
 const text=v=>'<span class="cell-long" title="'+E(v)+'">'+E(v)+'</span>';
 function row(r){if(kind==='sessions'){const sm=D.summary(r),on=D.enabled(r),can=D.eligible(r),acct=D.account(r.mid);return '<tr data-id="'+r.id+'">'+[E(r.supplier),E(r.corp),E(r.id),E(r.cid),E(r.cname),E(r.mid),E(r.mname)].map(v=>td(v)).join('')+td('<div class="switch-label"><label class="switch"><input aria-label="'+E(r.id)+' AI接管状态" data-switch="'+r.id+'" type="checkbox" '+(on?'checked ':'')+(!can?'disabled ':'')+'><span class="slider"></span></label><span>'+(on?'是':'否')+'</span></div>'+(!can?'<small class="small-status">'+'账号未开启单聊AI接管'+' <a class="link-btn" href="'+D.url('AI托管账号_v1.0.html',{uid:acct.id})+'">去配置</a></small>':''))+td(tag(sm.ai))+td(sm.count)+td(D.fmt(sm.created),'time-col muted')+td(D.fmt(sm.last),'time-col muted')+td('<div class="row-tools"><a class="op-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.id})+'">聊天内容</a></div>','action-col')+'</tr>';}
  const metadata=[kind==='latency'?r.traceId:r.id,r.sid,r.cid,r.cname,r.mid,r.mname].map(v=>td(E(v))).join(''); const replySource=(r.replies&&r.replies.length)?r.replies:((r.kind==='grouped'&&r.traceOwner)?((D.records.find(x=>x.id===r.traceOwner)||{}).replies||[]):(r.reply?[{text:r.reply}]:[])); const replyTexts=replySource.map(x=>x.text).filter(Boolean);
  if(kind==='messages'){const result={pending:'待回复',error:'处理异常'}[r.kind];return '<tr data-id="'+r.id+'">'+metadata+td(r.type==='图片'?'[图片]':text(r.question),'cell-text')+td(E(r.type))+td(D.fmt(r.sentAt),'time-col muted')+td(replyTexts.length?(replyTexts.length>1?'<div class="reply-list">'+replyTexts.map((t,i)=>'<div class="reply-item"><em>'+(i+1)+'</em><span>'+text(t)+'</span></div>').join('')+'</div>':text(replyTexts[0])):(result?'<span class="tag '+(r.kind==='error'?'error':r.kind==='transfer'?'transfer':'waiting')+'">'+result+'</span>':'—'),'cell-text')+td(tag(!!r.reason))+td(r.reason?E(r.reason.label):'—')+td(r.trace?'<button class="link-btn" data-trace="'+E(r.traceOwner||r.id)+'">'+E(r.traceId)+'</button>':'—')+td('<div class="row-tools">'+(r.trace?'<button type="button" class="op-btn" data-trace="'+(r.traceOwner||r.id)+'">AI决策追溯</button>':'')+'</div>','action-col')+'</tr>';}
- return '<tr data-id="'+r.traceId+'">'+metadata+td('<b>'+sec(r.total)+'</b> 秒')+td('<button type="button" class="op-btn" data-latency="'+r.id+'">耗时详情</button>','action-col')+'</tr>';
+ return '<tr data-id="'+r.traceId+'">'+metadata+td(E(D.fmt(r.receivedAt)),'time-col muted')+td('<b>'+sec(r.total)+'</b> 秒')+td('<button type="button" class="op-btn" data-latency="'+r.id+'">耗时详情</button>','action-col')+'</tr>';
 }
 function render(){const all=matching();page=Math.max(1,Math.min(page,Math.ceil(all.length/size)||1));document.getElementById('tbody').innerHTML=all.length?all.slice((page-1)*size,page*size).map(row).join(''):'<tr><td colspan="'+headers.length+'" style="text-align:center;height:180px;color:var(--weak)">暂无符合条件的记录</td></tr>';document.getElementById('pager').innerHTML='<span>共 '+all.length+' 条</span><select id="page-size" aria-label="每页条数">'+[10,20,50].map(n=>'<option '+(n===size?'selected':'')+'>'+n+'条/页</option>').join('')+'</select><button class="page-num" id="prev" '+(page===1?'disabled':'')+'>‹</button><span>第 '+page+' / '+(Math.ceil(all.length/size)||1)+' 页</span><button class="page-num" id="next" '+(page*size>=all.length?'disabled':'')+'>›</button>';document.getElementById('prev').onclick=()=>{page--;render();};document.getElementById('next').onclick=()=>{page++;render();};document.getElementById('page-size').onchange=e=>{size=parseInt(e.target.value,10);page=1;render();};}
 function apply(){const q=stateForm(),err=validate(q);error(err);if(err)return false;applied=q;page=1;render();return true;}
 const filterTrigger=document.getElementById('btn-filter'),filterPopover=document.getElementById('filter-popover');
 function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));}
 filterTrigger.addEventListener('click',e=>{e.stopPropagation();setFilterOpen(filterPopover.hidden);});filterPopover.addEventListener('click',e=>e.stopPropagation());document.getElementById('filter-close').onclick=()=>setFilterOpen(false);document.addEventListener('click',()=>setFilterOpen(false));document.addEventListener('keydown',e=>{if(e.key==='Escape')setFilterOpen(false);});
-form.addEventListener('submit',e=>{e.preventDefault();if(apply())setFilterOpen(false);});document.getElementById('reset').onclick=()=>{HTMLFormElement.prototype.reset.call(form);syncRanges();apply();paintRanges();};
+form.addEventListener('submit',e=>{e.preventDefault();if(apply())setFilterOpen(false);});document.getElementById('reset').onclick=()=>{HTMLFormElement.prototype.reset.call(form);apply();paintRanges();};
 function paintRanges(){document.querySelectorAll('[data-range]').forEach(box=>{const a=box.querySelector('input[name=start]'),b=box.querySelector('input[name=end]'),t=box.querySelector('.dr-text');t.value=(a.value||b.value)?(a.value||'开始日期')+' ～ '+(b.value||'结束日期'):'';});}document.querySelectorAll('[data-range]').forEach(box=>{const a=box.querySelector('input[name=start]'),b=box.querySelector('input[name=end]');const open=el=>{try{el.showPicker();}catch(_){el.focus();}};box.addEventListener('click',()=>open(!a.value||b.value?a:b));a.addEventListener('change',()=>{paintRanges();if(a.value&&!b.value)setTimeout(()=>open(b),0);});b.addEventListener('change',paintRanges);});paintRanges();
-function syncRanges(){if(kind!=='latency')return;document.querySelector('.totalMaxWrap').hidden=form.totalOp.value!=='between';}
-form.addEventListener('change',syncRanges);syncRanges();
+
+
 let pending=null;
 document.getElementById('tbody').addEventListener('change',e=>{if(!e.target.dataset.switch)return;const s=D.sessions.find(s=>s.id===e.target.dataset.switch),target=e.target.checked;e.target.checked=D.enabled(s);if(!D.eligible(s))return;pending={s,target};const modal=document.getElementById('session-modal');modal.querySelector('#session-title').textContent=target?'开启会话AI接管':'关闭会话AI接管';modal.querySelector('#session-copy').textContent=s.cname+' × '+s.mname+'（'+s.id+'）';modal.querySelector('#session-effect').textContent=target?'账号已开启单聊AI接管，本次仅为该会话开启AI接管。':'仅关闭该会话的AI接管，不改变账号的单聊AI接管配置，也不清除历史AI回复及追溯。';modal.classList.add('active');modal.querySelector('#session-confirm').focus();});
 const cancel=()=>{pending=null;document.getElementById('session-modal').classList.remove('active');};document.getElementById('session-cancel').onclick=cancel;document.getElementById('session-close').onclick=cancel;document.getElementById('session-confirm').onclick=()=>{if(!pending)return;const ok=D.setSession(pending.s.id,pending.target);cancel();render();showToast(ok?'保存成功':'账号未开启单聊AI接管，请先配置账号',ok?'ok':'fail');};
 function trace(r){openDrawer('AI决策追溯',D.traceHTML(r),'<a class="link-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.sid,message:r.id,trace:r.id})+'">在聊天记录中定位</a>'+(r.ai?'<a class="link-btn" href="'+D.url('AI响应明细_v1.0.html',{id:r.traceId})+'">查看AI响应明细</a>':''));}
-function latency(r){const timeline=[{name:'消费者发出问题',at:r.sentAt,reference:true},{name:'系统接收到问题',at:r.receivedAt,origin:true},...r.stages];openDrawer('AI回复响应详情','<div class="trace-summary"><div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+E(r.traceId)+'</span><span><em>会话ID</em>'+E(r.sid)+'</span></div></div><div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+sec(r.total)+'</b><span>秒</span></div><div class="duration-range">系统收到消息 '+D.fmt(r.receivedAt)+' → 最终回复发送成功 '+D.fmt(r.replyAt)+'</div><div class="duration-share">'+r.stages.map(n=>'<i style="width:'+Math.max(3,n.duration/r.total*100)+'%"></i>').join('')+'</div></div><div class="timeline">'+timeline.map(n=>'<div class="timeline-item'+(n.reference?' reference':'')+(n.origin?' origin':'')+'"><div class="row"><b>'+n.name+'</b><span class="tl-dur">'+(n.reference?'参考节点，不计入总时长':n.origin?'总时长起点':sec(n.duration)+' 秒')+'</span></div><small>'+D.fmt(n.at)+'</small>'+(!n.reference&&!n.origin?'<div class="time-track"><i style="width:'+Math.max(3,n.duration/r.total*100)+'%"></i></div>':'')+'</div>').join('')+'</div><div class="trace-kv"><span>各环节耗时合计</span><div>'+sec(r.stages.reduce((s,n)=>s+n.duration,0))+' 秒</div></div>','<button class="link-btn" id="latency-trace">查看AI决策追溯</button>');document.getElementById('latency-trace').onclick=()=>trace(r);}
+function latency(r){const timeline=[{name:'消费者发出问题',at:r.sentAt,reference:true},{name:'系统接收到问题',at:r.receivedAt,origin:true},...r.stages];openDrawer('AI回复响应详情','<div class="trace-summary"><div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+E(r.traceId)+'</span><span><em>会话ID</em>'+E(r.sid)+'</span></div></div><div class="duration-hero"><span class="duration-label">AI响应总时长</span><div class="duration-value"><b>'+sec(r.total)+'</b><span>秒</span></div></div><div class="timeline">'+timeline.map(n=>'<div class="timeline-item'+(n.reference?' reference':'')+(n.origin?' origin':'')+'"><div class="row"><b>'+n.name+'</b>'+(n.reference||n.origin?'':'<span class="tl-dur">'+sec(n.duration)+' 秒</span>')+'</div><small>'+D.fmt(n.at)+'</small>'+(!n.reference&&!n.origin?'<div class="time-track"><i style="width:'+Math.max(3,n.duration/r.total*100)+'%"></i></div>':'')+'</div>').join('')+'</div>','<button class="link-btn" id="latency-trace">查看AI决策追溯</button>');document.getElementById('latency-trace').onclick=()=>trace(r);}
 document.getElementById('tbody').addEventListener('click',e=>{const a=e.target.closest('[data-trace],[data-latency]');if(!a)return;const r=D.records.find(r=>r.id===(a.dataset.trace||a.dataset.latency));if(a.dataset.trace)trace(r);else latency(r);});
 if(D.params.get('filters')){try{const q=JSON.parse(D.params.get('filters'));for(const[k,v]of Object.entries(q))if(form.elements[k])form.elements[k].value=v;}catch(_){} }
-applied=stateForm();page=Math.max(1,Math.floor(+D.params.get('page')||1));size=[10,20,50].includes(+D.params.get('size'))?+D.params.get('size'):10;syncRanges();paintRanges();
+applied=stateForm();page=Math.max(1,Math.floor(+D.params.get('page')||1));size=[10,20,50].includes(+D.params.get('size'))?+D.params.get('size'):10;paintRanges();
 if(D.params.get('state')==='forbidden'){root.innerHTML='<div class="card empty-panel">暂无此页面的查看权限（原型状态）</div>';return;}
 if(D.params.get('state')==='error'){root.innerHTML='<div class="card empty-panel">数据加载失败 <button class="btn" id="retry">重试</button></div>';document.getElementById('retry').onclick=()=>{const u=new URL(location.href);u.searchParams.delete('state');location.href=u;};return;}
 render();if(D.params.get('trace')){const r=D.records.find(r=>r.id===D.params.get('trace'));if(r?.trace)trace(r);}

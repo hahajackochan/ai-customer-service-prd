@@ -233,9 +233,9 @@ td.strong{color:var(--ink)}
 .duration-hero .duration-value b{color:var(--brand);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
 .duration-hero .duration-value span{font-size:13px;color:var(--brand);font-weight:700}
 .duration-hero p{margin:2px 0;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.duration-hero .duration-range{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.duration-share{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;background:#f1f3f6;margin-top:12px}
-.duration-share i{display:block;height:100%;background:#d3a25a}
+.duration-hero 
+
+
 .timeline{padding-top:2px}
 .timeline-item{border-left:2px solid #f0e2cc;margin-left:9px;padding:0 0 18px 22px;position:relative}
 .timeline-item:last-child{border-left-color:transparent;padding-bottom:0}
@@ -564,7 +564,7 @@ function traceHTML(r){
  const results=(type,items,empty)=>{
   const known=Array.isArray(items),list=known?items:[],intent=type==='intent';
   if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
-  return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b></div>'+(list.length?list.map((item,i)=>{
+  return '<div class="trace-results" data-results="'+type+'">'+(list.length?list.map((item,i)=>{
    const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
    const notes=[item.reason,item.scene?'场景：'+item.scene:'',item.strategy?'策略：'+item.strategy:'',item.source?'来源：'+item.source:'',item.filter?'筛选：'+item.filter:''].filter(Boolean);
    return '<div class="trace-result static" data-result-index="'+i+'"><div class="trace-result-line"><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></div>'+(notes.length?'<div class="trace-result-detail">'+notes.map(esc).join(' · ')+'</div>':'')+'</div>';
@@ -648,13 +648,13 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     tbody.innerHTML=list.map(function(r){
       var idx=rows.indexOf(r);
       return '<tr'+(initUid&&r.uid===initUid?' class="focus-target"':'')+'>'
-        +'<td class="strong">'+esc(r.supplier)+'</td><td class="weak">'+esc(r.uid)+'</td><td class="strong">'+esc(r.name)+'</td>'
-        +'<td><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--amber);color:var(--amber-deep);align-items:center;justify-content:center;font-size:12px;font-weight:700">菲</span></td>'
-        +'<td>'+esc(r.phone)+'</td><td class="weak">'+r.count+'</td>'
-        +'<td>'+modeText(r,'单聊')+'</td><td>'+modeText(r,'群聊')+'</td>'
-        +'<td class="weak">'+esc(r.time)+'</td>'
-        +'<td><div class="action-links row-actions"><button type="button" class="op-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="op-btn lnk-edit" data-i="'+idx+'">编辑</button></div></td>'
-      +'</tr>';
+       '<td class="strong">'+esc(r.supplier)+'</td><td class="weak">'+esc(r.uid)+'</td><td class="strong">'+esc(r.name)+'</td>'
+       '<td><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--amber);color:var(--amber-deep);align-items:center;justify-content:center;font-size:12px;font-weight:700">菲</span></td>'
+       '<td>'+esc(r.phone)+'</td><td class="weak">'+r.count+'</td>'
+       '<td>'+modeText(r,'单聊')+'</td><td>'+modeText(r,'群聊')+'</td>'
+       '<td class="weak">'+esc(r.time)+'</td>'
+       '<td><div class="action-links row-actions"><button type="button" class="op-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="op-btn lnk-edit" data-i="'+idx+'">编辑</button></div></td>'
+     '</tr>';
     }).join('');
     pager.textContent='共 '+list.length+' 条';
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-detail'),function(a){a.addEventListener('click',function(){openDetail(parseInt(a.getAttribute('data-i'),10))});});
