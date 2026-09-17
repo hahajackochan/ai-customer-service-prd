@@ -611,7 +611,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     pager.textContent='共 '+list.length+' 条';
   }
   var filterTrigger=document.getElementById('btn-filter'),filterPopover=document.getElementById('filter-popover');
-  function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));if(open)setTimeout(function(){document.getElementById('q-type').focus();},0);}
+  function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));}
   filterTrigger.addEventListener('click',function(e){e.stopPropagation();setFilterOpen(filterPopover.hidden);});
   document.getElementById('btn-filter-close').addEventListener('click',function(){setFilterOpen(false);});
   document.getElementById('btn-query').addEventListener('click',function(){render();setFilterOpen(false);});

@@ -173,8 +173,8 @@ td.strong{color:var(--ink)}
 .drawer-body{padding:20px 22px;overflow:auto;flex:1}
 .drawer-foot{padding:12px 22px;border-top:1px solid var(--line);display:flex;gap:18px;flex-wrap:wrap}
 .trace-summary{padding:14px 16px;border:1px solid #f0e2cc;border-radius:10px;background:linear-gradient(180deg,#fffaf2,#fffdfa)}
-.trace-summary-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.trace-summary-head b{font-size:15px;color:var(--ink);font-weight:700}
+
+
 .trace-summary-meta{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;padding-top:10px;font-size:12px;color:var(--muted)}
 .trace-summary-meta span{display:inline-flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums}
 .trace-summary-meta em{font-style:normal;color:var(--weak)}
@@ -186,7 +186,7 @@ td.strong{color:var(--ink)}
 .trace-kv:last-child{border-bottom:0}
 .trace-kv>span{color:var(--weak)}
 .trace-kv>div{overflow-wrap:anywhere;white-space:pre-wrap;color:var(--text)}
-.reason-box{background:#fff8ee;border:1px solid #f5dfb6;border-left:3px solid #dfa94e;border-radius:8px;padding:4px 16px;margin:14px 0 0}
+
 .trace-step pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7f8fa;border:1px solid var(--line);padding:12px;border-radius:6px;font-size:12px;line-height:1.8;color:var(--muted)}
 .trace-step summary{cursor:pointer;font-size:13px;color:var(--brand);padding:6px 0;font-weight:600}
 .trace-results{margin-top:2px}
@@ -319,62 +319,62 @@ td.strong{color:var(--ink)}
 </style>
 </head>
 <body data-view="sessions">
-  <header class="topbar">
-    <div class="logo"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="none" stroke="#a83f3f" stroke-width="3.2"/><g stroke="#a83f3f" stroke-width="2" fill="none"><path d="M18 6c4 2.4 4 7.6 0 10-4-2.4-4-7.6 0-10Z"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(60 18 18)"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(180 18 18)"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(300 18 18)"/></g></svg><b>消费者业务中台</b></div>
-    <nav class="top-tabs">
-      <span class="top-tab js-nothing"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>平台端</span>
-      <span class="top-tab active"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>租户端</span>
-      <span class="tenant-pill js-nothing">企微AI客服<span class="caret">▾</span></span>
-    </nav>
-    <div class="top-right">
-      <span class="avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.4" r="3.6" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.4c1.5-3.6 4-5.4 7-5.4s5.5 1.8 7 5.4" stroke="currentColor" stroke-width="1.8"/></svg></span>
-      <span>陈嘉豪，你好！</span>
-      <span class="quit">退出登录</span>
-    </div>
-  </header>
-  <div class="shell">
-  <aside class="sidebar">
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 7.4v4.8l3 1.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">首页</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="3.5" width="15" height="17" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">租户管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.2" r="3.5" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M5 19.6c1.4-3.5 4-5.2 7-5.2s5.6 1.7 7 5.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">用户管理</span><span class="chev">▾</span></div>
-      <div class="nav-item open" id="nav-agent"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M5 20c1.4-4 3.8-6 7-6s5.6 2 7 6M18.5 4.5l1 1m-15 0 1-1" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">智能体管理</span><span class="chev">▾</span></div>
+ <header class="topbar">
+ <div class="logo"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="none" stroke="#a83f3f" stroke-width="3.2"/><g stroke="#a83f3f" stroke-width="2" fill="none"><path d="M18 6c4 2.4 4 7.6 0 10-4-2.4-4-7.6 0-10Z"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(60 18 18)"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(180 18 18)"/><path d="M29 15c-1.2 4.5-6 6.4-9.6 4 1.2-4.5 6-6.4 9.6-4Z" transform="rotate(300 18 18)"/></g></svg><b>消费者业务中台</b></div>
+ <nav class="top-tabs">
+ <span class="top-tab js-nothing"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>平台端</span>
+ <span class="top-tab active"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>租户端</span>
+ <span class="tenant-pill js-nothing">企微AI客服<span class="caret">▾</span></span>
+ </nav>
+ <div class="top-right">
+ <span class="avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.4" r="3.6" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.4c1.5-3.6 4-5.4 7-5.4s5.5 1.8 7 5.4" stroke="currentColor" stroke-width="1.8"/></svg></span>
+ <span>陈嘉豪，你好！</span>
+ <span class="quit">退出登录</span>
+ </div>
+ </header>
+ <div class="shell">
+ <aside class="sidebar">
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 7.4v4.8l3 1.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">首页</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="3.5" width="15" height="17" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">租户管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.2" r="3.5" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M5 19.6c1.4-3.5 4-5.2 7-5.2s5.6 1.7 7 5.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">用户管理</span><span class="chev">▾</span></div>
+ <div class="nav-item open" id="nav-agent"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M5 20c1.4-4 3.8-6 7-6s5.6 2 7 6M18.5 4.5l1 1m-15 0 1-1" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">智能体管理</span><span class="chev">▾</span></div>
 <div class="nav-item child agent-child js-nav" data-page="智能体管理"><span class="dot-ic">•</span><span class="lbl">智能体管理</span></div>
 <div class="nav-item child agent-child js-nav" data-page="工作流管理"><span class="dot-ic">•</span><span class="lbl">工作流管理</span></div>
-      <div class="nav-item open" id="nav-third"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.6" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="12" cy="17.6" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.4 7.6l2.6 8M15.6 7.6l-2.6 8M8.8 6.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">三方账号管理</span><span class="chev">▾</span></div>
-      <div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div><div class="nav-item child js-nav" data-page="艾客坐席管理"><span class="dot-ic">•</span><span class="lbl">艾客坐席管理</span></div>
-      <div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div>
-      <div class="nav-item open" id="nav-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
+ <div class="nav-item open" id="nav-third"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.6" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="12" cy="17.6" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.4 7.6l2.6 8M15.6 7.6l-2.6 8M8.8 6.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">三方账号管理</span><span class="chev">▾</span></div>
+ <div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div><div class="nav-item child js-nav" data-page="艾客坐席管理"><span class="dot-ic">•</span><span class="lbl">艾客坐席管理</span></div>
+ <div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div>
+ <div class="nav-item open" id="nav-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
 <div class="nav-item child ai-child js-nav active" data-page="客户会话管理" title="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div>
 <div class="nav-item child ai-child js-nav" data-page="会话消息管理" title="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div>
 <div class="nav-item child ai-child js-nav" data-page="AI响应明细" title="AI响应明细"><span class="dot-ic">•</span><span class="lbl">AI响应明细</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 10h16M10 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">京东模块</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.6 12.2l2.3 2.3 4.5-4.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">任务管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 4.6v2.8M12 16.6v2.8M4.6 12h2.8M16.6 12h2.8" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">页面管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.6 13a7.4 7.4 0 0 1 14.8 0" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="3.6" y="13" width="3.9" height="5.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="16.5" y="13" width="3.9" height="5.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">售后管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="6.8" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 9.8V13l2.3 1.5M10.2 3.6h3.6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">营销活动</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="5.6" width="16.8" height="12.8" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m4.6 7.4 7.4 5.8 7.4-5.8" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">短信管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="6" width="11.6" height="12" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m15.2 10.6 5.2-3v8.8l-5.2-3" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">直播管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.5 13 12M5 5l6.4 6.6M12.5 12.5 18 19" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="19.8" cy="4.6" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="4.4" cy="4.4" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="19.6" cy="19.6" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">异业合作</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 9.4h16M4 14.6h16M9.4 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">潜客管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.6" cy="6.6" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.4" cy="6.6" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="6.6" cy="17.4" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.4" cy="17.4" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.8 6.6h6.4M6.6 8.8v6.4M17.4 8.8v6.4M8.8 17.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">成品分销管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.4 5.4h7.4A1.6 1.6 0 0 1 19.4 7v10a1.6 1.6 0 0 1-1.6 1.6h-7.4" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="4" y="8.6" width="7" height="6.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">定制分销管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5.4" width="16.4" height="13.2" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 9h16.4M8 13h5" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">微信订阅消息管理</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.8 9.4c.6 2.8 1.4 4.4 3.2 5.2 1.8-.8 2.6-2.4 3.2-5.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">微信小程序</span><span class="chev">▾</span></div>
-      <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.6 13.7 10 19 11.7 13.7 13.4 12 18.8 10.3 13.4 5 11.7 10.3 10Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M18.4 16.4l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7Z" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI图片工作流</span><span class="chev">▾</span></div>
-    </aside>
-    <main style="flex:1;min-width:0;display:flex;flex-direction:column">
-    <div class="crumb-bar">
-      <span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <span class="crumb">AI会话管理 / <b>客户会话管理</b></span>
-    </div>
-    <div class="tab-bar">
-      <span class="tab-nav">‹</span>
-      <span class="tab"><span class="dot"></span>客户会话管理<span class="x" title="关闭（演示）">×</span></span>
-      <span class="tab-nav" style="margin-left:auto">›</span>
-    </div>
-      <div class="page-body" id="view-root"></div></main></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 10h16M10 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">京东模块</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.6 12.2l2.3 2.3 4.5-4.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">任务管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 4.6v2.8M12 16.6v2.8M4.6 12h2.8M16.6 12h2.8" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">页面管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.6 13a7.4 7.4 0 0 1 14.8 0" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="3.6" y="13" width="3.9" height="5.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="16.5" y="13" width="3.9" height="5.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">售后管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="6.8" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 9.8V13l2.3 1.5M10.2 3.6h3.6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">营销活动</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="5.6" width="16.8" height="12.8" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m4.6 7.4 7.4 5.8 7.4-5.8" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">短信管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.6" y="6" width="11.6" height="12" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m15.2 10.6 5.2-3v8.8l-5.2-3" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">直播管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.5 13 12M5 5l6.4 6.6M12.5 12.5 18 19" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="19.8" cy="4.6" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="4.4" cy="4.4" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="19.6" cy="19.6" r="1.9" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">异业合作</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M4 9.4h16M4 14.6h16M9.4 4v16" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">潜客管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.6" cy="6.6" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.4" cy="6.6" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="6.6" cy="17.4" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.4" cy="17.4" r="2.2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.8 6.6h6.4M6.6 8.8v6.4M17.4 8.8v6.4M8.8 17.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">成品分销管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.4 5.4h7.4A1.6 1.6 0 0 1 19.4 7v10a1.6 1.6 0 0 1-1.6 1.6h-7.4" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="4" y="8.6" width="7" height="6.8" rx="1.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">定制分销管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5.4" width="16.4" height="13.2" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M3.8 9h16.4M8 13h5" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">微信订阅消息管理</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.8 9.4c.6 2.8 1.4 4.4 3.2 5.2 1.8-.8 2.6-2.4 3.2-5.2" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">微信小程序</span><span class="chev">▾</span></div>
+ <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.6 13.7 10 19 11.7 13.7 13.4 12 18.8 10.3 13.4 5 11.7 10.3 10Z" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M18.4 16.4l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7Z" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI图片工作流</span><span class="chev">▾</span></div>
+ </aside>
+ <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+ <div class="crumb-bar">
+ <span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+ <span class="crumb">AI会话管理 / <b>客户会话管理</b></span>
+ </div>
+ <div class="tab-bar">
+ <span class="tab-nav">‹</span>
+ <span class="tab"><span class="dot"></span>客户会话管理<span class="x" title="关闭（演示）">×</span></span>
+ <span class="tab-nav" style="margin-left:auto">›</span>
+ </div>
+ <div class="page-body" id="view-root"></div></main></div>
 <div class="drawer-mask" id="drawer-mask"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title"><header class="drawer-head"><span id="drawer-title"></span><button class="modal-close" id="drawer-close" aria-label="关闭详情">×</button></header><div id="drawer-body" class="drawer-body"></div><footer id="drawer-foot" class="drawer-foot"></footer></aside></div>
 <div class="modal" id="session-modal"><div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="session-title"><header class="modal-head"><span id="session-title"></span><button class="modal-close" id="session-close" aria-label="关闭确认">×</button></header><div class="modal-body"><p id="session-copy"></p><p class="status-warning" id="session-effect"></p></div><footer class="modal-foot"><button class="btn" id="session-cancel">取消</button><button class="btn primary" id="session-confirm">确认</button></footer></div></div>
 <div class="modal" id="image-modal"><div class="preview-box"><header class="modal-head"><span>图片预览 · 滚轮缩放 / 拖动平移</span><button class="btn" id="image-reset">重置</button><button class="modal-close" id="image-close" aria-label="关闭图片">×</button></header><div class="preview-stage" id="image-stage"></div></div></div><div class="toast" id="toast" role="status"></div>
@@ -414,50 +414,50 @@ const STAGES=['意图识别','知识检索','匹配决策','回复生成','回�
 for(let sidx=0;sidx<sessions.length;sidx++){
  const s=sessions[sidx], count=sidx===0?44:4+(sidx%3);
  for(let j=0;j<count;j++){
-  const seq=j+1, tmpl=templates[j%templates.length];let kind;
-  if(sidx===0)kind=j===43?'pending':j%4===1?'human':'ai';
-  else if([2,3,8,10].includes(sidx))kind=j===count-1?'pending':'human';
-  else kind=j===count-1?'pending':j%3===1?'transfer':'ai';
-  let reasonIndex=-1;
-  if(sidx===0&&((j>=6&&j<=15)||j===41)){reasonIndex=j===41?0:j-6;kind='transfer';} // j=41：列表第2条示例，用户主动要求人工
-  else if(kind==='transfer')reasonIndex=(sidx+j)%10;
-  const off=sidx===0?(j<14?-2:j<28?-1:0):-(sidx%3);
-  const base=day(off);base.setHours(9+Math.floor((j%14)/4),10+(j%4)*10,(j*7)%50,0);
-  const sentAt=base.getTime(), receivedAt=sentAt+120+(j%5)*30;
-  const durations=[180+(j%4)*70,260+(j%5)*160,90+(j%3)*40,640+(j%7)*340,100+(j%3)*80,80+(j%4)*50];
-  let at=receivedAt;const stages=durations.map((duration,i)=>({name:STAGES[i],duration,at:(at+=duration)}));
-  const r={id:'CM_'+pad(sidx+1,2)+'_'+pad(seq,3),sid:s.id,cid:s.cid,cname:s.cname,mid:s.mid,mname:s.mname,supplier:s.supplier,corp:s.corp,kind,sentAt,receivedAt,question:tmpl[0],type:'文本',replyType:'文本',intent:tmpl[2],knowledge:tmpl[3],strategy:tmpl[4],reason:reasonIndex>=0?{code:CODES[reasonIndex],label:REASONS[reasonIndex],detail:reasonExamples[reasonIndex],stage:reasonIndex===7?'知识检索':'匹配决策',type:kind==='error'?'异常':'转人工'}:null,traceId:'TR_'+pad(sidx+1,2)+'_'+pad(seq,3),stages,replyId:null,reply:null,replyAt:null,ai:false,total:null,trace:kind!=='human'&&kind!=='pending'};
-  if(kind==='ai'||kind==='human'){
-   r.replyId='RM_'+pad(sidx+1,2)+'_'+pad(seq,3);r.reply=kind==='ai'?tmpl[1]:'您好，我是'+s.mname+'，已收到您的问题，我为您进一步核实。';r.replyAt=kind==='ai'?at:receivedAt+85000;r.ai=kind==='ai';r.total=r.ai?at-receivedAt:null;
-  }
-  if(r.reason){
-   const messagesByReason=['我想找人工客服，请帮我转人工。','嗯那个就是之前那个，怎么弄？','不是查积分余额，我是想问积分到期日。','这款新上市的配色有没有维护手册？','我按你给的积分查询方法操作了，还是查不到。','我已提交预约，为什么预约流程没有开始？','预约修改做到一半，缺少资料，无法继续。','请帮我查一下订单接口返回的进度。','我想办理一项需要人工身份核实的业务。','我的账户疑似被盗用，请帮我处理安全问题。'];
-   const intents=['人工客服诉求','未识别','积分查询（本次误判，实际为积分有效期咨询）','配色维护咨询','积分查询','到店预约','预约修改','安装进度查询','身份核实业务','账户安全'];
-   r.question=messagesByReason[reasonIndex];r.intent=intents[reasonIndex];
-   r.strategy=kind==='error'?'记录接口异常，停止本次自动答复':'转人工核实并处理';
-   r.eventAt=stages[reasonIndex===7?1:2].at;r.stages=stages.slice(0,reasonIndex===7?2:3);
-   if(reasonIndex===7)r.knowledge='订单进度接口';
-   if(reasonIndex===0)r.knowledge='未检索（用户直接要求人工）';
-  }
-  if(kind==='human'||kind==='pending')r.stages=[];
-  if(sidx===0&&j===40){r.type='图片';r.question='[图片] 柜体颜色参考图';r.intent='配色咨询';r.knowledge='柜体配色说明';r.strategy='参考色以实物样板为准，建议到店查看';r.reply='已收到您的配色参考图。图片颜色可能与实物存在差异，建议您到店查看样板后确认。';}
-  // Recorded candidate arrays for this deterministic prototype, not live inference.
-  r.intentResults=[];r.knowledgeResults=[];
-  r.intentSummary='暂无意图识别记录';r.knowledgeSummary='暂无知识匹配记录';
-  if(r.trace){
-   const code=r.reason?.code, multi=r.ai&&j%2===0;
-   r.intentSummary=code==='INTENT_UNKNOWN'?'已执行识别，未获得可用意图结果。':'以下为当次日志中的识别结果，按记录顺序展示。';
-   if(code!=='INTENT_UNKNOWN'){
-    r.intentResults.push({result:r.intent,score:r.ai?'0.92':code==='INTERFACE_ERROR'?null:'0.46',reason:r.ai?'问题表达与该意图的适用范围一致。':r.reason.detail,scene:r.intent,strategy:r.strategy,status:r.ai?'已采用':'已记录'});
-    if(multi){const other=templates[(j+1)%templates.length];r.intentResults.push({result:other[2],score:'0.61',reason:'包含相近业务词，但没有该意图所需的明确诉求。',scene:other[2],strategy:other[4],status:'未采用'},{result:'其他会员服务咨询',score:j%4===0?0:null,reason:j%4===0?'未发现支持该候选的业务信息。':'原始日志未记录该候选的评分，保留结果供核对。',scene:'会员服务',strategy:null,status:'未采用'});}
-   }
-   r.knowledgeSummary=r.ai?'已记录候选及过滤结果，是否采用以当次日志为准。':code==='USER_REQUEST'?'用户直接要求人工，未执行知识检索。':code==='INTERFACE_ERROR'?'接口异常，未获得有效检索结果。':code==='KNOWLEDGE_UNRESOLVED'?'命中知识并尝试提供方案，但客户反馈仍未解决。':'已执行检索，未获得可直接解决问题的有效匹配。';
-   if(r.ai||code==='KNOWLEDGE_UNRESOLVED'){
-    r.knowledgeResults.push({result:r.knowledge,score:r.ai?'0.89':'0.82',reason:r.ai?'内容适用于本次问题，版本有效。':'条目内容相关，但已有方案未解决客户问题。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v1',filter:'有效版本，适用范围一致',status:r.ai?'已采用':'已命中·未解决'});
-    if(multi)r.knowledgeResults.push({result:r.knowledge+'（历史版本）',score:'0.86',reason:'内容相关，但该版本已过期，不能用于本次答复。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v0',filter:'版本已过期，已排除',status:'未采用'},{result:'会员服务通用说明',score:j%4===0?null:'0.37',reason:j%4===0?'仅记录了召回内容，匹配评分未采集。':'内容较宽泛，不能直接回答本次具体问题。',source:'会员服务知识库 / 通用说明 / 示例快照 v1',filter:'有效版本，但不满足当前问句范围',status:'未采用'});
-   }
-  }
-  s.records.push(r);
+ const seq=j+1, tmpl=templates[j%templates.length];let kind;
+ if(sidx===0)kind=j===43?'pending':j%4===1?'human':'ai';
+ else if([2,3,8,10].includes(sidx))kind=j===count-1?'pending':'human';
+ else kind=j===count-1?'pending':j%3===1?'transfer':'ai';
+ let reasonIndex=-1;
+ if(sidx===0&&((j>=6&&j<=15)||j===41)){reasonIndex=j===41?0:j-6;kind='transfer';} // j=41：列表第2条示例，用户主动要求人工
+ else if(kind==='transfer')reasonIndex=(sidx+j)%10;
+ const off=sidx===0?(j<14?-2:j<28?-1:0):-(sidx%3);
+ const base=day(off);base.setHours(9+Math.floor((j%14)/4),10+(j%4)*10,(j*7)%50,0);
+ const sentAt=base.getTime(), receivedAt=sentAt+120+(j%5)*30;
+ const durations=[180+(j%4)*70,260+(j%5)*160,90+(j%3)*40,640+(j%7)*340,100+(j%3)*80,80+(j%4)*50];
+ let at=receivedAt;const stages=durations.map((duration,i)=>({name:STAGES[i],duration,at:(at+=duration)}));
+ const r={id:'CM_'+pad(sidx+1,2)+'_'+pad(seq,3),sid:s.id,cid:s.cid,cname:s.cname,mid:s.mid,mname:s.mname,supplier:s.supplier,corp:s.corp,kind,sentAt,receivedAt,question:tmpl[0],type:'文本',replyType:'文本',intent:tmpl[2],knowledge:tmpl[3],strategy:tmpl[4],reason:reasonIndex>=0?{code:CODES[reasonIndex],label:REASONS[reasonIndex],detail:reasonExamples[reasonIndex],stage:reasonIndex===7?'知识检索':'匹配决策',type:kind==='error'?'异常':'转人工'}:null,traceId:'TR_'+pad(sidx+1,2)+'_'+pad(seq,3),stages,replyId:null,reply:null,replyAt:null,ai:false,total:null,trace:kind!=='human'&&kind!=='pending'};
+ if(kind==='ai'||kind==='human'){
+ r.replyId='RM_'+pad(sidx+1,2)+'_'+pad(seq,3);r.reply=kind==='ai'?tmpl[1]:'您好，我是'+s.mname+'，已收到您的问题，我为您进一步核实。';r.replyAt=kind==='ai'?at:receivedAt+85000;r.ai=kind==='ai';r.total=r.ai?at-receivedAt:null;
+ }
+ if(r.reason){
+ const messagesByReason=['我想找人工客服，请帮我转人工。','嗯那个就是之前那个，怎么弄？','不是查积分余额，我是想问积分到期日。','这款新上市的配色有没有维护手册？','我按你给的积分查询方法操作了，还是查不到。','我已提交预约，为什么预约流程没有开始？','预约修改做到一半，缺少资料，无法继续。','请帮我查一下订单接口返回的进度。','我想办理一项需要人工身份核实的业务。','我的账户疑似被盗用，请帮我处理安全问题。'];
+ const intents=['人工客服诉求','未识别','积分查询（本次误判，实际为积分有效期咨询）','配色维护咨询','积分查询','到店预约','预约修改','安装进度查询','身份核实业务','账户安全'];
+ r.question=messagesByReason[reasonIndex];r.intent=intents[reasonIndex];
+ r.strategy=kind==='error'?'记录接口异常，停止本次自动答复':'转人工核实并处理';
+ r.eventAt=stages[reasonIndex===7?1:2].at;r.stages=stages.slice(0,reasonIndex===7?2:3);
+ if(reasonIndex===7)r.knowledge='订单进度接口';
+ if(reasonIndex===0)r.knowledge='未检索（用户直接要求人工）';
+ }
+ if(kind==='human'||kind==='pending')r.stages=[];
+ if(sidx===0&&j===40){r.type='图片';r.question='[图片] 柜体颜色参考图';r.intent='配色咨询';r.knowledge='柜体配色说明';r.strategy='参考色以实物样板为准，建议到店查看';r.reply='已收到您的配色参考图。图片颜色可能与实物存在差异，建议您到店查看样板后确认。';}
+ // Recorded candidate arrays for this deterministic prototype, not live inference.
+ r.intentResults=[];r.knowledgeResults=[];
+ r.intentSummary='暂无意图识别记录';r.knowledgeSummary='暂无知识匹配记录';
+ if(r.trace){
+ const code=r.reason?.code, multi=r.ai&&j%2===0;
+ r.intentSummary=code==='INTENT_UNKNOWN'?'已执行识别，未获得可用意图结果。':'以下为当次日志中的识别结果，按记录顺序展示。';
+ if(code!=='INTENT_UNKNOWN'){
+ r.intentResults.push({result:r.intent,score:r.ai?'0.92':code==='INTERFACE_ERROR'?null:'0.46',reason:r.ai?'问题表达与该意图的适用范围一致。':r.reason.detail,scene:r.intent,strategy:r.strategy,status:r.ai?'已采用':'已记录'});
+ if(multi){const other=templates[(j+1)%templates.length];r.intentResults.push({result:other[2],score:'0.61',reason:'包含相近业务词，但没有该意图所需的明确诉求。',scene:other[2],strategy:other[4],status:'未采用'},{result:'其他会员服务咨询',score:j%4===0?0:null,reason:j%4===0?'未发现支持该候选的业务信息。':'原始日志未记录该候选的评分，保留结果供核对。',scene:'会员服务',strategy:null,status:'未采用'});}
+ }
+ r.knowledgeSummary=r.ai?'已记录候选及过滤结果，是否采用以当次日志为准。':code==='USER_REQUEST'?'用户直接要求人工，未执行知识检索。':code==='INTERFACE_ERROR'?'接口异常，未获得有效检索结果。':code==='KNOWLEDGE_UNRESOLVED'?'命中知识并尝试提供方案，但客户反馈仍未解决。':'已执行检索，未获得可直接解决问题的有效匹配。';
+ if(r.ai||code==='KNOWLEDGE_UNRESOLVED'){
+ r.knowledgeResults.push({result:r.knowledge,score:r.ai?'0.89':'0.82',reason:r.ai?'内容适用于本次问题，版本有效。':'条目内容相关，但已有方案未解决客户问题。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v1',filter:'有效版本，适用范围一致',status:r.ai?'已采用':'已命中·未解决'});
+ if(multi)r.knowledgeResults.push({result:r.knowledge+'（历史版本）',score:'0.86',reason:'内容相关，但该版本已过期，不能用于本次答复。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v0',filter:'版本已过期，已排除',status:'未采用'},{result:'会员服务通用说明',score:j%4===0?null:'0.37',reason:j%4===0?'仅记录了召回内容，匹配评分未采集。':'内容较宽泛，不能直接回答本次具体问题。',source:'会员服务知识库 / 通用说明 / 示例快照 v1',filter:'有效版本，但不满足当前问句范围',status:'未采用'});
+ }
+ }
+ s.records.push(r);
  }
 }
 // 一次 AI 决策追溯可能产出多条 AI 回复消息
@@ -486,24 +486,24 @@ function traceHTML(r){
  const kv=(k,v)=>'<div class="trace-kv"><span>'+esc(k)+'</span><div>'+esc(recorded(v))+'</div></div>';
  const section=(n,title,body)=>'<section class="trace-step"><h4><i>'+n+'</i>'+title+'</h4>'+body+'</section>';
  const results=(type,items,empty)=>{
-  const known=Array.isArray(items),list=known?items:[],intent=type==='intent';
-  if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
-  return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b></div>'+(list.length?list.map((item,i)=>{
-   const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
-   return '<div class="trace-result static" data-result-index="'+i+'"><div class="trace-result-line"><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></div>'+'</div>';
-  }).join(''):'<div class="trace-result-empty">'+esc(empty)+'</div>')+'</div>';
+ const known=Array.isArray(items),list=known?items:[],intent=type==='intent';
+ if(!known)return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>'+(intent?'意图结果':'知识结果')+' · 未记录</b></div><div class="trace-result-empty">该分组未记录，无法确认结果数量。</div></div>';
+ return '<div class="trace-results" data-results="'+type+'"><div class="trace-results-meta"><b>共 '+list.length+' 条'+(intent?'意图结果':'知识结果')+'</b></div>'+(list.length?list.map((item,i)=>{
+ const missing=item.score===null||item.score===undefined||(typeof item.score==='string'&&!item.score.trim());
+ return '<div class="trace-result static" data-result-index="'+i+'"><div class="trace-result-line"><span class="trace-result-copy"><span class="trace-result-name">'+(i+1)+'. '+esc(recorded(item.result))+'</span>'+(item.status?'<span class="trace-result-state">'+esc(item.status)+'</span>':'')+'</span><span class="trace-result-score'+(missing?' missing':'')+'"><small>'+(intent?'意图评分':'匹配评分')+'</small><b>'+esc(missing?'未记录':item.score)+'</b></span></div>'+'</div>';
+ }).join(''):'<div class="trace-result-empty">'+esc(empty)+'</div>')+'</div>';
  };
  const success=r.ai,failed=r.kind==='error';
  const context=history.map(x=>(x.role==='customer'?'客户':'成员')+'：'+x.text).join('\n')||'本次为首条客户消息，无前序上下文。';
  const inputs=Array.isArray(r.traceInputs)&&r.traceInputs.length?r.traceInputs:[{id:r.id,text:r.question,at:r.sentAt}];
  const replies=Array.isArray(r.replies)&&r.replies.length?r.replies:(r.reply?[{id:r.replyId,text:r.reply,at:r.replyAt}]:[]);
  const msgList=list=>'<div class="trace-msg-list">'+list.map((m,i)=>'<div class="trace-msg"><b>'+(i+1)+'</b><div><span class="trace-msg-text">'+esc(m.text)+'</span><small>消息ID：'+esc(m.id)+' · '+esc(fmt(m.at))+'</small></div></div>').join('')+'</div>';
- return '<div class="trace-summary">'+(success?'':'<div class="trace-summary-head"><b>'+esc(failed?'异常':'转人工')+'</b></div>')+'<div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+esc(r.traceId)+'</span><span><em>会话ID</em>'+esc(r.sid)+'</span></div></div>'
- + (r.reason?'<div class="reason-box">'+kv('处理类型',r.reason.type)+kv('转人工归因',r.reason.label)+kv('原因编码',r.reason.code)+kv('发生环节',r.reason.stage)+kv('原因说明',r.reason.detail)+'</div>':'')
+ return '<div class="trace-summary">'+''+'<div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+esc(r.traceId)+'</span><span><em>会话ID</em>'+esc(r.sid)+'</span></div></div>'
+ + ''
  +section('1','输入 · 触发消息','<div class="trace-sub">客户消息原文'+(inputs.length>1?'（共 '+inputs.length+' 条，AI 一并接管）':'')+'</div>'+msgList(inputs)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
  +section('2','理解 · 意图识别',results('intent',r.intentResults,'暂无意图结果'))
  +section('3','判断与决策 · 知识匹配',results('knowledge',r.knowledgeResults,'暂无知识结果'))
- +section('4','输出 · AI回复消息',replies.length?msgList(replies):'<div class="trace-result-empty">本次追溯未产出AI回复消息（转人工 / 异常）。</div>');
+ +section('4','输出 · AI回复消息',replies.length?msgList(replies):'<div class="trace-result-empty">'+esc(failed?'异常':'已转人工')+'</div>');
 }
 window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,sessions,records,account,saveAccount,enabled,eligible,setSession,messages,summary,traceHTML,reasonOptions,fmt,date,day,esc,url,params};
 })();
@@ -542,18 +542,18 @@ function validate(q){if(q.start&&q.end&&q.start>q.end)return '开始日期不能
 function threshold(value,op,lo,hi){if(lo==='')return true;return op==='lt'?value<+lo:op==='between'?value>=+lo&&value<=+hi:value>+lo;}
 function matching(){const q=applied;let data=kind==='sessions'?D.sessions.slice():D.records.filter(r=>kind!=='latency'||r.ai&&r.replyAt!==null);
  data=data.filter(r=>{
-  const session=kind==='sessions',sm=session?D.summary(r):null;
-  for(const key of ['cid','cname','mid','mname','supplier','corp'])if(q[key]&&!String(r[key]).toLowerCase().includes(q[key].toLowerCase()))return false;
-  if(q.sid&&String(session?r.id:r.sid).indexOf(q.sid)<0)return false;
-  if(q.id&&String(kind==='latency'?r.replyId:r.id).indexOf(q.id)<0)return false;
-  if(session&&q.enabled!==''&&(D.enabled(r)?'1':'0')!==q.enabled)return false;
-  if(q.ai!==''&&((session?sm.ai:r.ai)?'1':'0')!==q.ai)return false;
-  if(kind==='messages'&&q.kind&&r.kind!==q.kind)return false;
-  if(q.reason&&r.reason?.code!==q.reason)return false;
-  const d=D.date(session?sm.last:kind==='latency'?r.replyAt:r.sentAt);
-  if(q.start&&d<q.start||q.end&&d>q.end)return false;
-  if(kind==='latency'&&!threshold(r.total,q.totalOp,q.total,q.totalMax))return false;
-  return true;
+ const session=kind==='sessions',sm=session?D.summary(r):null;
+ for(const key of ['cid','cname','mid','mname','supplier','corp'])if(q[key]&&!String(r[key]).toLowerCase().includes(q[key].toLowerCase()))return false;
+ if(q.sid&&String(session?r.id:r.sid).indexOf(q.sid)<0)return false;
+ if(q.id&&String(kind==='latency'?r.replyId:r.id).indexOf(q.id)<0)return false;
+ if(session&&q.enabled!==''&&(D.enabled(r)?'1':'0')!==q.enabled)return false;
+ if(q.ai!==''&&((session?sm.ai:r.ai)?'1':'0')!==q.ai)return false;
+ if(kind==='messages'&&q.kind&&r.kind!==q.kind)return false;
+ if(q.reason&&r.reason?.code!==q.reason)return false;
+ const d=D.date(session?sm.last:kind==='latency'?r.replyAt:r.sentAt);
+ if(q.start&&d<q.start||q.end&&d>q.end)return false;
+ if(kind==='latency'&&!threshold(r.total,q.totalOp,q.total,q.totalMax))return false;
+ return true;
  });
  return data.sort((a,b)=>kind==='sessions'?D.summary(b).last-D.summary(a).last:kind==='latency'?b.replyAt-a.replyAt:b.sentAt-a.sentAt);
 }
@@ -563,13 +563,13 @@ const td=(v,cls='')=>'<td class="'+cls+'">'+v+'</td>',tag=(v)=>'<span class="tag
 const text=v=>'<span class="cell-long" title="'+E(v)+'">'+E(v)+'</span>';
 function row(r){if(kind==='sessions'){const sm=D.summary(r),on=D.enabled(r);return '<tr data-id="'+r.id+'">'+[E(r.supplier),E(r.corp),E(r.id),E(r.cid),E(r.cname),E(r.mid),E(r.mname)].map(v=>td(v)).join('')+td('<span class="tag '+(on?'yes':'no')+'">'+(on?'启用':'禁用')+'</span>')+td(tag(sm.ai))+td(sm.count)+td(D.fmt(sm.created),'time-col muted')+td(D.fmt(sm.last),'time-col muted')+td('<div class="row-tools"><button type="button" class="op-btn" data-edit="'+r.id+'">编辑</button><a class="op-btn" href="'+D.url('会话消息详情_v1.0.html',{...listContext(),sid:r.id})+'">聊天内容</a></div>','action-col')+'</tr>';}
  const metadata=[kind==='latency'?r.replyId:r.id,r.sid,r.cid,r.cname,r.mid,r.mname].map(v=>td(E(v))).join(''); const replySource=(r.replies&&r.replies.length)?r.replies:((r.kind==='grouped'&&r.traceOwner)?((D.records.find(x=>x.id===r.traceOwner)||{}).replies||[]):(r.reply?[{text:r.reply}]:[])); const replyTexts=replySource.map(x=>x.text).filter(Boolean);
- if(kind==='messages'){const result={pending:'待回复',error:'处理异常'}[r.kind];return '<tr data-id="'+r.id+'">'+metadata+td(text(r.question),'cell-text')+td(E(r.type))+td(D.fmt(r.sentAt),'time-col muted')+td(replyTexts.length?(replyTexts.length>1?'<div class="reply-list">'+replyTexts.map((t,i)=>'<div class="reply-item"><em>'+(i+1)+'</em><span>'+text(t)+'</span></div>').join('')+'</div>':text(replyTexts[0])):(result?'<span class="tag '+(r.kind==='error'?'error':r.kind==='transfer'?'transfer':'waiting')+'">'+result+'</span>':'—'),'cell-text')+td(r.reply?E(r.replyType):'—')+td(D.fmt(r.replyAt),'time-col muted')+td(tag(r.ai))+td(r.reason?'<button class="link-btn" data-trace="'+r.id+'">'+E(r.reason.label)+'</button><small class="small-status">'+r.reason.type+'</small>':'—')+td('<div class="row-tools">'+(r.trace?'<button type="button" class="op-btn" data-trace="'+(r.traceOwner||r.id)+'">AI决策追溯</button>':'')+'</div>','action-col')+'</tr>';}
- return '<tr data-id="'+r.replyId+'">'+metadata+td(text(r.question),'cell-text')+td(text(r.reply),'cell-text')+td(D.fmt(r.replyAt,true),'time-col muted')+td('<b>'+r.total+'</b> ms')+td('<button type="button" class="op-btn" data-latency="'+r.id+'">耗时详情</button>','action-col')+'</tr>';
+ if(kind==='messages'){const result={pending:'待回复',error:'处理异常'}[r.kind];return '<tr data-id="'+r.id+'">'+metadata+td(r.type==='图片'?'[图片]':text(r.question),'cell-text')+td(E(r.type))+td(D.fmt(r.sentAt),'time-col muted')+td(replyTexts.length?(replyTexts.length>1?'<div class="reply-list">'+replyTexts.map((t,i)=>'<div class="reply-item"><em>'+(i+1)+'</em><span>'+text(t)+'</span></div>').join('')+'</div>':text(replyTexts[0])):(result?'<span class="tag '+(r.kind==='error'?'error':r.kind==='transfer'?'transfer':'waiting')+'">'+result+'</span>':'—'),'cell-text')+td(r.reply?E(r.replyType):'—')+td(D.fmt(r.replyAt),'time-col muted')+td(tag(r.ai))+td(r.reason?E(r.reason.label):'—')+td('<div class="row-tools">'+(r.trace?'<button type="button" class="op-btn" data-trace="'+(r.traceOwner||r.id)+'">AI决策追溯</button>':'')+'</div>','action-col')+'</tr>';}
+ return '<tr data-id="'+r.replyId+'">'+metadata+td(r.type==='图片'?'[图片]':text(r.question),'cell-text')+td(text(r.reply),'cell-text')+td(D.fmt(r.replyAt,true),'time-col muted')+td('<b>'+r.total+'</b> ms')+td('<button type="button" class="op-btn" data-latency="'+r.id+'">耗时详情</button>','action-col')+'</tr>';
 }
 function render(){const all=matching();page=Math.max(1,Math.min(page,Math.ceil(all.length/size)||1));document.getElementById('tbody').innerHTML=all.length?all.slice((page-1)*size,page*size).map(row).join(''):'<tr><td colspan="'+headers.length+'" style="text-align:center;height:180px;color:var(--weak)">暂无符合条件的记录</td></tr>';document.getElementById('pager').innerHTML='<span>共 '+all.length+' 条</span><select id="page-size" aria-label="每页条数">'+[10,20,50].map(n=>'<option '+(n===size?'selected':'')+'>'+n+'条/页</option>').join('')+'</select><button class="page-num" id="prev" '+(page===1?'disabled':'')+'>‹</button><span>第 '+page+' / '+(Math.ceil(all.length/size)||1)+' 页</span><button class="page-num" id="next" '+(page*size>=all.length?'disabled':'')+'>›</button>';document.getElementById('prev').onclick=()=>{page--;render();};document.getElementById('next').onclick=()=>{page++;render();};document.getElementById('page-size').onchange=e=>{size=parseInt(e.target.value,10);page=1;render();};}
 function apply(){const q=stateForm(),err=validate(q);error(err);if(err)return false;applied=q;page=1;render();return true;}
 const filterTrigger=document.getElementById('btn-filter'),filterPopover=document.getElementById('filter-popover');
-function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));if(open)setTimeout(()=>form.querySelector('input,select')?.focus(),0);}
+function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));}
 filterTrigger.addEventListener('click',e=>{e.stopPropagation();setFilterOpen(filterPopover.hidden);});filterPopover.addEventListener('click',e=>e.stopPropagation());document.getElementById('filter-close').onclick=()=>setFilterOpen(false);document.addEventListener('click',()=>setFilterOpen(false));document.addEventListener('keydown',e=>{if(e.key==='Escape')setFilterOpen(false);});
 form.addEventListener('submit',e=>{e.preventDefault();if(apply())setFilterOpen(false);});document.getElementById('reset').onclick=()=>{HTMLFormElement.prototype.reset.call(form);syncRanges();apply();paintRanges();};
 function paintRanges(){document.querySelectorAll('[data-range]').forEach(box=>{const a=box.querySelector('input[name=start]'),b=box.querySelector('input[name=end]'),t=box.querySelector('.dr-text');t.value=(a.value||b.value)?(a.value||'开始日期')+' ～ '+(b.value||'结束日期'):'';});}document.querySelectorAll('[data-range]').forEach(box=>{const a=box.querySelector('input[name=start]'),b=box.querySelector('input[name=end]');const open=el=>{try{el.showPicker();}catch(_){el.focus();}};box.addEventListener('click',()=>open(!a.value||b.value?a:b));a.addEventListener('change',()=>{paintRanges();if(a.value&&!b.value)setTimeout(()=>open(b),0);});b.addEventListener('change',paintRanges);});paintRanges();

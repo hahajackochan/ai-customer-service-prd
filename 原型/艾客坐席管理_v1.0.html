@@ -170,7 +170,7 @@ function render(){
 }
 var filterTrigger=document.getElementById('btn-filter'),filterPopover=document.getElementById('filter-popover');
 function resetFilters(){document.getElementById('q-account').value='';document.getElementById('q-name').value='';document.getElementById('q-dept').value='';document.getElementById('q-agent').value='';document.getElementById('q-enabled').value='';}
-function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));if(open)setTimeout(function(){document.getElementById('q-account').focus();},0);}
+function setFilterOpen(open){filterPopover.hidden=!open;filterTrigger.setAttribute('aria-expanded',String(open));}
 filterTrigger.addEventListener('click',function(e){e.stopPropagation();setFilterOpen(filterPopover.hidden);});
 document.getElementById('btn-filter-close').addEventListener('click',function(){setFilterOpen(false);});
 document.getElementById('btn-query').addEventListener('click',function(){render();setFilterOpen(false);});
