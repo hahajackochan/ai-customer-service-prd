@@ -327,8 +327,7 @@ td.strong{color:var(--ink)}
 <div class="nav-item child agent-child js-nav" data-page="智能体管理"><span class="dot-ic">•</span><span class="lbl">智能体管理</span></div>
 <div class="nav-item child agent-child js-nav" data-page="工作流管理"><span class="dot-ic">•</span><span class="lbl">工作流管理</span></div>
  <div class="nav-item open" id="nav-third"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.6" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="12" cy="17.6" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.4 7.6l2.6 8M15.6 7.6l-2.6 8M8.8 6.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">三方账号管理</span><span class="chev">▾</span></div>
- <div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div><div class="nav-item child js-nav" data-page="艾客坐席管理"><span class="dot-ic">•</span><span class="lbl">艾客坐席管理</span></div>
- <div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div>
+ <div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div> <div class="nav-item child js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div>
  <div class="nav-item open" id="nav-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
 <div class="nav-item child ai-child js-nav active" data-page="客户会话管理" title="客户会话管理"><span class="dot-ic">•</span><span class="lbl">客户会话管理</span></div>
 <div class="nav-item child ai-child js-nav" data-page="会话消息管理" title="会话消息管理"><span class="dot-ic">•</span><span class="lbl">会话消息管理</span></div>
@@ -434,7 +433,7 @@ for(let sidx=0;sidx<sessions.length;sidx++){
  const code=r.reason?.code, multi=r.ai&&j%2===0;
  r.intentSummary=code==='INTENT_UNKNOWN'?'已执行识别，未获得可用意图结果。':'以下为当次日志中的识别结果，按记录顺序展示。';
  if(code!=='INTENT_UNKNOWN'){
- r.intentResults.push({result:r.intent,score:r.ai?'0.92':code==='INTERFACE_ERROR'?null:'0.46',reason:r.ai?'问题表达与该意图的适用范围一致。':r.reason.detail,scene:r.intent,strategy:r.strategy,status:r.ai?'已采用':'已记录'});
+ r.intentResults.push({result:r.intent,score:r.ai?'0.92':code==='INTERFACE_ERROR'?null:'0.46',reason:r.ai?'问题表达与该意图的适用范围一致。':r.reason.detail,scene:r.intent,strategy:r.strategy,status:'已采用'});
  if(multi){const other=templates[(j+1)%templates.length];r.intentResults.push({result:other[2],score:'0.61',reason:'包含相近业务词，但没有该意图所需的明确诉求。',scene:other[2],strategy:other[4],status:'未采用'},{result:'其他会员服务咨询',score:j%4===0?0:null,reason:j%4===0?'未发现支持该候选的业务信息。':'原始日志未记录该候选的评分，保留结果供核对。',scene:'会员服务',strategy:null,status:'未采用'});}
  }
  r.knowledgeSummary=r.ai?'已记录候选及过滤结果，是否采用以当次日志为准。':code==='USER_REQUEST'?'用户直接要求人工，未执行知识检索。':code==='INTERFACE_ERROR'?'接口异常，未获得有效检索结果。':code==='KNOWLEDGE_UNRESOLVED'?'命中知识并尝试提供方案，但客户反馈仍未解决。':'已执行检索，未获得可直接解决问题的有效匹配。';
@@ -456,8 +455,6 @@ for(const s of sessions){
  if(prev.length!==take||prev.some(function(p){return p.grouped||p.traceOwner||p.traceInputs||p.reason||p.kind==='human';}))continue;
  prev.forEach(function(p,i){p.grouped=true;p.traceOwner=r.id;p.traceId=r.traceId;p.trace=true;p.reply=null;p.replyId=null;p.replyAt=null;p.ai=false;p.total=null;p.kind='grouped';p.reason=null;p.stages=[];p.sentAt=r.sentAt-(prev.length-i)*23000;p.receivedAt=p.sentAt+120;});
  r.traceInputs=prev.map(function(p){return{id:p.id,text:p.question,at:p.sentAt};}).concat([{id:r.id,text:r.question,at:r.sentAt}]);
- const wait=r.receivedAt-prev[0].receivedAt;
- if(wait>0){r.stages=[{name:'等待客户补充消息',duration:wait,at:r.receivedAt}].concat(r.stages);r.receivedAt=prev[0].receivedAt;}
  r.total=r.replyAt-r.receivedAt;
  }
 }
@@ -501,7 +498,7 @@ function traceHTML(r){
  const msgList=list=>'<div class="trace-msg-list">'+list.map((m,i)=>'<div class="trace-msg"><b>'+(i+1)+'</b><div><span class="trace-msg-text">'+esc(m.text)+'</span><small>消息ID：'+esc(m.id)+' · '+esc(fmt(m.at))+'</small></div></div>').join('')+'</div>';
  return '<div class="trace-summary">'+''+'<div class="trace-summary-meta"><span><em>AI决策追溯ID</em>'+esc(r.traceId)+'</span><span><em>会话ID</em>'+esc(r.sid)+'</span></div></div>'
  + ''
- +section('1','输入 · 触发消息','<div class="trace-sub">客户消息原文'+(inputs.length>1?'（共 '+inputs.length+' 条，AI 一并接管）':'')+'</div>'+msgList(inputs)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
+ +section('1','输入 · 触发消息','<div class="trace-sub">客户消息原文</div>'+msgList(inputs)+'<details><summary>当时传入的上下文快照</summary><pre>'+esc(context)+'</pre></details>')
  +section('2','理解 · 意图识别',results('intent',r.intentResults,'暂无意图结果'))
  +section('3','判断与决策 · 知识匹配',results('knowledge',r.knowledgeResults,'暂无知识结果'))
  +section('4','输出 · AI回复消息',replies.length?msgList(replies):'<div class="trace-result-empty">'+esc(failed?'异常':'已转人工')+'</div>');
@@ -512,7 +509,7 @@ window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,sessions,records,account,saveAccoun
 (function(){
 'use strict';const D=window.AIDemo;
 window.showToast=function(msg,cls){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='toast '+(cls||'ok');t.style.display='block';clearTimeout(window.showToast.timer);window.showToast.timer=setTimeout(()=>t.style.display='none',2300);};
-const PAGES={'艾客坐席管理':'艾客坐席管理_v1.0.html','供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI响应明细':'AI响应明细_v1.0.html'};
+const PAGES={'供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI响应明细':'AI响应明细_v1.0.html'};
 document.querySelectorAll('.js-nav').forEach(el=>{el.tabIndex=0;el.setAttribute('role','link');const go=()=>{const file=PAGES[el.dataset.page];if(file)location.href=D.url(file);};el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go();}});});
 for(const [id,selector]of [['nav-third','.nav-item.child:not(.ai-child)'],['nav-ai','.nav-item.ai-child']]){const el=document.getElementById(id);if(el){el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-expanded','true');const toggle=()=>{const open=el.classList.toggle('open');el.setAttribute('aria-expanded',String(open));document.querySelectorAll(selector).forEach(c=>c.style.display=open?'flex':'none');};el.addEventListener('click',toggle);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});}}
 document.querySelectorAll('.js-nothing').forEach(el=>el.addEventListener('click',()=>showToast('本次原型仅包含三方账号管理与AI会话管理相关页面。','info')));

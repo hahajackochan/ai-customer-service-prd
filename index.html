@@ -81,7 +81,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 <div class="layout">
   <nav class="toc">
     <h1>AI客服 PRD</h1>
-    <div class="meta">v1.57 · 产品经理：陈嘉豪 · 2026-09-16</div>
+    <div class="meta">v1.68 · 产品经理：陈嘉豪 · 2026-09-17</div>
     <a href="#info">一、项目信息</a>
     <a href="#background">二、需求背景</a>
     <a href="#scope">三、需求功能清单</a>
@@ -91,12 +91,11 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <a href="#feature-agent">4.1 智能体管理</a>
         <a href="#feature-workflow">4.2 工作流管理</a>
         <a href="#feature-1">4.3 供应商管理</a>
-        <a href="#feature-seat">4.4 艾客坐席管理</a>
-        <a href="#feature-3">4.5 AI托管账号</a>
-        <a href="#feature-h5">4.6 会话接待插件H5</a>
-        <a href="#feature-5">4.7 客户会话管理</a>
-        <a href="#feature-4">4.8 会话消息管理</a>
-        <a href="#feature-6">4.9 AI响应明细</a>
+        <a href="#feature-3">4.4 AI托管账号</a>
+        <a href="#feature-h5">4.5 会话接待插件H5</a>
+        <a href="#feature-5">4.6 客户会话管理</a>
+        <a href="#feature-4">4.7 会话消息管理</a>
+        <a href="#feature-6">4.8 AI响应明细</a>
       </span>
     </div>
   </nav>
@@ -112,16 +111,27 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th style="width:160px">字段</th><th>内容</th></tr>
         <tr><td>产品/系统</td><td>消费者业务中台（租户端）</td></tr>
         <tr><td>需求名称</td><td>AI客服</td></tr>
-        <tr><td>版本</td><td>v1.57</td></tr>
+        <tr><td>版本</td><td>v1.68</td></tr>
         <tr><td>文档负责人</td><td>陈嘉豪</td></tr>
         <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息。</td></tr>
         <tr><td>涉及三方</td><td>艾客客服系统（前期）；京东、天猫等仅预留供应商维度扩展</td></tr>
-        <tr><td>更新时间</td><td>2026-09-16</td></tr>
+        <tr><td>更新时间</td><td>2026-09-17</td></tr>
       </table>
       <div style="display:none" aria-hidden="true">
       <h3>版本记录</h3>
       <table>
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-09-17</td><td>v1.68</td><td>按需求方确认：4.4 AI托管账号「后端处理逻辑」新增一条——当账号的单聊AI接管启用时，该账号下所有单聊会话都需要改成启用状态。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.67</td><td>按需求方确认：AI回复响应详情（耗时详情抽屉）时间轴删除「等待客户补充消息」环节，多次触发消息不再计入等待耗时，总时长与各环节耗时口径保持一致（AI响应明细 / 会话消息详情 / 会话消息管理三个原型同步）。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.66</td><td>按需求方确认：AI回复响应详情（耗时详情抽屉）时间轴删除「消费者发出问题」环节，改为从「系统接收到问题」起展示（与耗时口径一致，各环节耗时不变），AI响应明细 / 客户会话管理 / 会话消息管理三个原型同步。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.65</td><td>按需求方确认：①删除两个会话接待插件H5原型底部的「原型演示 · 数据为模拟示例…」演示说明（含禁用态原型）；②4.8 AI响应明细管理界面说明措辞微调（「AI响应明细主要是记录」改为「AI响应明细：主要是记录」）。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.64</td><td>按需求方确认：4.5 会话接待插件H5「前端规则逻辑」原一条清空，改为六条——①当前账号模块（托管账号姓名、账号ID、单聊AI接管状态）；②当前会话模块（客户名称、单聊标识、会话AI接管开关）；③单聊设置模块（单聊总数、名称模糊搜索）；④全部启用AI接管（账号单聊AI接管启用时才亮起，点击后当前账号下所有单聊会话改为启用）；⑤全部禁用AI接管（同前提，改为禁用）；⑥单个会话AI接管启用/禁用（同前提才可选）；功能清单中会话消息管理的说明同步——「员工未回复时保留该条消息并显示『员工未回复』占位」改为「成员未回复时保留该条消息，『成员回复内容』显示-」。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.63</td><td>按需求方确认：①4.7 会话消息管理新增「前端规则逻辑」三条——列表-成员回复内容（成员未回复或转人工显示-，AI回复显示回复内容，多条消息按序号换行展示）、列表-转人工（AI转人工显示是，反之显示否）、列表-AI决策追溯按钮（AI回复或转人工时显示）；②原型同步：成员未回复行的「成员回复内容」由「员工未回复」标签改为「-」；③AI决策追溯意图识别结果状态「已记录」改为「已采用」（6个原型同步）。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.62</td><td>按需求方确认：4.8 AI响应明细内容区顶部新增高亮管理界面说明（记录每个AI决策追溯的总耗时和各环节耗时，用于分析用时过长环节并迭代优化）及关联关系示意图——以AI决策追溯ID为主要ID，与会话ID、客户ID、成员ID均为一对一（1:1）关联。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.61</td><td>按需求方确认：①4.6 客户会话管理「前端规则逻辑」新增一条——会话明细的成员回复消息若为AI回复则颜色高亮，并显示「AI回复」「AI决策追溯」「耗时详情」按钮，点击AI决策追溯和耗时详情按钮右侧以抽屉形式展示对应内容；②4.6/4.7 在规则区上方新增高亮的管理界面说明（客户会话管理、会话消息管理各一段）；③4.7 新增关联关系示意图——列表记录以客户消息ID为主要ID，1:1关联AI决策追溯ID，1条AI决策追溯ID可输出多条（1:N）AI回复消息；④AI决策追溯抽屉「输入 · 触发消息」删除「（共 N 条，AI 一并接管）」文案，6个原型同步。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.60</td><td>按需求方确认：①4.2 工作流管理「前端规则逻辑」删除「列表新增「智能体类型」字段，并支持按智能体类型筛选。」一句；②删除 4.4 艾客坐席管理整个功能点（需求功能清单、目录、详细方案、独立原型文件及各原型左侧菜单入口同步移除），AI托管账号至 AI响应明细的章节号由 4.5—4.9 顺移为 4.4—4.8；功能清单中工作流管理说明的「列表新增智能体类型字段及筛选条件」同步改为「列表含智能体类型字段及筛选条件」。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.59</td><td>按需求方确认：4.5 AI托管账号「前端规则逻辑」删除定时同步规则；同步规则移入「后端处理逻辑」首条并调整口径为「同步回来的AI托管账号，若属于新增记录，默认单聊AI接管是禁用状态」；「后端处理逻辑」补充艾客接口文档链接（apifox，企微系统OpenAPI）及访问密码。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.58</td><td>按需求方确认：4.5 AI托管账号「前端规则逻辑」原三条清空改为四条——①系统每天定时同步一次艾客的托管账号，也支持人工点击【同步】按钮进行拉取，同步回来的AI托管账号默认单聊AI接管是禁用状态；②列表的「群聊AI接管」字段与编辑弹窗的「群聊AI接管」配置一期无需实现、后续再扩展，样式上需要兼容（标红说明保留）；③点击编辑按钮，弹窗内展示账号名称和账号ID，支持启用或禁用单聊AI接管，启用时必须选择意图识别工作流，未选择时保存给出拦截提示；④账号详情仅当供应商类型为艾客时展示艾客供应商扩展信息。「后端处理逻辑」原两条清空改为一条——开启AI接管联系人数逻辑：账号单聊AI接管启用时统计该账号下所有开启单聊AI接管的会话数，未启用默认显示0。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-16</td><td>v1.57</td><td>按需求方确认：①AI决策追溯详情的时间统一精确到秒（去掉毫秒），聊天详情消息时间同步；②4.8 会话消息管理筛选条件删除「处理结果」；③会话消息管理列表「成员回复内容」：一条追溯产出多条 AI 回复时按序号分行展示；客户连续发送、共享同一条追溯的多条客户消息，每条都在该列呈现该追溯的回复内容，并在操作列提供「AI决策追溯」入口（示例数据补充多条触发消息与多条回复）；④AI响应明细列表删除「成员回复时间」列（由9列调整为8列，排序仍按成员回复时间倒序），「耗时详情」顶部删除「发送成功」文案、状态摘要与AI决策追溯详情一致（AI决策追溯ID + 会话ID）；⑤AI决策追溯详情的示例数据补充客户连续多条消息（多条触发消息原文）与多条AI回复的情况。⑥转人工记录：「成员回复内容」列显示「—」（不再显示「已转人工」标签），操作列同样提供「AI决策追溯」入口；4.8「交互逻辑」同步改为「有 AI 回复或 AI 判定转人工时显示按钮」；会话消息管理示例数据把列表第 2 条改为转人工（归因「用户主动要求人工」），首屏即可看到转人工样式。⑦转人工相关呈现精简：会话消息管理「转人工归因」列只显示归因文案（不再可点击跳转、不再带「转人工」副标签）；AI决策追溯详情删除「AI决策追溯ID」上方的「转人工 / 异常」文案和下方的转人工归因模块（原型同步清理对应死样式）；转人工追溯的「4 输出 · AI回复消息」空态文案改为「已转人工」。⑧细节修正：4.7 客户会话管理前两条规则归入「前端规则逻辑」、后两条归入「交互逻辑」，「涉及AI回复」说明删除「不随当前接管状态变化」；会话消息管理列表在消息类型为图片时客户消息内容显示「[图片]」；所有列表点击「筛选」展开面板时不再自动聚焦第一个输入框。⑨聊天与追溯细节：会话聊天详情右上角「返回」与聊天区之间增加 14px 间距；聊天内容不再插入「AI转人工 / AI处理异常」事件行；「最后聊天」时间去掉毫秒；从客户会话管理进入AI决策追溯不再显示底部「查看关联消息」按钮；AI决策追溯顶部摘要卡片内容垂直居中（去掉原为上方分区预留的上边距）。⑩抽屉排版：AI回复响应详情顶部两张卡片（追溯摘要、AI响应总时长）之间补 14px 间距。⑪4.5 / 4.7 / 4.8 / 4.9 的原型标题去掉括号补充说明，只保留「原型 · 模块名」。⑫AI决策追溯「2 理解 · 意图识别」「3 判断与决策 · 知识匹配」不再显示「共 N 条意图结果 / 知识结果」统计行，只展示结果卡片本身。⑬AI回复响应详情删除「系统收到消息 … → 最终回复发送成功 …」说明行及其下方耗时占比进度条，时间线中「参考节点，不计入总时长」「总时长起点」两个标签删除（对应死样式一并清理）。⑭4.9 AI响应明细：筛选条件「总响应时长」删除「介于」选项及其上限输入框（区间校验、syncRanges 切换逻辑与相关死样式一并清理），仅保留大于 / 小于；列表新增「创建时间」列（8列调整为9列，位于「AI响应总时长」右侧）。⑮「AI回复响应详情」删除底部的「各环节耗时合计」一行（时间线本身保留），随之失效的 kv() 辅助函数与 .trace-kv 死样式一并清理。PRD 与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
           <tr><td>2026-09-16</td><td>v1.56</td><td>按需求方确认：①4.9「AI响应明细」删除两条底色说明（AI响应总时长口径与耗时示例）；②AI回复响应详情删除「查看客户消息」跳转，仅保留「查看AI决策追溯」；③AI决策追溯详情：删除状态摘要上方虚线，状态摘要由「AI决策追溯ID + 会话 + 触发客户消息条数 + AI回复消息条数」简化为「AI决策追溯ID + 会话ID」；④「1 输入 · 触发消息」在每条消息上直接展示「消息ID」字段名，删除独立的「触发时间」「触发消息ID」两行；⑤「2 理解 · 意图识别」「3 判断与决策 · 知识匹配」去掉每条结果下方的说明行，保留结果名称、采用状态与评分；⑥「4 输出 · AI回复消息」每条回复同样展示「消息ID」字段名，示例数据补充一条追溯产出多条AI回复的情况。PRD 与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
           <tr><td>2026-09-16</td><td>v1.55</td><td>按需求方确认：4.8 会话消息管理列表「操作」列删除「聊天记录」按钮，v1.54 新增的对应交互规则（点击「聊天记录」跳到客户会话管理详情并定位消息）同步删除；该列只保留「AI决策追溯」按钮，无AI回复的记录该列为空。会话消息管理、AI响应明细的操作列宽度恢复为与其他列表一致的 112px（客户会话管理列表仍有「编辑」「聊天内容」两个按钮，保持 248px）。PRD 与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
@@ -204,13 +214,12 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       <table class="scope-table">
         <tr><th>系统</th><th>模块</th><th>功能点</th><th>优先级</th><th>说明</th><th>详细方案</th></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>智能体管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、应用Key和应用密钥；当前类型仅支持飞书aily-工作流应用，列表密钥脱敏展示，记录按创建时间倒序，支持新增、编辑。</td><td><a href="#feature-agent">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、工作流类型、工作流名称、工作流ID；智能体类型当前仅支持飞书aily-工作流应用，工作流类型支持意图识别、业务API、商品知识库、FAQ知识库；列表新增智能体类型字段及筛选条件，记录按创建时间倒序；编辑时智能体类型与工作流类型不可修改；支持按当前筛选结果导出。</td><td><a href="#feature-workflow">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、工作流类型、工作流名称、工作流ID；智能体类型当前仅支持飞书aily-工作流应用，工作流类型支持意图识别、业务API、商品知识库、FAQ知识库；列表含智能体类型字段及筛选条件，记录按创建时间倒序；编辑时智能体类型与工作流类型不可修改；支持按当前筛选结果导出。</td><td><a href="#feature-workflow">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>供应商管理</td><td><span class="tag p0">P0</span></td><td>供应商列表与维护页面；筛选条件仅含供应商类型；列表字段含供应商类型、应用ID、应用Key等，共9列，记录按创建时间倒序；新增供应商需选择供应商类型（当前支持艾客）并填写该类型接入配置：服务地址、应用ID、应用Key、应用Secret、回调Token、回调AES密钥、启用状态；编辑可维护接入配置与启用状态，供应商类型创建后不可更换；支持按当前筛选结果导出。</td><td><a href="#feature-1">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>艾客坐席管理</td><td><span class="tag p0">P0</span></td><td>艾客坐席账号列表；筛选条件为账号、账号名称、所属部门、是否客服、启用状态，列表字段为用户账号ID、账号、账号名称、所属部门、是否客服、创建时间、启用状态，共7列，记录按创建时间倒序，启用状态只读展示「启用 / 禁用」；支持「同步」按钮重新拉取坐席账号；支持按当前筛选结果导出。</td><td><a href="#feature-seat">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>AI托管账号</td><td><span class="tag p0">P0</span></td><td>AI托管账号列表展示9个数据字段及操作列，支持按账号名称、账号ID、手机号、单聊AI接管、群聊AI接管、在线状态筛选；按最近上线时间倒序；单聊 / 群聊AI接管在列表只读展示「是 / 否」，通过「编辑」弹窗按单聊 / 群聊分组配置，开启后必须各自选择一个「意图识别」工作流（两者可选择不同工作流），支持「同步」按钮重新拉取托管账号，并支持按当前筛选结果导出。</td><td><a href="#feature-3">查看</a></td></tr>
         <tr><td>消费者业务中台 / 会话接待插件H5</td><td>AI接管配置（艾客客服端内嵌）</td><td>会话接待插件H5</td><td><span class="tag p0">P0</span></td><td>展示当前账号、当前会话及账号下单聊会话列表；当前账号展示单聊AI接管状态（启用 / 禁用）；列表记录不可选择且不展示复选框，仅支持当前会话、行内单个及全部启用 / 禁用AI接管。</td><td><a href="#feature-h5">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>客户会话管理</td><td><span class="tag p0">P0</span></td><td>13列，按客户 × 成员管理会话接管（列表展示启用 / 禁用，支持弹窗编辑）、历史AI标记及聊天记录，按最后聊天时间倒序；支持按起止日期筛选、分段加载和追溯，聊天详情右上角「返回」按按钮样式返回来源列表并保留筛选，聊天内容默认定位到最新记录、首屏只展示最新10条并支持上滑每次加载更早的10条；支持按当前筛选结果导出。</td><td><a href="#feature-5">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>13列，逐条查询客户消息、回复及转人工归因，按发送时间倒序；员工未回复时保留该条消息并显示「员工未回复」占位；「AI回复」列改为「转人工」，删除「成员回复消息类型」「成员回复时间」；共享AI决策追溯（追溯ID、输入、意图识别、知识匹配、AI回复消息），支持意图 / 知识多结果与评分；支持按当前筛选结果导出。</td><td><a href="#feature-4">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>13列，逐条查询客户消息、回复及转人工归因，按发送时间倒序；成员未回复时保留该条消息，「成员回复内容」显示-；「AI回复」列改为「转人工」，删除「成员回复消息类型」「成员回复时间」；共享AI决策追溯（追溯ID、输入、意图识别、知识匹配、AI回复消息），支持意图 / 知识多结果与评分；支持按当前筛选结果导出。</td><td><a href="#feature-4">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI响应明细</td><td><span class="tag p0">P0</span></td><td>9列，新增「创建时间」列（取该条响应记录创建时间，即系统收到客户消息的时间），以AI决策追溯ID为主查询AI回复总时长、七节点与阶段耗时，按成员回复时间倒序；不展示消息ID、客户消息内容、成员回复内容；仅支持总响应时长大于 / 小于阈值筛选（不提供区间），不提供各环节时间筛选，并支持关联追溯；支持按当前筛选结果导出。</td><td><a href="#feature-6">查看</a></td></tr>
       </table>
     </section>
@@ -243,7 +252,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
-            <li>新增 / 编辑包含智能体类型、工作流类型、工作流名称、工作流ID，均为必填；智能体类型当前仅可选择「飞书aily-工作流应用」，工作流类型可选择「意图识别」「业务API」「商品知识库」「FAQ知识库」。列表新增「智能体类型」字段，并支持按智能体类型筛选。</li>
+            <li>新增 / 编辑包含智能体类型、工作流类型、工作流名称、工作流ID，均为必填；智能体类型当前仅可选择「飞书aily-工作流应用」，工作流类型可选择「意图识别」「业务API」「商品知识库」「FAQ知识库」。</li>
             <li>编辑工作流时，智能体类型与工作流类型只读、不可修改；新增时两项均可选择。编辑保存只更新工作流名称与工作流ID。</li>
           </ul>
           <h4>后端处理逻辑</h4>
@@ -276,45 +285,21 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
 
-      <article id="feature-seat" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.4 艾客坐席管理</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
-        <div class="feature-content">
-          <h4>前端规则逻辑</h4>
-          <ul class="rules">
-            <li>筛选条件：账号、账号名称、所属部门、是否客服、启用状态；列表展示用户账号ID、账号、账号名称、所属部门、是否客服、创建时间、启用状态，共7列，记录按创建时间倒序。</li>
-            <li>启用状态只读展示「启用 / 禁用」，不提供切换操作。</li>
-          </ul>
-          <h4>交互逻辑</h4>
-          <ul class="rules">
-            <li>列表右上角提供「同步」按钮：点击后按钮置为禁用并显示「同步中…」，同步完成恢复为「同步」并刷新列表，同时提示同步结果；同步进行中重复点击不重复触发。</li>
-          </ul>
-          <h4>后端处理逻辑</h4>
-          <ul class="rules">
-            <li>列表读取艾客坐席账号数据，返回用户账号ID、账号、账号名称、所属部门、是否客服、创建时间与启用状态。</li>
-            <li>点击「同步」时向艾客重新拉取坐席账号数据并更新本地记录；同步进行中忽略重复请求。</li>
-          </ul>
-          <div class="proto-card">
-            <div class="block-head"><span>原型 · 艾客坐席管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 艾客坐席管理','原型/艾客坐席管理_v1.0.html')">放大查看</button></span></div>
-            <iframe class="proto-frame" src="原型/艾客坐席管理_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="艾客坐席管理原型"></iframe>
-          </div>
-        </div>
-      </article>
-
-
-
       <article id="feature-3" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.5 AI托管账号</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.4 AI托管账号</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
-            <li>企业名称、联系人、设备名称、设备保管者、是否在线、所属组不在列表展示；点击「详情」展示账号基础信息（供应商、账号ID、账号名称、头像、手机号、开启AI接管联系人数），供应商为「艾客」时额外展示上述6个供应商扩展字段，其他供应商不展示该区域；详情不展示AI接管配置。</li>
-            <li>意图识别工作流取自工作流管理中类型为「意图识别」的工作流，下拉选项同时展示工作流名称与工作流ID（格式：工作流名称（工作流ID）），单聊与群聊可分别绑定不同工作流。</li>
             <li class="warn">列表的「群聊AI接管」字段与编辑弹窗的「群聊AI接管」配置，一期无需实现，后续再扩展，但样式上需要兼容。</li>
+            <li>点击编辑按钮，弹窗内需展示账号名称和账号ID，支持启用或禁用单聊AI接管，若启用单聊AI接管时，必须选择意图识别工作流，未选择的情况下，保存提示“同步回来的AI托管账号，默认单聊AI接管是禁用状态；”</li>
+            <li>账号详情，只有当账号供应商类型为艾客时，才展示艾客供应商扩展信息的模块；</li>
           </ul>
           <h4>后端处理逻辑</h4>
           <ul class="rules">
-            <li>同步与查询：账号基础信息及在线状态由艾客定时拉取，供应商展示拉取归属；点击「同步」时手动重新拉取一次。</li>
-            <li>「开启AI接管联系人数」由中台统计，随会话AI接管配置更新。</li>
+            <li>系统每天定时同步一次艾客的托管账号，也支持人工点击【同步】按钮进行拉取，同步回来的AI托管账号，若属于新增记录，默认单聊AI接管是禁用状态；</li>
+            <li>艾客接口文档：<a href="https://s.apifox.cn/bbc28efa-ca03-4c46-929f-208fb3aebad8/api-96003535" target="_blank" rel="noopener">https://s.apifox.cn/bbc28efa-ca03-4c46-929f-208fb3aebad8/api-96003535</a>，访问密码：K5XKUot3；</li>
+            <li>开启AI接管联系人数逻辑：判断账号的单聊AI托管账号是否启用，若启用，则统计当前托管账号下所有开启单聊AI接管的会话数；未启用的话，默认显示0；</li>
+            <li>当账号的单聊AI接管启用时，该账号下所有单聊会话都需要改成启用状态。</li>
           </ul>
           <div class="proto-card">
             <div class="block-head"><span>原型 · AI托管账号</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · AI托管账号','原型/AI托管账号_v1.0.html')">放大查看</button></span></div>
@@ -326,11 +311,16 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-h5" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.6 会话接待插件H5</h3><span class="feature-id">消费者业务中台 / 会话接待插件（艾客客服端内嵌）</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.5 会话接待插件H5</h3><span class="feature-id">消费者业务中台 / 会话接待插件（艾客客服端内嵌）</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
-            <li>展示当前账号下的单聊会话，列表标题展示「单聊设置（N）」（N 为当前账号的单聊会话数），列表按最新会话记录倒序展示；当前账号的单聊AI接管状态为禁用时，单个会话的开关与「全部启用」「全部禁用」按钮全部置灰，不可操作。</li>
+            <li>当前账号模块：显示托管账号姓名、账号ID、单聊AI接管状态；</li>
+            <li>当前会话模块：显示客户名称、单聊标识、会话AI接管开关；</li>
+            <li>单聊设置模块：显示当前账号的单聊总数，支持输入名称模糊搜索客户会话；</li>
+            <li>（1）全部启用AI接管：只有当账号的单聊AI接管状态为启用时才亮起，点击后自动把当前账号下所有单聊会话的AI接管状态改为启用。</li>
+            <li>（2）全部禁用AI接管：只有当账号的单聊AI接管状态为启用时才亮起，点击后自动把当前账号下所有单聊会话的AI接管状态改为禁用。</li>
+            <li>（3）单个会话AI接管启用/禁用：只有当账号的单聊AI接管状态为启用时才可以选择，可点击启用或禁用。</li>
           </ul>
           <h4>后端处理逻辑</h4>
           <ul class="rules">
@@ -352,12 +342,14 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-5" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.7 客户会话管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.6 客户会话管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
+          <div class="note">客户会话管理：管理每个客户和成员的会话，每个客户和成员只要产生对话，就会有一条会话记录，可进入详情查看完整对话过程、AI决策追溯和AI耗时明细；</div>
           <h4>前端规则逻辑</h4>
           <ul class="rules">
             <li>AI接管状态：账号已开启单聊AI接管时才可编辑，不满足前提时启用 / 禁用两项均置灰不可选，弹窗内提示「托管账号AI接管状态已关闭，请先启用。」并提供「去配置」，点击跳转AI托管账号、按账号ID自动搜索出该账号记录。</li>
             <li>涉及AI回复：只读；该会话有实际AI发送记录时显示「是」，否则显示「否」。</li>
+            <li>会话明细的成员回复消息，若为AI回复，则颜色需要高亮，并且需要显示AI回复、AI决策追溯、耗时详情按钮，点击AI决策追溯和耗时详情按钮，右侧以抽屉形式展示对应内容；</li>
             </ul>
           <h4>交互逻辑</h4>
           <ul class="rules">
@@ -375,8 +367,39 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-4" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.8 会话消息管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.7 会话消息管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
+          <div class="note">会话消息管理：当单聊开启AI接管后，会记录客户发送的消息，并且会自动关联AI决策追溯ID。</div>
+          <div style="margin:10px 0 4px"><svg viewBox="0 0 900 196" role="img" aria-label="客户消息ID与AI决策追溯ID、AI回复消息的关联关系示意图" style="width:100%;max-width:900px;display:block;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b98a4e"/></marker></defs>
+  <rect x="20" y="40" width="230" height="108" rx="10" fill="#fdf1e8" stroke="#e3cba4"/>
+  <text x="135" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#7c4a03">客户消息</text>
+  <text x="135" y="97" text-anchor="middle" font-size="12.5" fill="#8a6a3f">客户消息ID（主要ID）</text>
+  <text x="135" y="122" text-anchor="middle" font-size="12.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">CM_01_042（示例）</text>
+  <line x1="258" y1="94" x2="348" y2="94" stroke="#b98a4e" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="303" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c4a03">1 : 1</text>
+  <text x="303" y="114" text-anchor="middle" font-size="11.5" fill="#a8763f">关联</text>
+  <rect x="356" y="40" width="230" height="108" rx="10" fill="#fdf1e8" stroke="#e3cba4"/>
+  <text x="471" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#7c4a03">AI决策追溯</text>
+  <text x="471" y="97" text-anchor="middle" font-size="12.5" fill="#8a6a3f">AI决策追溯ID</text>
+  <text x="471" y="122" text-anchor="middle" font-size="12.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">TR_01_042（示例）</text>
+  <line x1="594" y1="94" x2="684" y2="94" stroke="#b98a4e" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="639" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c4a03">1 : N</text>
+  <text x="639" y="114" text-anchor="middle" font-size="11.5" fill="#a8763f">输出</text>
+  <rect x="692" y="32" width="188" height="124" rx="10" fill="#fdf1e8" stroke="#e3cba4"/>
+  <text x="786" y="58" text-anchor="middle" font-size="15" font-weight="700" fill="#7c4a03">AI回复消息</text>
+  <rect x="706" y="70" width="160" height="26" rx="13" fill="#ffffff" stroke="#e3cba4"/>
+  <text x="786" y="87" text-anchor="middle" font-size="11.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">RM_01_042_1</text>
+  <rect x="706" y="102" width="160" height="26" rx="13" fill="#ffffff" stroke="#e3cba4"/>
+  <text x="786" y="119" text-anchor="middle" font-size="11.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">RM_01_042_2</text>
+  <text x="786" y="147" text-anchor="middle" font-size="10.5" fill="#a8763f">同一追溯可输出多条</text>
+</svg><p style="font-size:12.5px;color:#909399;margin:4px 0 0">关联关系示意图：列表记录以客户消息ID为主要ID，1条客户消息关联1条AI决策追溯ID，1条AI决策追溯ID可能输出多条AI回复消息。</p></div>
+          <h4>前端规则逻辑</h4>
+          <ul class="rules">
+            <li>列表-成员回复内容：当成员未回复或转人工的情况下，显示-，若为AI回复的则显示AI回复内容，需注意AI存在回复多条消息的情况，多条消息的情况下，每条消息需要新增一个序号 并且 换行展示。</li>
+            <li>列表-转人工：当AI转人工后，此字段显示是，反之显示否；</li>
+            <li>列表-AI决策追溯按钮：当客户消息是通过AI回复或转人工的情况下，需要显示AI决策追溯按钮；</li>
+          </ul>
           <h4>交互逻辑</h4>
           <ul class="rules">
             <li>当客户消息有AI回复、或由AI判定转人工时，显示「AI决策追溯」按钮，点击后在右侧展示该客户消息所属的追溯过程；被并入后续追溯的客户消息，按钮指向所属的那条追溯。</li>
@@ -392,8 +415,31 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-6" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.9 AI响应明细</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.8 AI响应明细</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
+          <div class="note">AI响应明细：主要是记录每个AI决策追溯的总耗时和各个环节的耗时，用于后期分析用时过长的环节，进行迭代优化。</div>
+          <div style="margin:10px 0 4px"><svg viewBox="0 0 900 252" role="img" aria-label="AI响应明细以AI决策追溯ID为主要ID，与会话ID、客户ID、成员ID一对一关联的示意图" style="width:100%;max-width:900px;display:block;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b98a4e"/></marker></defs>
+  <rect x="20" y="76" width="260" height="110" rx="10" fill="#fdf1e8" stroke="#e3cba4"/>
+  <text x="150" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#7c4a03">AI响应明细</text>
+  <text x="150" y="135" text-anchor="middle" font-size="12.5" fill="#8a6a3f">AI决策追溯ID（主要ID）</text>
+  <text x="150" y="160" text-anchor="middle" font-size="12.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">TR_01_042（示例）</text>
+  <line x1="288" y1="115" x2="572" y2="51" stroke="#b98a4e" stroke-width="1.6" marker-end="url(#arr2)"/>
+  <text x="420" y="72" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c4a03">1 : 1</text>
+  <line x1="288" y1="131" x2="572" y2="128" stroke="#b98a4e" stroke-width="1.6" marker-end="url(#arr2)"/>
+  <text x="430" y="122" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c4a03">1 : 1</text>
+  <line x1="288" y1="147" x2="572" y2="205" stroke="#b98a4e" stroke-width="1.6" marker-end="url(#arr2)"/>
+  <text x="420" y="192" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c4a03">1 : 1</text>
+  <rect x="580" y="22" width="300" height="54" rx="10" fill="#fdf1e8" stroke="#e3cba4"/>
+  <text x="600" y="54" font-size="13.5" font-weight="700" fill="#7c4a03">会话ID</text>
+  <text x="690" y="54" font-size="12.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">S_0001（示例）</text>
+  <rect x="580" y="99" width="300" height="54" rx="10" fill="#fdf1e8" stroke="#e3cba4"/>
+  <text x="600" y="131" font-size="13.5" font-weight="700" fill="#7c4a03">客户ID</text>
+  <text x="690" y="131" font-size="12.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">C_88001（示例）</text>
+  <rect x="580" y="176" width="300" height="54" rx="10" fill="#fdf1e8" stroke="#e3cba4"/>
+  <text x="600" y="208" font-size="13.5" font-weight="700" fill="#7c4a03">成员ID</text>
+  <text x="690" y="208" font-size="12.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">wx_1001（示例）</text>
+</svg><p style="font-size:12.5px;color:#909399;margin:4px 0 0">关联关系示意图：AI响应明细以AI决策追溯ID为主要ID，与会话ID、客户ID、成员ID均为一对一（1 : 1）关联。</p></div>
           <div class="proto-card">
             <div class="block-head"><span>原型 · AI响应明细</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · AI响应明细','原型/AI响应明细_v1.0.html')">放大查看</button></span></div>
             <iframe class="proto-frame" src="原型/AI响应明细_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="AI响应明细原型"></iframe>
