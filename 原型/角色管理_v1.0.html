@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>原型 · 角色管理 v1.0（租户管理-角色管理 · AI托管账号权限）</title>
+<style>
+:root{--gold:#b8860b;--gold-deep:#a1760a;--amber:#f9ecc9;--ink:#303133;--text:#4a4f55;--muted:#606266;--weak:#909399;--line:#ebeef4;--page:#f0f1f2;--ok:#67c23a;--blue:#6f8db5;--danger:#f56c6c}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+button,input{font:inherit}
+.topbar{height:64px;background:#fff;display:flex;align-items:center;padding:0 24px;position:relative;z-index:30;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:12px;white-space:nowrap}.logo svg{width:32px;height:32px}.logo b{font-size:18px;font-weight:700;color:#3a3f45;letter-spacing:1px}
+.top-tabs{display:flex;align-items:center;gap:14px;margin-left:56px}.top-tab{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 18px;border-radius:4px;color:var(--text);cursor:pointer;user-select:none}.top-tab svg{width:16px;height:16px}.top-tab.active{background:var(--amber);color:#6b4410;font-weight:600}
+.tenant-pill{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px;border-radius:4px;background:var(--amber);color:#5c4a1e;font-weight:600;cursor:pointer;user-select:none}.tenant-pill .caret{font-size:10px}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:18px;color:var(--ink);white-space:nowrap}.avatar{width:30px;height:30px;border-radius:50%;background:#e8eaed;display:inline-flex;align-items:center;justify-content:center;color:#aeb4bc}.quit{color:var(--gold);cursor:pointer}
+.shell{display:flex;min-height:calc(100vh - 65px)}.sidebar{width:224px;height:calc(100vh - 65px);position:sticky;top:0;background:#fff;border-right:1px solid var(--line);padding:10px 0;flex:0 0 auto;overflow-y:auto}
+.nav-item{height:44px;display:flex;align-items:center;gap:11px;padding:0 20px;color:#3f444a;cursor:pointer;user-select:none;background:transparent}.nav-item svg{width:17px;height:17px;flex:0 0 auto;color:#5b6167}.nav-item .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nav-item:hover{background:#faf6ec}
+.nav-item .chev{font-size:11px;color:#a8adb3;transition:transform .2s ease}
+.nav-item.child{padding-left:42px;font-size:13.5px}.nav-item.child.active{background:var(--amber);color:#6b4410;font-weight:600}
+.nav-children{display:grid;grid-template-rows:0fr;transition:grid-template-rows .2s ease}.nav-children.open{grid-template-rows:1fr}.nav-children-inner{min-height:0;overflow:hidden}
+.nav-group.open>.chev{transform:rotate(180deg)}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.crumb-bar{height:48px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 20px}
+.collapse-ic{display:inline-flex;color:#3f444a}.crumb{color:#3f444a}.crumb .sep{color:#b9bec4;margin:0 8px}.crumb .cur{color:#8a8f94}
+.tab-bar{height:46px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 14px;gap:8px}
+.tab-nav{color:#b9bec4;font-size:16px;cursor:pointer}.tab{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:4px;background:var(--amber);color:#5c4a1e;font-size:13px;cursor:pointer;user-select:none}.tab .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}.tab .x{color:#a3801f;font-size:14px;line-height:1}.tab.plain{background:transparent;color:var(--text)}
+.page-body{padding:18px 20px;flex:1;min-width:0}
+.table-card{background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(31,41,55,.04)}
+.list-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:14px 18px}
+.btn{height:32px;padding:0 16px;border-radius:4px;border:1px solid #dcdfe6;background:#fff;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:13px}
+.btn:hover{color:var(--gold);border-color:#e3c692}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn.primary:hover{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff}
+.btn svg{width:15px;height:15px}
+.table-scroll{overflow:auto}
+table{width:100%;min-width:1360px;border-collapse:collapse;font-size:13.5px}
+thead th{background:#f5f7fa;color:#4a4f55;font-weight:700;text-align:center;padding:12px 10px;white-space:nowrap;border-bottom:1px solid var(--line)}
+tbody td{padding:13px 10px;text-align:center;border-bottom:1px solid #f2f4f7;color:var(--ink);white-space:nowrap}
+tbody tr:hover td{background:#fafbfc}
+tbody td.weak{color:var(--weak)}
+.op-btn{height:28px;padding:0 10px;border-radius:4px;border:0;background:#f4f5f7;color:var(--gold);cursor:pointer;font-size:13px;margin:0 4px}
+.op-btn:hover{background:#f0ead8}
+.op-btn.danger{color:var(--danger)}
+.op-btn.danger:hover{background:#fdeeee}
+.pager{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 18px 18px;color:var(--muted);font-size:13px;flex-wrap:wrap}
+.page-size{height:30px;border:1px solid #dcdfe6;border-radius:4px;padding:0 8px;color:var(--muted);background:#fff;outline:none}
+.page-num{width:30px;height:30px;border-radius:4px;border:0;background:#f4f5f7;color:var(--muted);cursor:pointer}
+.page-num.active{background:var(--gold);color:#fff}
+.page-num:disabled{color:#c8ccd2;cursor:default}
+.pager input.jump{width:48px;height:30px;border:1px solid #dcdfe6;border-radius:4px;text-align:center;color:var(--muted);outline:none}
+.modal{position:fixed;inset:0;background:rgba(31,35,41,.45);display:none;align-items:center;justify-content:center;z-index:100}
+.modal.active{display:flex}
+.modal-box{width:760px;max-width:calc(100vw - 40px);background:#fff;border-radius:8px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 60px)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 18px;border-bottom:1px solid var(--line);font-weight:700}
+.modal-close{border:0;background:transparent;font-size:18px;color:#909399;cursor:pointer;line-height:1;padding:4px}
+.modal-close:hover{color:var(--ink)}
+.modal-body{padding:16px 18px;overflow:auto}
+.perm-sub{font-size:12.5px;color:var(--weak);margin-bottom:12px}
+.perm-xfer{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.xfer-panel{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff;min-width:0}
+.xfer-head{display:flex;align-items:center;justify-content:space-between;gap:8px;height:34px;padding:0 10px;background:#f7f8fa;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.xfer-search{height:32px;margin:8px 10px 0;padding:0 10px;border:1px solid #dcdfe6;border-radius:4px;outline:none;font-size:13px;color:var(--ink);font-family:inherit;box-sizing:border-box;width:auto}
+.xfer-search:focus{border-color:var(--gold)}
+.xfer-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;height:32px;padding:0 10px;font-size:12.5px;color:var(--weak)}
+.perm-link{border:0;background:transparent;color:var(--gold);font-size:12.5px;cursor:pointer;padding:0;font-family:inherit}
+.perm-link:hover{text-decoration:underline}
+.perm-link:disabled{color:#c8ccd2;cursor:default;text-decoration:none}
+.xfer-list{overflow:auto;border-top:1px solid var(--line);max-height:min(260px,calc(100vh - 408px));min-height:132px}
+.xfer-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px dashed var(--line);cursor:pointer;min-width:0}
+.xfer-item:last-child{border-bottom:0}
+.xfer-item:hover{background:#fafbfc}
+.xfer-item:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.xfer-item.on{background:#fdf8f3}
+.xfer-name{color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xfer-id{color:var(--weak);font-size:12.5px;margin-left:auto;font-family:SFMono-Regular,Consolas,monospace}
+.xfer-flag{flex:0 0 auto;font-size:12px;color:var(--gold);border:1px solid #f0d5bd;border-radius:9px;padding:0 7px;height:19px;line-height:18px;background:#fdf1e8}
+.xfer-flag.plus{color:#b9bec6;border-color:#e6e8ec;background:#fff}
+.xfer-x{flex:0 0 auto;color:#b9bec6;font-size:14px;line-height:1;padding:0 2px}
+.xfer-item:hover .xfer-x{color:var(--gold)}
+.xfer-empty{padding:26px 10px;text-align:center;color:var(--weak);font-size:12.5px;line-height:1.8}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:14px 18px;border-top:1px solid var(--line)}
+.toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:200;display:none;padding:9px 18px;border-radius:4px;color:#fff;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.toast.ok{background:var(--ok)}.toast.info{background:#7a8699}
+.focus-target{outline:2px solid #e3a344;outline-offset:2px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="none" stroke="#c0552b" stroke-width="3"/><g stroke="#c0552b" stroke-width="2.4" fill="none"><path d="M18 7.5c3.6 2.2 3.6 6.8 0 9-3.6-2.2-3.6-6.8 0-9Z"/><path d="M27.5 14.5c-1 4-5.4 5.6-8.6 3.6 1-4 5.4-5.6 8.6-3.6Z"/><path d="M27.5 22.5c-3.2 2-7.6.4-8.6-3.6 3.2-2 7.6-.4 8.6 3.6Z"/><path d="M18 28.5c-3.6-2.2-3.6-6.8 0-9 3.6 2.2 3.6 6.8 0 9Z"/><path d="M8.5 22.5c1-4 5.4-5.6 8.6-3.6-1 4-5.4 5.6-8.6 3.6Z"/><path d="M8.5 14.5c3.2-2 7.6-.4 8.6 3.6-3.2 2-7.6.4-8.6-3.6Z"/></g></svg><b>消费者业务中台</b></div>
+  <nav class="top-tabs">
+    <span class="top-tab js-nothing"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>平台端</span>
+    <span class="top-tab active"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="7.2" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4.8 6v12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3V6M4.8 12c0 1.66 3.22 3 7.2 3s7.2-1.34 7.2-3" stroke="currentColor" stroke-width="1.8"/></svg>租户端</span>
+    <span class="tenant-pill js-nothing">索菲亚会员小程序<span class="caret">▾</span></span>
+  </nav>
+  <div class="top-right"><span class="avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.4" r="3.6" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.4c1.5-3.6 4-5.4 7-5.4s5.5 1.8 7 5.4" stroke="currentColor" stroke-width="1.8"/></svg></span><span>陈嘉豪，你好！</span><span class="quit js-nothing">退出登录</span></div>
+</header>
+<div class="shell">
+<aside class="sidebar">
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.4v4.8l3 1.9" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">首页</span></div>
+  <div class="nav-item nav-group open" data-target="tenant-children" role="button" tabindex="0" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none"><rect x="4.5" y="3.5" width="15" height="17" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">租户管理</span><span class="chev">▾</span></div>
+  <div class="nav-children open" id="tenant-children"><div class="nav-children-inner">
+    <div class="nav-item child js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.2" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M5 19.6c1.4-3.5 4-5.2 7-5.2s5.6 1.7 7 5.2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">用户管理</span></div>
+    <div class="nav-item child active"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7.6" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M5.4 19.8c1.3-3.2 3.7-4.8 6.6-4.8s5.3 1.6 6.6 4.8" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 4.2a3.2 3.2 0 0 1 0 6.8" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">角色管理</span></div>
+    <div class="nav-item child js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="8.2" cy="14.6" r="3.6" stroke="currentColor" stroke-width="1.7"/><path d="M10.8 12 19 3.8M15.5 7.3l2.6 2.6M13 9.8l2 2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">接口能力授权管理</span></div>
+    <div class="nav-item child js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.6v5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="15.9" r="1" fill="currentColor"/></svg><span class="lbl">告警消息配置</span></div>
+    <div class="nav-item child js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M12 4.2v2M12 17.8v2M4.2 12h2M17.8 12h2M6.5 6.5l1.4 1.4M16.1 16.1l1.4 1.4M17.5 6.5l-1.4 1.4M7.9 16.1l-1.4 1.4" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">基础配置</span></div>
+    <div class="nav-item child js-nothing"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3M19.5 12a7.5 7.5 0 0 1-12.8 5.3" stroke="currentColor" stroke-width="1.7"/><path d="M17 3.4v3.5h-3.5M7 20.6v-3.5h3.5" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">自动化规则</span></div>
+  </div></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.2" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M5 19.6c1.4-3.5 4-5.2 7-5.2s5.6 1.7 7 5.2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">用户管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><path d="M5.4 8.4h13.2l-1.1 10.7a1.7 1.7 0 0 1-1.7 1.5H8.2a1.7 1.7 0 0 1-1.7-1.5Z" stroke="currentColor" stroke-width="1.7"/><path d="M9.2 10.4V7.2a2.8 2.8 0 0 1 5.6 0v3.2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">商品管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="3.8" y="7" width="16.4" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 11h16.4M8.6 7c0-2 1.4-3.4 3.4-3.4S15.4 5 15.4 7" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">订单管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M4 10h16M10 4v16" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">京东模块</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.6 12.2l2.3 2.3 4.5-4.9" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">任务管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M12 4.6v2.8M12 16.6v2.8M4.6 12h2.8M16.6 12h2.8" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">页面管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5v-2a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="12.5" width="4" height="6" rx="1.6" stroke="currentColor" stroke-width="1.7"/><rect x="17" y="12.5" width="4" height="6" rx="1.6" stroke="currentColor" stroke-width="1.7"/><path d="M12 5.8v2.7M12 18.5v1.2" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">售后管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="9" width="16" height="11" rx="1.8" stroke="currentColor" stroke-width="1.7"/><path d="M4 12.5h16M12 9v11M12 9c-2.8-.4-4.6-1.6-4.6-3.2C7.4 4.4 8.4 3.6 9.6 3.6c1.6 0 2.4 2 2.4 5.4Zm0 0c2.8-.4 4.6-1.6 4.6-3.2 0-1.4-1-2.2-2.2-2.2-1.6 0-2.4 2-2.4 5.4Z" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">营销活动</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7 10.5h4M7 13.5h7" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">短信管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="6" width="12.5" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M16 10.5 20.5 8v8L16 13.5" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">直播管理</span><span class="chev">▾</span></div>
+  <div class="nav-item js-nothing"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 12.5 12 4l8.5 8.5M6 11v8h12v-8" stroke="currentColor" stroke-width="1.7"/></svg><span class="lbl">异业合作</span><span class="chev">▾</span></div>
+</aside>
+<main class="main">
+  <div class="crumb-bar"><span class="collapse-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 9.5 3 2.5-3 2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="crumb">租户管理<span class="sep">/</span><span class="cur">角色管理</span></span></div>
+  <div class="tab-bar"><span class="tab-nav">‹</span><span class="tab plain js-nothing">首页</span><span class="tab js-nothing"><span class="dot"></span>用户管理<span class="x" title="关闭（演示）">×</span></span><span class="tab"><span class="dot"></span>角色管理<span class="x js-nothing" title="关闭（演示）">×</span></span><span class="tab-nav" style="margin-left:auto">›</span></div>
+  <div class="page-body">
+    <div class="table-card">
+      <div class="list-toolbar">
+        <button type="button" class="btn js-nothing" id="btn-filter"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button>
+        <button type="button" class="btn primary js-nothing" id="btn-create"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>新建角色</button>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th style="min-width:70px">ID</th><th style="min-width:200px">角色名称</th><th style="min-width:220px">角色编码</th><th style="min-width:100px">创建人</th><th style="min-width:170px">创建时间</th><th style="min-width:100px">更新人</th><th style="min-width:170px">更新时间</th><th style="min-width:320px">操作</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <span id="pager-total">共 0 条</span>
+        <select class="page-size" id="page-size" aria-label="每页条数"><option>10条/页</option><option>20条/页</option><option>50条/页</option></select>
+        <button type="button" class="page-num" id="page-prev" aria-label="上一页">‹</button>
+        <span id="page-nums"></span>
+        <button type="button" class="page-num" id="page-next" aria-label="下一页">›</button>
+        <span>前往</span><input class="jump" id="page-jump" value="1" aria-label="前往页码"><span>页</span>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="modal" id="perm-modal" role="dialog" aria-modal="true" aria-labelledby="perm-title">
+  <div class="modal-box">
+    <div class="modal-head"><span id="perm-title">设置AI托管账号权限</span><button type="button" class="modal-close" id="perm-close" aria-label="关闭">×</button></div>
+    <div class="modal-body">
+      <div class="perm-sub">勾选该角色可查看的AI托管账号；中台的AI托管账号、客户会话管理、会话消息管理、AI响应明细等列表按此权限展示数据</div>
+      <div class="perm-xfer">
+        <section class="xfer-panel">
+          <div class="xfer-head"><span>AI托管账号</span></div>
+          <input type="search" class="xfer-search" id="perm-search" placeholder="搜索账号名称 / 账号ID" aria-label="搜索AI托管账号" autocomplete="off">
+          <div class="xfer-bar"><span id="perm-match">共 0 个账号</span><button type="button" class="perm-link" id="perm-pick-all">全选当前 0 条</button></div>
+          <div class="xfer-list" id="perm-list"></div>
+        </section>
+        <section class="xfer-panel">
+          <div class="xfer-head"><span>已选账号</span></div>
+          <div class="xfer-bar"><span id="perm-tip">已选 0 / 0 个账号</span><button type="button" class="perm-link" id="perm-clear">清空已选</button></div>
+          <div class="xfer-list" id="perm-picked"></div>
+        </section>
+      </div>
+    </div>
+    <div class="modal-foot"><button type="button" class="btn" id="perm-cancel">取消</button><button type="button" class="btn primary" id="perm-save">保存</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<script>
+(function(){
+'use strict';
+var STORE_KEY='dsh_proto_role_agent_scope_v1';
+var ACCOUNTS=(function(){var arr=[];for(var i=1;i<=36;i++){arr.push({id:'wx_10'+(i<10?'0'+i:i),name:'会员助理 小菲'+i});}return arr;})();
+var ROLES=[
+  {id:127,name:'建行支付分账服务能力',code:'ccb_payment',creator:'钟进星',createdAt:'2026-09-02 15:03:56',updater:'赵建辉',updatedAt:'2026-09-03 11:57:34'},
+  {id:124,name:'异业合作管理员',code:'cooperation_admin',creator:'梁烨彤',createdAt:'2026-08-26 14:54:07',updater:'梁烨彤',updatedAt:'2026-09-17 16:28:29'},
+  {id:116,name:'异业合作运营人员',code:'Promotion_Admin',creator:'梁烨彤',createdAt:'2026-05-20 18:36:36',updater:'梁烨彤',updatedAt:'2026-09-17 16:28:11'},
+  {id:108,name:'整家事业部-策略分析室专员',code:'Strategic_Analysis_Specialist',creator:'陈嘉豪',createdAt:'2026-03-31 14:32:51',updater:'赵建辉',updatedAt:'2026-09-03 11:57:46'},
+  {id:107,name:'广告分群管理员',code:'Ad_Group_Manager',creator:'陈嘉豪',createdAt:'2026-03-30 14:27:39',updater:'陈嘉豪',updatedAt:'2026-03-30 14:35:19'},
+  {id:105,name:'直播管理员',code:'Live_Admin',creator:'梁烨彤',createdAt:'2026-03-11 15:43:30',updater:'赵建辉',updatedAt:'2026-09-03 11:57:50'},
+  {id:102,name:'定制分销查看&导出',code:'Bringorders_Data',creator:'梁烨彤',createdAt:'2025-10-21 14:56:31',updater:'赵建辉',updatedAt:'2026-09-03 11:48:47'},
+  {id:101,name:'定制分销管理员',code:'Bringorders_Operations',creator:'梁烨彤',createdAt:'2025-10-15 14:36:15',updater:'赵建辉',updatedAt:'2026-09-03 11:47:41'},
+  {id:100,name:'小程序码管理员',code:'QR_Code_Admin',creator:'陈嘉豪',createdAt:'2025-09-26 17:28:41',updater:'赵建辉',updatedAt:'2026-09-03 11:57:54'},
+  {id:99,name:'财务管理员',code:'Finance_Manager',creator:'陈嘉豪',createdAt:'2025-09-18 10:48:59',updater:'赵建辉',updatedAt:'2026-09-03 11:57:56'},
+  {id:98,name:'会员管理员',code:'Member_Manager',creator:'梁烨彤',createdAt:'2025-08-21 10:12:33',updater:'赵建辉',updatedAt:'2026-08-12 15:21:09'},
+  {id:97,name:'订单管理员',code:'Order_Admin',creator:'梁烨彤',createdAt:'2025-07-14 16:05:12',updater:'梁烨彤',updatedAt:'2026-07-30 09:42:18'},
+  {id:96,name:'商品管理员',code:'Product_Admin',creator:'陈嘉豪',createdAt:'2025-06-09 11:38:27',updater:'赵建辉',updatedAt:'2026-06-18 14:07:52'},
+  {id:95,name:'优惠券管理员',code:'Coupon_Admin',creator:'陈嘉豪',createdAt:'2025-05-27 09:54:41',updater:'赵建辉',updatedAt:'2026-05-11 16:33:07'},
+  {id:94,name:'客服主管',code:'Service_Supervisor',creator:'钟进星',createdAt:'2025-04-16 14:20:58',updater:'梁烨彤',updatedAt:'2026-04-22 10:15:36'},
+  {id:93,name:'数据分析师',code:'Data_Analyst',creator:'钟进星',createdAt:'2025-03-05 17:46:20',updater:'赵建辉',updatedAt:'2026-03-19 11:28:44'},
+  {id:92,name:'门店店长',code:'Store_Manager',creator:'梁烨彤',createdAt:'2025-02-11 10:07:35',updater:'梁烨彤',updatedAt:'2026-02-24 15:52:11'},
+  {id:91,name:'导购员',code:'Shopping_Guide',creator:'梁烨彤',createdAt:'2025-01-08 09:31:16',updater:'赵建辉',updatedAt:'2026-01-15 17:09:03'}
+];
+var PAGE_SIZE=10,page=1;
+var tbody=document.getElementById('tbody');
+var modal=document.getElementById('perm-modal');
+var permList=document.getElementById('perm-list'),permTip=document.getElementById('perm-tip'),permTitle=document.getElementById('perm-title');
+var permSearch=document.getElementById('perm-search'),permPicked=document.getElementById('perm-picked'),permMatch=document.getElementById('perm-match'),permPickAll=document.getElementById('perm-pick-all');
+var editingRoleId=null,draft=[],lastFocus=null;
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function showToast(message,type){var el=document.getElementById('toast');el.textContent=message;el.className='toast '+(type||'ok');el.style.display='block';clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){el.style.display='none';},2200);}
+function loadScopes(){try{var raw=localStorage.getItem(STORE_KEY);if(raw){var d=JSON.parse(raw);if(d&&typeof d==='object')return d;}}catch(e){}return {};}
+function saveScopes(d){try{localStorage.setItem(STORE_KEY,JSON.stringify(d));}catch(e){}}
+function pageCount(){return Math.max(1,Math.ceil(ROLES.length/PAGE_SIZE));}
+function render(){
+  var start=(page-1)*PAGE_SIZE,list=ROLES.slice(start,start+PAGE_SIZE);
+  tbody.innerHTML=list.map(function(r){
+    return '<tr><td class="weak">'+r.id+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.code)+'</td><td>'+esc(r.creator)+'</td><td class="weak">'+esc(r.createdAt)+'</td><td>'+esc(r.updater)+'</td><td class="weak">'+esc(r.updatedAt)+'</td>'+
+      '<td><button type="button" class="op-btn js-nothing">编辑</button><button type="button" class="op-btn danger js-nothing">删除</button><button type="button" class="op-btn btn-perm" data-id="'+r.id+'" id="btn-perm-'+r.id+'">设置AI托管账号权限</button></td></tr>';
+  }).join('');
+  document.getElementById('pager-total').textContent='共 '+ROLES.length+' 条';
+  var total=pageCount(),nums='';
+  for(var i=1;i<=total;i++)nums+='<button type="button" class="page-num'+(i===page?' active':'')+'" data-page="'+i+'">'+i+'</button>';
+  document.getElementById('page-nums').innerHTML=nums;
+  document.getElementById('page-prev').disabled=page<=1;
+  document.getElementById('page-next').disabled=page>=total;
+  document.getElementById('page-jump').value=String(page);
+  bind();
+}
+function bind(){
+  tbody.querySelectorAll('.js-nothing').forEach(function(b){b.onclick=function(){showToast('该入口不在本次原型演示范围内','info');};});
+  tbody.querySelectorAll('.btn-perm').forEach(function(b){b.onclick=function(){openModal(Number(b.dataset.id));};});
+  document.querySelectorAll('#page-nums .page-num').forEach(function(b){b.onclick=function(){page=Number(b.dataset.page);render();};});
+}
+function visibleAccounts(){
+  var q=(permSearch.value||'').trim().toLowerCase();
+  if(!q)return ACCOUNTS.slice();
+  return ACCOUNTS.filter(function(a){return a.name.toLowerCase().indexOf(q)>=0||a.id.toLowerCase().indexOf(q)>=0;});
+}
+function accountById(id){return ACCOUNTS.filter(function(a){return a.id===id;})[0];}
+function renderPermList(){
+  var keyword=(permSearch.value||'').trim(),list=visibleAccounts();
+  permMatch.textContent=keyword?('匹配 '+list.length+' 个账号'):('共 '+ACCOUNTS.length+' 个账号');
+  var allPicked=list.length>0&&list.every(function(a){return draft.indexOf(a.id)>=0;});
+  permPickAll.disabled=!list.length;
+  permPickAll.textContent=allPicked?('移出当前 '+list.length+' 条'):('全选当前 '+list.length+' 条');
+  if(!ACCOUNTS.length){permList.innerHTML='<div class="xfer-empty">当前租户暂无AI托管账号</div>';}
+  else if(!list.length){permList.innerHTML='<div class="xfer-empty">没有匹配「'+esc(keyword)+'」的账号</div>';}
+  else{
+    permList.innerHTML=list.map(function(a){
+      var on=draft.indexOf(a.id)>=0;
+      return '<div class="xfer-item'+(on?' on':'')+'" data-id="'+esc(a.id)+'" role="button" tabindex="0" aria-pressed="'+on+'" title="'+(on?'点击移出已选':'点击加入已选')+'"><span class="xfer-name">'+esc(a.name)+'</span><span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-flag'+(on?'':' plus')+'">'+(on?'已选':'＋')+'</span></div>';
+    }).join('');
+    bindXferItems(permList,function(id){toggleAccount(id,draft.indexOf(id)<0);renderPermList();});
+  }
+  renderPicked();
+  syncPermState();
+}
+function renderPicked(){
+  if(!draft.length){permPicked.innerHTML='<div class="xfer-empty">尚未选择账号<br>点击左侧账号即可添加</div>';return;}
+  permPicked.innerHTML=draft.map(function(id){
+    var a=accountById(id);if(!a)return '';
+    return '<div class="xfer-item" data-id="'+esc(a.id)+'" role="button" tabindex="0" title="点击移出已选"><span class="xfer-name">'+esc(a.name)+'</span><span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-x">×</span></div>';
+  }).join('');
+  bindXferItems(permPicked,function(id){toggleAccount(id,false);renderPermList();});
+}
+function bindXferItems(container,handler){
+  container.querySelectorAll('.xfer-item').forEach(function(el){
+    el.addEventListener('click',function(){handler(el.dataset.id);});
+    el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();handler(el.dataset.id);}});
+  });
+}
+function syncPermState(){
+  permTip.textContent='已选 '+draft.length+' / '+ACCOUNTS.length+' 个账号';
+}
+function toggleAccount(id,checked){
+  var i=draft.indexOf(id);
+  if(checked&&i<0)draft.push(id);
+  if(!checked&&i>=0)draft.splice(i,1);
+  syncPermState();
+}
+function openModal(roleId){
+  var role=ROLES.filter(function(r){return r.id===roleId;})[0];if(!role)return;
+  editingRoleId=roleId;lastFocus=document.activeElement;
+  var scopes=loadScopes();
+  draft=(scopes[roleId]||[]).slice();
+  permTitle.textContent='设置AI托管账号权限';
+  permSearch.value='';
+  renderPermList();
+  modal.classList.add('active');
+  setTimeout(function(){permSearch.focus();},0);
+}
+function closeModal(){modal.classList.remove('active');draft=[];editingRoleId=null;if(lastFocus&&lastFocus.focus)lastFocus.focus();}
+permSearch.addEventListener('input',function(){renderPermList();});
+permSearch.addEventListener('keydown',function(e){if(e.key==='Escape'){permSearch.value='';renderPermList();}});
+permPickAll.addEventListener('click',function(){
+  var list=visibleAccounts(),allPicked=list.length>0&&list.every(function(a){return draft.indexOf(a.id)>=0;});
+  list.forEach(function(a){
+    var i=draft.indexOf(a.id);
+    if(allPicked){if(i>=0)draft.splice(i,1);}
+    else if(i<0)draft.push(a.id);
+  });
+  renderPermList();
+});
+document.getElementById('perm-clear').addEventListener('click',function(){draft=[];renderPermList();});
+document.getElementById('perm-save').addEventListener('click',function(){
+  if(editingRoleId==null)return;
+  var scopes=loadScopes();scopes[editingRoleId]=draft.slice();saveScopes(scopes);
+  closeModal();showToast('保存成功','ok');
+});
+document.getElementById('perm-close').addEventListener('click',closeModal);
+document.getElementById('perm-cancel').addEventListener('click',closeModal);
+document.addEventListener('keydown',function(e){
+  if(!modal.classList.contains('active'))return;
+  if(e.key==='Escape'){closeModal();return;}
+  if(e.key==='Tab'){
+    var controls=[document.getElementById('perm-close'),permSearch,permPickAll]
+      .concat([].slice.call(permList.querySelectorAll('.xfer-item')),
+        [].slice.call(permPicked.querySelectorAll('.xfer-item')),
+        [document.getElementById('perm-clear'),document.getElementById('perm-cancel'),document.getElementById('perm-save')]);
+    var first=controls[0],last=controls[controls.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  }
+});
+document.getElementById('page-prev').addEventListener('click',function(){if(page>1){page--;render();}});
+document.getElementById('page-next').addEventListener('click',function(){if(page<pageCount()){page++;render();}});
+document.getElementById('page-jump').addEventListener('change',function(){var v=parseInt(document.getElementById('page-jump').value,10);if(v>=1&&v<=pageCount()){page=v;render();}else{document.getElementById('page-jump').value=String(page);}});
+document.getElementById('page-size').addEventListener('change',function(){PAGE_SIZE=parseInt(this.value,10)||10;page=1;render();});
+document.querySelectorAll('.nav-group').forEach(function(el){
+  var children=document.getElementById(el.dataset.target);
+  function toggle(){var open=!el.classList.contains('open');el.classList.toggle('open',open);children.classList.toggle('open',open);el.setAttribute('aria-expanded',String(open));}
+  el.addEventListener('click',toggle);el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+});
+document.querySelectorAll('.js-nothing').forEach(function(el){el.addEventListener('click',function(){showToast('该入口不在本次原型演示范围内','info');});});
+render();
+var params=new URLSearchParams(location.search);
+var focusId=params.get('focus');if(focusId&&document.getElementById(focusId))document.getElementById(focusId).classList.add('focus-target');
+if(params.get('open')==='1'){var first=ROLES[0];if(first)openModal(first.id);}
+})();
+</script>
+
+</body>
+</html>

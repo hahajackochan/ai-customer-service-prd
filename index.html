@@ -52,7 +52,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 .rules{padding-left:1.2rem}
 .rules li{margin:3px 0}
 .rules li.warn{color:#c0392b}
-.scope-table a{color:var(--brand);font-weight:600}
+.scope-table{table-layout:fixed;width:100%}.scope-table th{white-space:nowrap}.scope-table a{color:var(--brand);font-weight:600}
 .scope-table a:hover{text-decoration:underline}
 .flow-card,.proto-card{border:1px solid var(--line);border-radius:4px;background:#fff;overflow:hidden;margin:14px 0}
 .block-head{padding:10px 12px;border-bottom:1px solid var(--line);background:var(--head);font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -81,7 +81,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 <div class="layout">
   <nav class="toc">
     <h1>AI客服 PRD</h1>
-    <div class="meta">v1.68 · 产品经理：陈嘉豪 · 2026-09-17</div>
+    <div class="meta">v1.76 · 产品经理：陈嘉豪 · 2026-09-18</div>
     <a href="#info">一、项目信息</a>
     <a href="#background">二、需求背景</a>
     <a href="#scope">三、需求功能清单</a>
@@ -96,13 +96,15 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <a href="#feature-5">4.6 客户会话管理</a>
         <a href="#feature-4">4.7 会话消息管理</a>
         <a href="#feature-6">4.8 AI响应明细</a>
+        <a href="#feature-config">4.9 AI客服配置</a>
+        <a href="#feature-role">4.10 角色管理（AI托管账号权限）</a>
       </span>
     </div>
   </nav>
   <main class="main">
     <header class="hero">
       <h1>AI客服 PRD</h1>
-      <p>本期建设三方账号管理、会话接待插件H5、AI会话管理及智能体管理，支持单聊 / 群聊AI接管独立配置、会话 / 消息查询、转人工归因追溯、AI回复耗时分析，以及智能体应用凭证与工作流配置；不实现真实AI执行。原型均为模拟数据。</p>
+      <p>本期建设三方账号管理、会话接待插件H5、AI会话管理、智能体管理及租户基础配置（AI客服配置），支持单聊 / 群聊AI接管独立配置、按工作日 / 非工作日定时自动启用单聊AI接管、会话 / 消息查询、转人工归因追溯、AI回复耗时分析，以及智能体应用凭证与工作流配置；不实现真实AI执行。原型均为模拟数据。</p>
     </header>
 
     <section id="info" class="section">
@@ -111,16 +113,24 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th style="width:160px">字段</th><th>内容</th></tr>
         <tr><td>产品/系统</td><td>消费者业务中台（租户端）</td></tr>
         <tr><td>需求名称</td><td>AI客服</td></tr>
-        <tr><td>版本</td><td>v1.68</td></tr>
+        <tr><td>版本</td><td>v1.76</td></tr>
         <tr><td>文档负责人</td><td>陈嘉豪</td></tr>
-        <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息。</td></tr>
+        <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息，支持在租户基础配置中按工作日 / 非工作日定时自动启用单聊AI接管。</td></tr>
         <tr><td>涉及三方</td><td>艾客客服系统（前期）；京东、天猫等仅预留供应商维度扩展</td></tr>
-        <tr><td>更新时间</td><td>2026-09-17</td></tr>
+        <tr><td>更新时间</td><td>2026-09-18</td></tr>
       </table>
       <div style="display:none" aria-hidden="true">
       <h3>版本记录</h3>
       <table>
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-09-18</td><td>v1.76</td><td>按需求方确认，4.10 角色管理「设置AI托管账号权限」弹窗去重：①已选账号仅在右侧「已选账号」列表展示，去掉弹窗底部重复的已选标签区；②左右两个列表标题右侧不再展示数量。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-18</td><td>v1.75</td><td>按需求方确认，4.10 角色管理「设置AI托管账号权限」弹窗改为左右穿梭（transfer）形式：①弹窗标题去掉角色名称，固定为「设置AI托管账号权限」；②左侧「AI托管账号」列表（账号名称 + 账号ID）上方提供搜索框，支持按名称 / 账号ID搜索，点击记录自动加入右侧「已选账号」列表（同样展示名称 + 账号ID），点击右侧记录移回；③已选账号在弹窗底部以「账号名称（账号ID）」标签形式展示并可逐个×移出；④保留「全选当前 N 条 / 移出当前 N 条」「清空已选」与已选数量统计。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-18</td><td>v1.74</td><td>按需求方确认：4.10 角色管理「设置AI托管账号权限」弹窗针对账号数量多（几十个）的场景优化交互——①新增搜索框（账号名称 / 账号ID 模糊匹配，输入即时过滤）与「全部 / 已选 / 未选」筛选页签（含数量）；②账号列表改为两列展示、内部滚动；③「全选」改为「全选当前 N 个账号」，作用于当前搜索 / 筛选结果；④底部新增已选账号标签区（可逐个×取消）与「清空已选」；⑤新增搜索 / 筛选无结果空态文案。原型账号示例扩充至 36 个。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-18</td><td>v1.73</td><td>按需求方确认：①4.9 AI客服配置弹窗「执行AI接管等待时长」说明文案改为「当账号和会话启用AI接管，客户发送消息后达到执行时长后，系统开始执行AI客服流程」（原型同步）；②AI客服配置弹窗删除「是否开启」标签与开关旁的「开启 / 关闭」状态文案，开启时间控件紧贴开关展示（原型）；③「开启AI接管联系人数」更名为「开启AI接管客户数」（AI托管账号列表列头、账号详情与 4.4 后端规则字段名同步）。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-18</td><td>v1.72</td><td>按需求方确认：①4.9 AI客服配置的卡片「配置说明」改为「AI客服相关的配置」；②配置弹窗在「自动启用单聊AI托管」上方新增「执行AI接管等待时长」配置项，仅支持输入正整数、单位「秒」，必填；生效口径为账号启用AI接管后，客户发送消息达到执行时长后系统开始执行AI客服流程；③新增 4.10「角色管理（AI托管账号权限）」功能点——角色管理列表每个角色的操作列新增【设置AI托管账号权限】按钮，弹窗展示当前租户的AI托管账号并支持勾选多个账号，权限按角色维度保存；④4.4 AI托管账号、4.6 客户会话管理、4.7 会话消息管理、4.8 AI响应明细各新增一条列表数据范围规则，仅展示当前登录人所属角色已授权的AI托管账号范围内的数据；同步目录、功能清单与原型（新增原型/角色管理_v1.0.html，更新原型/AI客服配置_v1.0.html）。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-18</td><td>v1.71</td><td>按需求方确认：4.1 智能体管理新增 / 编辑弹窗新增「智能体名称」「智能体标识」两个必填字段，位置在「智能体类型」之后；两项仅在新增时可填写，编辑记录时智能体名称、智能体标识与智能体类型只读、不可修改，编辑仅可修改应用Key与应用密钥。列表同步新增「智能体名称」「智能体标识」两列（由9列调整为11列），前端校验、后端保存与更新口径同步。PRD 与原型同步，历史记录不变。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-18</td><td>v1.70</td><td>按需求方确认：新增「AI客服配置」功能点（4.9）——租户管理「基础配置」页新增AI客服配置卡片，点击【配置】以弹窗设置「自动启用单聊AI托管」，工作日 / 非工作日分别独立设置是否开启，开启时必填开启时间；系统定时任务每天判断当天为工作日或非工作日，对应日类型开启自动启用时，按开启时间把所有AI托管账号的单聊AI接管全部启用（账号启用后单聊会话联动，与4.4规则一致），仅自动启用、不涉及自动禁用；同步功能清单、目录与原型（原型/AI客服配置_v1.0.html）。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-17</td><td>v1.69</td><td>按需求方确认：①修复会话接待插件H5「当前会话」AI开关启用 / 禁用一次后无法再次点击的问题（开关的临时禁用态未复位，两个H5原型同步）；②功能清单表格列宽固定、标题行文字不换行，各功能点说明精简为一句用途概述。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-17</td><td>v1.68</td><td>按需求方确认：4.4 AI托管账号「后端处理逻辑」新增一条——当账号的单聊AI接管启用时，该账号下所有单聊会话都需要改成启用状态。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-17</td><td>v1.67</td><td>按需求方确认：AI回复响应详情（耗时详情抽屉）时间轴删除「等待客户补充消息」环节，多次触发消息不再计入等待耗时，总时长与各环节耗时口径保持一致（AI响应明细 / 会话消息详情 / 会话消息管理三个原型同步）。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-17</td><td>v1.66</td><td>按需求方确认：AI回复响应详情（耗时详情抽屉）时间轴删除「消费者发出问题」环节，改为从「系统接收到问题」起展示（与耗时口径一致，各环节耗时不变），AI响应明细 / 客户会话管理 / 会话消息管理三个原型同步。</td><td>陈嘉豪</td></tr>
@@ -212,15 +222,18 @@ th{background:var(--head);color:var(--ink);font-weight:700}
     <section id="scope" class="section">
       <h2>三、需求功能清单</h2>
       <table class="scope-table">
+        <colgroup><col style="width:15%"><col style="width:12%"><col style="width:12%"><col style="width:6%"><col><col style="width:8%"></colgroup>
         <tr><th>系统</th><th>模块</th><th>功能点</th><th>优先级</th><th>说明</th><th>详细方案</th></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>智能体管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、应用Key和应用密钥；当前类型仅支持飞书aily-工作流应用，列表密钥脱敏展示，记录按创建时间倒序，支持新增、编辑。</td><td><a href="#feature-agent">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护智能体类型、工作流类型、工作流名称、工作流ID；智能体类型当前仅支持飞书aily-工作流应用，工作流类型支持意图识别、业务API、商品知识库、FAQ知识库；列表含智能体类型字段及筛选条件，记录按创建时间倒序；编辑时智能体类型与工作流类型不可修改；支持按当前筛选结果导出。</td><td><a href="#feature-workflow">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>供应商管理</td><td><span class="tag p0">P0</span></td><td>供应商列表与维护页面；筛选条件仅含供应商类型；列表字段含供应商类型、应用ID、应用Key等，共9列，记录按创建时间倒序；新增供应商需选择供应商类型（当前支持艾客）并填写该类型接入配置：服务地址、应用ID、应用Key、应用Secret、回调Token、回调AES密钥、启用状态；编辑可维护接入配置与启用状态，供应商类型创建后不可更换；支持按当前筛选结果导出。</td><td><a href="#feature-1">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>AI托管账号</td><td><span class="tag p0">P0</span></td><td>AI托管账号列表展示9个数据字段及操作列，支持按账号名称、账号ID、手机号、单聊AI接管、群聊AI接管、在线状态筛选；按最近上线时间倒序；单聊 / 群聊AI接管在列表只读展示「是 / 否」，通过「编辑」弹窗按单聊 / 群聊分组配置，开启后必须各自选择一个「意图识别」工作流（两者可选择不同工作流），支持「同步」按钮重新拉取托管账号，并支持按当前筛选结果导出。</td><td><a href="#feature-3">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 会话接待插件H5</td><td>AI接管配置（艾客客服端内嵌）</td><td>会话接待插件H5</td><td><span class="tag p0">P0</span></td><td>展示当前账号、当前会话及账号下单聊会话列表；当前账号展示单聊AI接管状态（启用 / 禁用）；列表记录不可选择且不展示复选框，仅支持当前会话、行内单个及全部启用 / 禁用AI接管。</td><td><a href="#feature-h5">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>客户会话管理</td><td><span class="tag p0">P0</span></td><td>13列，按客户 × 成员管理会话接管（列表展示启用 / 禁用，支持弹窗编辑）、历史AI标记及聊天记录，按最后聊天时间倒序；支持按起止日期筛选、分段加载和追溯，聊天详情右上角「返回」按按钮样式返回来源列表并保留筛选，聊天内容默认定位到最新记录、首屏只展示最新10条并支持上滑每次加载更早的10条；支持按当前筛选结果导出。</td><td><a href="#feature-5">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>13列，逐条查询客户消息、回复及转人工归因，按发送时间倒序；成员未回复时保留该条消息，「成员回复内容」显示-；「AI回复」列改为「转人工」，删除「成员回复消息类型」「成员回复时间」；共享AI决策追溯（追溯ID、输入、意图识别、知识匹配、AI回复消息），支持意图 / 知识多结果与评分；支持按当前筛选结果导出。</td><td><a href="#feature-4">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI响应明细</td><td><span class="tag p0">P0</span></td><td>9列，新增「创建时间」列（取该条响应记录创建时间，即系统收到客户消息的时间），以AI决策追溯ID为主查询AI回复总时长、七节点与阶段耗时，按成员回复时间倒序；不展示消息ID、客户消息内容、成员回复内容；仅支持总响应时长大于 / 小于阈值筛选（不提供区间），不提供各环节时间筛选，并支持关联追溯；支持按当前筛选结果导出。</td><td><a href="#feature-6">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>智能体管理</td><td><span class="tag p0">P0</span></td><td>维护智能体名称、标识、应用密钥等信息（当前为飞书aily-工作流应用），支持新增、编辑。</td><td><a href="#feature-agent">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护智能体所用的工作流（意图识别、业务API、商品知识库、FAQ知识库），支持新增、编辑与导出。</td><td><a href="#feature-workflow">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>供应商管理</td><td><span class="tag p0">P0</span></td><td>维护艾客等供应商的接入配置（服务地址、应用密钥、回调配置等），支持新增、编辑与导出。</td><td><a href="#feature-1">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>AI托管账号</td><td><span class="tag p0">P0</span></td><td>管理艾客托管账号及其单聊 / 群聊AI接管配置，支持同步、编辑与导出。</td><td><a href="#feature-3">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 会话接待插件H5</td><td>AI接管配置（艾客客服端内嵌）</td><td>会话接待插件H5</td><td><span class="tag p0">P0</span></td><td>内嵌艾客客服端，管理当前账号下各单聊会话的AI接管开关（单个 / 全部启停）。</td><td><a href="#feature-h5">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>客户会话管理</td><td><span class="tag p0">P0</span></td><td>按客户 × 成员管理每个会话的AI接管状态、聊天记录与AI决策追溯，支持导出。</td><td><a href="#feature-5">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>逐条查看客户消息、AI回复与转人工归因，可关联查看AI决策追溯，支持导出。</td><td><a href="#feature-4">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI响应明细</td><td><span class="tag p0">P0</span></td><td>以AI决策追溯ID为主查看AI响应总时长与各环节耗时，用于分析耗时过长的环节。</td><td><a href="#feature-6">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>租户管理（基础配置）</td><td>AI客服配置</td><td><span class="tag p0">P0</span></td><td>配置执行AI接管等待时长与按工作日 / 非工作日自动启用单聊AI托管的定时规则，定时把所有AI托管账号的单聊AI接管全部启用。</td><td><a href="#feature-config">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>租户管理（角色管理）</td><td>角色管理（AI托管账号权限）</td><td><span class="tag p0">P0</span></td><td>为角色设置可查看的AI托管账号范围（支持勾选多个账号），中台各AI客服列表按角色授权范围展示数据。</td><td><a href="#feature-role">查看</a></td></tr>
       </table>
     </section>
 
@@ -232,11 +245,12 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
-            <li>新增弹窗包含智能体类型、应用Key、应用密钥，均为必填；智能体类型当前仅可选择「飞书aily-工作流应用」。编辑时类型只读，应用密钥不在列表展示明文。</li>
+            <li>新增弹窗包含智能体名称、智能体标识、智能体类型、应用Key、应用密钥，均为必填；智能体类型当前仅可选择「飞书aily-工作流应用」。编辑时智能体名称、智能体标识与智能体类型只读、不可修改，仅可修改应用Key与应用密钥；应用密钥不在列表展示明文。</li>
           </ul>
           <h4>后端处理逻辑</h4>
           <ul class="rules">
-            <li>保存前校验智能体类型为「飞书aily-工作流应用」，并校验应用Key、应用密钥非空；应用密钥加密存储，查询列表仅返回脱敏值。</li>
+            <li>保存前校验智能体类型为「飞书aily-工作流应用」，并校验智能体名称、智能体标识、应用Key、应用密钥非空；应用密钥加密存储，查询列表仅返回脱敏值。</li>
+            <li>更新时以记录已保存的智能体名称、智能体标识、智能体类型为准，仅接收应用Key与应用密钥的变更；请求携带的名称、标识与库中不一致时按编辑不可修改处理，不更新该字段。</li>
           </ul>
           <div class="proto-card">
             <div class="block-head"><span>原型 · 智能体管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 智能体管理','原型/智能体管理_v1.0.html')">放大查看</button></span></div>
@@ -293,12 +307,13 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li class="warn">列表的「群聊AI接管」字段与编辑弹窗的「群聊AI接管」配置，一期无需实现，后续再扩展，但样式上需要兼容。</li>
             <li>点击编辑按钮，弹窗内需展示账号名称和账号ID，支持启用或禁用单聊AI接管，若启用单聊AI接管时，必须选择意图识别工作流，未选择的情况下，保存提示“同步回来的AI托管账号，默认单聊AI接管是禁用状态；”</li>
             <li>账号详情，只有当账号供应商类型为艾客时，才展示艾客供应商扩展信息的模块；</li>
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号数据，未授权的账号不展示（权限在「租户管理 / 角色管理」的【设置AI托管账号权限】中维护，见4.10）。</li>
           </ul>
           <h4>后端处理逻辑</h4>
           <ul class="rules">
             <li>系统每天定时同步一次艾客的托管账号，也支持人工点击【同步】按钮进行拉取，同步回来的AI托管账号，若属于新增记录，默认单聊AI接管是禁用状态；</li>
             <li>艾客接口文档：<a href="https://s.apifox.cn/bbc28efa-ca03-4c46-929f-208fb3aebad8/api-96003535" target="_blank" rel="noopener">https://s.apifox.cn/bbc28efa-ca03-4c46-929f-208fb3aebad8/api-96003535</a>，访问密码：K5XKUot3；</li>
-            <li>开启AI接管联系人数逻辑：判断账号的单聊AI托管账号是否启用，若启用，则统计当前托管账号下所有开启单聊AI接管的会话数；未启用的话，默认显示0；</li>
+            <li>开启AI接管客户数逻辑：判断账号的单聊AI托管账号是否启用，若启用，则统计当前托管账号下所有开启单聊AI接管的会话数；未启用的话，默认显示0；</li>
             <li>当账号的单聊AI接管启用时，该账号下所有单聊会话都需要改成启用状态。</li>
           </ul>
           <div class="proto-card">
@@ -350,6 +365,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>AI接管状态：账号已开启单聊AI接管时才可编辑，不满足前提时启用 / 禁用两项均置灰不可选，弹窗内提示「托管账号AI接管状态已关闭，请先启用。」并提供「去配置」，点击跳转AI托管账号、按账号ID自动搜索出该账号记录。</li>
             <li>涉及AI回复：只读；该会话有实际AI发送记录时显示「是」，否则显示「否」。</li>
             <li>会话明细的成员回复消息，若为AI回复，则颜色需要高亮，并且需要显示AI回复、AI决策追溯、耗时详情按钮，点击AI决策追溯和耗时详情按钮，右侧以抽屉形式展示对应内容；</li>
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【设置AI托管账号权限】中维护，见4.10）。</li>
             </ul>
           <h4>交互逻辑</h4>
           <ul class="rules">
@@ -399,6 +415,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>列表-成员回复内容：当成员未回复或转人工的情况下，显示-，若为AI回复的则显示AI回复内容，需注意AI存在回复多条消息的情况，多条消息的情况下，每条消息需要新增一个序号 并且 换行展示。</li>
             <li>列表-转人工：当AI转人工后，此字段显示是，反之显示否；</li>
             <li>列表-AI决策追溯按钮：当客户消息是通过AI回复或转人工的情况下，需要显示AI决策追溯按钮；</li>
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【设置AI托管账号权限】中维护，见4.10）。</li>
           </ul>
           <h4>交互逻辑</h4>
           <ul class="rules">
@@ -440,10 +457,64 @@ th{background:var(--head);color:var(--ink);font-weight:700}
   <text x="600" y="208" font-size="13.5" font-weight="700" fill="#7c4a03">成员ID</text>
   <text x="690" y="208" font-size="12.5" fill="#a86115" font-family="SFMono-Regular,Consolas,monospace">wx_1001（示例）</text>
 </svg><p style="font-size:12.5px;color:#909399;margin:4px 0 0">关联关系示意图：AI响应明细以AI决策追溯ID为主要ID，与会话ID、客户ID、成员ID均为一对一（1 : 1）关联。</p></div>
+          <h4>前端规则逻辑</h4>
+          <ul class="rules">
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【设置AI托管账号权限】中维护，见4.10）。</li>
+          </ul>
           <div class="proto-card">
             <div class="block-head"><span>原型 · AI响应明细</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · AI响应明细','原型/AI响应明细_v1.0.html')">放大查看</button></span></div>
             <iframe class="proto-frame" src="原型/AI响应明细_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="AI响应明细原型"></iframe>
             <div class="proto-tip">模拟总响应时长筛选、节点详情和关联追溯。</div>
+          </div>
+        </div>
+      </article>
+
+
+
+      <article id="feature-config" class="feature">
+        <div class="feature-head"><h3 class="feature-title">4.9 AI客服配置</h3><span class="feature-id">消费者业务中台 / 租户管理（基础配置）</span></div>
+        <div class="feature-content">
+          <div class="note">AI客服配置：租户在「租户管理 / 基础配置」维护的AI客服入口配置，包含执行AI接管等待时长与自动启用单聊AI托管的定时设置；点击卡片【配置】按钮，以弹窗形式设置。</div>
+          <h4>前端规则逻辑</h4>
+          <ul class="rules">
+            <li>执行AI接管等待时长：只能填写正整数，不填写的情况下默认0；</li>
+            <li>自动启用单聊AI托管：支持按工作日和非工作日自动启用AI账号和所有单聊会话；当勾选自动启用后，必须选择启用的时间；</li>
+            <li><br></li>
+          </ul>
+          <ul class="rules">
+            <li>等待时长：当AI托管账号的AI接管状态为启用 且 会话的AI接管状态为启用时，客户发送消息达到等待时长后，AI将自动获取客户最近发送的消息，执行AI客户流程。</li>
+            <li>自动启用单聊AI托管逻辑：系统每5分钟执行一次定时任务，检查工作日和非工作日是否有勾选，无勾选则结束定时任务，当有任一勾选启用，执行以下逻辑：</li>
+            <li>（1）调用外部接口检查今天是否为工作日，判断是否满足工作日/非工作 和 开启时间的要求，若满足的情况下，将所有托管账号的AI接管状态改为启用 并且 将账号下所有单聊会话的AI接管状态改为启用。</li>
+            <li>（2）查询工作日，可考虑采用此外部接口 或 技术另寻其他接口，下方接口支持传入日期，接口会返回类型 工作日/节假日/周末。</li>
+            <li>万维易源-节假日查询接口&nbsp; <a href="https://www.showapi.com/apiGateway/view/894/6" target="_blank" rel="noopener" title="按住 Cmd / Ctrl 点击可打开链接">https://www.showapi.com/apiGateway/view/894/6</a></li>
+          </ul>
+          <div class="proto-card">
+            <div class="block-head"><span>原型 · AI客服配置</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · AI客服配置','原型/AI客服配置_v1.0.html')">放大查看</button></span></div>
+            <iframe class="proto-frame" src="原型/AI客服配置_v1.0.html?embed=1&focus=card-ai-config" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="AI客服配置原型"></iframe>
+            <div class="proto-tip">模拟租户管理「基础配置」页的AI客服配置卡片与配置弹窗，支持执行AI接管等待时长（正整数 · 单位秒）、工作日 / 非工作日独立开关、开启时间必填校验与保存。</div>
+          </div>
+        </div>
+      </article>
+
+      <article id="feature-role" class="feature">
+        <div class="feature-head"><h3 class="feature-title">4.10 角色管理（AI托管账号权限）</h3><span class="feature-id">消费者业务中台 / 租户管理（角色管理）</span></div>
+        <div class="feature-content">
+          <div class="note">角色管理：租户在「租户管理 / 角色管理」为每个角色设置可查看的AI托管账号范围；系统管理员进入中台后，AI托管账号、客户会话管理、会话消息管理、AI响应明细等界面按当前登录人所属角色的授权范围展示数据。</div>
+          <h4>前端规则逻辑</h4>
+          <ul class="rules">
+            <li>账号选择：左侧显示当前租户的所有AI托管账号，点击选中后，自动在右侧列表展示；</li>
+          </ul>
+          <h4>交互逻辑</h4>
+          <ul class="rules">
+          </ul>
+          <h4>后端处理逻辑</h4>
+          <ul class="rules">
+            <li>登录人进入AI托管账号、客户会话管理、会话消息管理、AI响应明细等界面时，按当前登录人所属角色的授权账号集合过滤数据；未授权账号的数据不返回、不可见。</li>
+          </ul>
+          <div class="proto-card">
+            <div class="block-head"><span>原型 · 角色管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 角色管理','原型/角色管理_v1.0.html')">放大查看</button></span></div>
+            <iframe class="proto-frame" src="原型/角色管理_v1.0.html?embed=1&open=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="角色管理原型"></iframe>
+            <div class="proto-tip">模拟租户管理「角色管理」列表与新增的【设置AI托管账号权限】入口；内嵌原型默认打开权限弹窗，关闭后可查看列表「操作」列新增的按钮。弹窗内为左右穿梭形式：左侧可搜索账号并点击加入右侧已选列表，右侧点击可移出（原型内置 36 个账号演示，权限存于浏览器本地）。</div>
           </div>
         </div>
       </article>
@@ -467,5 +538,1175 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePrevie
 Array.prototype.forEach.call(document.querySelectorAll('.toggle'),function(btn){btn.addEventListener('click',function(){var pre=document.getElementById(btn.getAttribute('data-target')),svg=document.getElementById(btn.getAttribute('data-svg')),showing=pre&&pre.style.display==='block';if(pre)pre.style.display=showing?'none':'block';if(svg)svg.style.display=showing?'block':'none';btn.textContent=showing?'查看源码':'返回图形'})});
 document.querySelectorAll('.toc .chev').forEach(function(btn){btn.addEventListener('click',function(){var g=document.getElementById(btn.getAttribute('data-group'));if(g)g.classList.toggle('open')})});
 </script>
+<!-- PRD-EDITOR:BEGIN v3.0 -->
+<!-- 本段由 agile-pm-workflow skill 注入，不要手工修改；升级请改 skill 目录下的 prd-editor.html 后重新注入。 -->
+<!-- 行为：只有在本机打开（file:// / localhost / 127.0.0.1）时才提供编辑能力；通过 GitHub Pages 等线上地址打开时完全不介入。 -->
+<style id="prd-editor-css">
+#prd-editor-bar{position:fixed;top:18px;right:18px;z-index:99999;display:flex;align-items:center;gap:8px;font:400 13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#0f172a;-webkit-font-smoothing:antialiased}
+#prd-editor-bar button[hidden],#prd-editor-bar .pe-status[hidden]{display:none}
+#prd-editor-bar .pe-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(15,23,42,.08);border-radius:11px;padding:9px 15px;font:500 13px/1 inherit;font-family:inherit;color:#334155;background:rgba(255,255,255,.82);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px -8px rgba(15,23,42,.18);cursor:pointer;transition:background .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+#prd-editor-bar .pe-btn:hover{background:#fff;color:#0f172a;border-color:rgba(15,23,42,.14);transform:translateY(-1px);box-shadow:0 2px 4px rgba(15,23,42,.05),0 12px 28px -8px rgba(15,23,42,.24)}
+#prd-editor-bar .pe-btn:active{transform:translateY(0)}
+#prd-editor-bar .pe-btn svg{width:14px;height:14px;flex:0 0 auto;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#prd-editor-bar .pe-btn.primary{background:#0f172a;color:#fff;border-color:#0f172a}
+#prd-editor-bar .pe-btn.primary:hover{background:#1e293b;border-color:#1e293b;color:#fff}
+#prd-editor-bar .pe-btn.primary:disabled{background:rgba(15,23,42,.3);border-color:transparent;color:rgba(255,255,255,.7);cursor:not-allowed;transform:none;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+#prd-editor-bar .pe-status{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:11px;background:rgba(255,255,255,.82);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border:1px solid rgba(15,23,42,.08);box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px -8px rgba(15,23,42,.18);color:#475569}
+#prd-editor-bar .pe-status .pe-dot{width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.16);transition:background .2s,box-shadow .2s}
+#prd-editor-bar.is-dirty .pe-status .pe-dot{background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.16)}
+#prd-editor-toast{position:fixed;top:74px;right:18px;z-index:99999;max-width:min(92vw,420px);padding:11px 15px;border-radius:12px;font:400 13px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#334155;background:rgba(255,255,255,.9);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border:1px solid rgba(15,23,42,.08);box-shadow:0 2px 4px rgba(15,23,42,.04),0 16px 40px -12px rgba(15,23,42,.26);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+#prd-editor-toast.show{opacity:1;transform:none}
+#prd-editor-toast.ok{color:#065f46;border-color:rgba(16,185,129,.28);background:rgba(236,253,245,.94)}
+#prd-editor-toast.err{color:#991b1b;border-color:rgba(239,68,68,.28);background:rgba(254,242,242,.94)}
+#prd-editor-modal{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:24px}
+#prd-editor-modal[hidden]{display:none}
+#prd-editor-modal .pe-mask{position:absolute;inset:0;background:rgba(15,23,42,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .22s ease}
+#prd-editor-modal.in .pe-mask{opacity:1}
+#prd-editor-modal .pe-card{position:relative;width:min(100%,420px);background:#fff;border-radius:18px;box-shadow:0 4px 8px rgba(15,23,42,.06),0 32px 72px -16px rgba(15,23,42,.4);padding:26px 26px 20px;font:400 14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#334155;opacity:0;transform:scale(.95) translateY(8px);transition:opacity .22s cubic-bezier(.2,.8,.3,1),transform .22s cubic-bezier(.2,.8,.3,1)}
+#prd-editor-modal.in .pe-card{opacity:1;transform:none}
+#prd-editor-modal .pe-ico{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;background:#eff6ff;color:#2563eb}
+#prd-editor-modal[data-tone="warn"] .pe-ico{background:#fffbeb;color:#d97706}
+#prd-editor-modal .pe-ico svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#prd-editor-modal .pe-title{margin:0 0 8px;font-size:17px;font-weight:600;color:#0f172a;letter-spacing:-.01em;line-height:1.4}
+#prd-editor-modal .pe-text{margin:0 0 22px;color:#64748b;font-size:13.5px;line-height:1.65}
+#prd-editor-modal .pe-text b{color:#334155;font-weight:600}
+#prd-editor-modal .pe-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+#prd-editor-modal .pe-mbtn{border:1px solid transparent;border-radius:10px;padding:9px 16px;font:500 13px/1 inherit;font-family:inherit;cursor:pointer;transition:background .16s ease,color .16s ease}
+#prd-editor-modal .pe-mbtn.ghost{color:#64748b;background:transparent}
+#prd-editor-modal .pe-mbtn.ghost:hover{background:#f1f5f9;color:#0f172a}
+#prd-editor-modal .pe-mbtn.danger{color:#dc2626;background:#fef2f2}
+#prd-editor-modal .pe-mbtn.danger:hover{background:#fee2e2}
+#prd-editor-modal .pe-mbtn.primary{color:#fff;background:#0f172a}
+#prd-editor-modal .pe-mbtn.primary:hover{background:#1e293b}
+#prd-editor-fmt{position:absolute;z-index:99999;display:none;align-items:center;gap:2px;padding:4px;border-radius:11px;background:rgba(255,255,255,.93);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border:1px solid rgba(15,23,42,.08);box-shadow:0 2px 4px rgba(15,23,42,.04),0 14px 36px -10px rgba(15,23,42,.32)}
+#prd-editor-fmt button{min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:0;border-radius:7px;background:transparent;color:#475569;font:600 12.5px/1 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;cursor:pointer;transition:background .14s ease,color .14s ease}
+#prd-editor-fmt button:hover{background:#f1f5f9;color:#0f172a}
+#prd-editor-fmt button svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#prd-editor-fmt .pe-sep{width:1px;height:18px;background:rgba(15,23,42,.1);margin:0 3px;flex:0 0 auto}
+#prd-editor-fmt .pe-sw{width:17px;height:17px;border-radius:50%;border:1px solid rgba(15,23,42,.14)}
+#prd-editor-rowbar{position:absolute;z-index:99998;display:none;gap:1px;padding:3px;border-radius:10px;background:rgba(255,255,255,.9);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border:1px solid rgba(15,23,42,.08);box-shadow:0 2px 4px rgba(15,23,42,.04),0 12px 32px -10px rgba(15,23,42,.3)}
+#prd-editor-rowbar button{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:0;border-radius:7px;background:transparent;color:#64748b;cursor:pointer;transition:background .14s ease,color .14s ease}
+#prd-editor-rowbar button:hover{background:#f1f5f9;color:#0f172a}
+#prd-editor-rowbar button[data-act="del"]:hover{background:#fef2f2;color:#dc2626}
+#prd-editor-rowbar button[data-act="del"].is-del{color:#dc2626;background:#fef2f2}
+#prd-editor-rowbar button[data-list].on{background:#eff6ff;color:#2563eb}
+#prd-editor-rowbar .pe-rb-sep{width:1px;height:16px;background:#e2e8f0;margin:0 2px;align-self:center}
+body.prd-editing [data-prd-target]{outline:2px solid rgba(37,99,235,.5);outline-offset:-2px;border-radius:3px}
+#prd-editor-rowbar button svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+body.prd-editing [data-prd-edit]{cursor:text;border-radius:4px;transition:background .14s ease,box-shadow .14s ease}
+body.prd-editing [data-prd-edit]:hover{background:rgba(37,99,235,.05);box-shadow:inset 0 0 0 1px rgba(37,99,235,.16)}
+body.prd-editing [data-prd-edit] a[href]{cursor:pointer}
+body.prd-editing [data-prd-edit] a[href]:hover{background:rgba(37,99,235,.12);border-radius:3px;box-shadow:0 0 0 2px rgba(37,99,235,.12)}
+body.prd-editing [data-prd-edit]:focus{outline:none;background:#fff;box-shadow:inset 0 0 0 2px #2563eb,0 0 0 4px rgba(37,99,235,.12)}
+body.prd-editing [data-prd-dirty="1"]{background:rgba(37,99,235,.07);box-shadow:inset 0 0 0 1px rgba(37,99,235,.22)}
+body.prd-editing [data-prd-dirty="1"]:focus{background:#fff}
+body.prd-editing [data-prd-new="1"]{background:rgba(16,185,129,.08);box-shadow:inset 0 0 0 1px rgba(16,185,129,.26)}
+body.prd-editing [data-prd-deleted="1"]{opacity:.42;text-decoration:line-through;text-decoration-color:rgba(220,38,38,.6);background:rgba(239,68,68,.06)!important;box-shadow:inset 0 0 0 1px rgba(239,68,68,.24)}
+/* 内容被清空后元素高度会塌陷，鼠标就悬停不上去了（会命中父级 ul/table），给个可见占位把行撑住 */
+body.prd-editing [data-prd-edit]:empty,
+body.prd-editing [data-prd-edit]:has(> br:only-child){min-height:1.5em}
+body.prd-editing [data-prd-edit]:empty::before,
+body.prd-editing [data-prd-edit]:has(> br:only-child)::before{content:'（空行）';color:#cbd5e1;font-weight:400;font-size:12px;pointer-events:none}
+body.prd-editing [data-prd-deleted="1"]:empty::before,
+body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'（已删除的空行）'}
+@media print{#prd-editor-bar,#prd-editor-rowbar,#prd-editor-toast,#prd-editor-modal{display:none!important}}
+</style>
+<script id="prd-editor-js">
+(function () {
+  'use strict';
+
+  /* ── 1. 环境闸门：只有本机打开才启用；线上（GitHub Pages 等）直接退出 ── */
+  var host = location.hostname;
+  var IS_LOCAL = location.protocol === 'file:' || host === 'localhost' || host === '127.0.0.1' ||
+                 host === '0.0.0.0' || host === '::1' || host === '[::1]';
+  if (!IS_LOCAL) return;
+
+  /* ── 2. 可编辑范围：除原型、流程图、导航以外的全部文本 ── */
+  // 注意用 i 标志：SVG 元素的 tagName 是小写（text/tspan/g），HTML 元素是大写
+  var SKIP_TAGS = /^(IFRAME|SVG|IMG|CANVAS|VIDEO|AUDIO|PICTURE|OBJECT|EMBED|SCRIPT|STYLE|NOSCRIPT|TEMPLATE|INPUT|TEXTAREA|SELECT|BUTTON|MAP|AREA|SOURCE|TRACK|DIALOG|PROGRESS|METER|PATH|CIRCLE|RECT|LINE|POLYGON|POLYLINE|ELLIPSE|DEFS|G|USE|SYMBOL|MARKER|CLIPPATH|MASK|PATTERN|LINEARGRADIENT|RADIALGRADIENT|STOP|FILTER|FOREIGNOBJECT|TSPAN|TEXTPATH|IMAGE)$/i;
+  var SKIP_SEL = '.toc, nav, .proto-card, .iframe-wrap, .prototype-block, .prototype-frame, .prototype-head, .modal, .img-box, .mermaid, [data-preview-key], #prd-editor-bar, #prd-editor-rowbar, #prd-editor-fmt, #prd-editor-modal, #prd-editor-toast';
+  var INLINE = {};
+  ('A ABBR ACRONYM B BDI BDO BIG BR CITE CODE DATA DEL DFN EM FONT I INS KBD LABEL MARK NOBR Q RP RT RUBY S SAMP SMALL SPAN STRIKE STRONG SUB SUP TIME TT U VAR WBR').split(' ')
+    .forEach(function (t) { INLINE[t] = 1; });
+
+  // 流程图源码（mermaid）不纳入编辑：改了会破坏渲染，且渲染后 DOM 与源码本就不一致
+  var MERMAID_RE = /^\s*(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt|pie|journey|mindmap|timeline|quadrantChart|requirementDiagram|gitGraph|C4Context|sankey-beta|xychart-beta|block-beta)\b/i;
+  var FILE_NAME = decodeURIComponent(location.pathname.split('/').pop() || 'prd.html');
+  var LS_KEY = 'prd-editor:' + location.pathname;
+  var DB_NAME = 'prd-editor';
+  var SVC_PORT = 8799;   // 独立的 PRD 本地保存服务（launchd 常驻）
+
+  var ICON = {
+    edit: '<svg viewBox="0 0 20 20"><path d="M13.6 3.4l3 3L7.1 15.9H4.1v-3z"/></svg>',
+    undo: '<svg viewBox="0 0 20 20"><path d="M4 8h7.5a3.75 3.75 0 010 7.5H7.5"/><path d="M7 5L4 8l3 3"/></svg>',
+    save: '<svg viewBox="0 0 20 20"><path d="M4.6 10.4l3.6 3.6 7.2-8"/></svg>',
+    restore: '<svg viewBox="0 0 20 20"><path d="M4 8h7.5a3.75 3.75 0 010 7.5H7.5"/><path d="M7 5L4 8l3 3"/></svg>',
+    up: '<svg viewBox="0 0 20 20"><path d="M10 16V5"/><path d="M5.6 9.4L10 5l4.4 4.4"/></svg>',
+    down: '<svg viewBox="0 0 20 20"><path d="M10 4v11"/><path d="M5.6 10.6L10 15l4.4-4.4"/></svg>',
+    minus: '<svg viewBox="0 0 20 20"><path d="M5 10h10"/></svg>',
+    warn: '<svg viewBox="0 0 24 24"><path d="M12 9v4.5"/><path d="M12 17h.01"/><path d="M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>',
+    ul: '<svg viewBox="0 0 20 20"><circle cx="4" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="4" cy="10" r="1.2" fill="currentColor" stroke="none"/><circle cx="4" cy="14" r="1.2" fill="currentColor" stroke="none"/><path d="M8 6h8M8 10h8M8 14h8"/></svg>',
+    ol: '<svg viewBox="0 0 20 20"><path d="M8 6h8M8 10h8M8 14h8"/><text x="2" y="8" font-size="6" fill="currentColor" stroke="none" font-family="sans-serif">1</text><text x="2" y="12" font-size="6" fill="currentColor" stroke="none" font-family="sans-serif">2</text><text x="2" y="16" font-size="6" fill="currentColor" stroke="none" font-family="sans-serif">3</text></svg>',
+    clear: '<svg viewBox="0 0 20 20"><path d="M7.5 4h8M11 4l-2 12M5 16h10"/></svg>',
+    nolist: '<svg viewBox="0 0 20 20"><path d="M8 6h8M8 10h8M8 14h8"/><path d="M2.4 12.2l3.2-3.2"/><path d="M2.4 9l3.2 3.2"/></svg>',
+    info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11.5v4.5"/><path d="M12 8h.01"/></svg>'
+  };
+
+  var els = [], snap = [], deleted = [], added = {};
+  var editing = false, busy = false, leaving = false, rawText = null, baseHash = null, svc = null;
+  var bar = null, rowBar = null, fmtBar = null, toastEl = null, hoverEl = null, targetEl = null, toastTimer = null;
+
+  /* ── 3. 收集可编辑元素：取「最外层纯文本块」，内联标签保留 ── */
+  function isTextLeaf(el) {
+    var k = el.children;
+    for (var i = 0; i < k.length; i++) if (!INLINE[k[i].tagName]) return false;
+    return true;
+  }
+  function collect() {
+    els = []; snap = []; deleted = []; added = {};
+    (function walk(node) {
+      var kids = node.children;
+      for (var i = 0; i < kids.length; i++) {
+        var c = kids[i];
+        if (SKIP_TAGS.test(c.tagName)) continue;
+        if (c.matches && c.matches(SKIP_SEL)) continue;
+        if (c.tagName === 'PRE' && (MERMAID_RE.test(c.textContent) || /mermaid|flow-source|chart-source/i.test(c.className || ''))) continue;
+        if (isTextLeaf(c)) {
+          var p = c.parentElement;
+          if ((!p || !isTextLeaf(p)) && (c.textContent.trim().length || isBlankRow(c))) {
+            // 快照前清掉所有编辑器标记：否则二次收集时 outerHTML 会带上 data-prd-edit，源码里就找不到这一行了
+            ['data-prd-edit', 'data-prd-dirty', 'data-prd-deleted', 'data-prd-new', 'contenteditable'].forEach(function (a) { c.removeAttribute(a); });
+            var inner0 = c.innerHTML, outer0 = c.outerHTML;
+            c.setAttribute('data-prd-edit', String(els.length));
+            els.push(c);
+            snap.push({ inner: inner0, outer: outer0, tag: c.tagName, attrs: attrSig(c) });
+          }
+          continue;
+        }
+        walk(c);
+      }
+    })(document.body);
+  }
+  function idxOf(el) { var v = el && el.getAttribute && el.getAttribute('data-prd-edit'); return v == null || v === 'new' ? -1 : Number(v); }
+  // 取消了列表序号的空白行内容为空，普通规则会把它当成"没有内容"跳过，导致重新打开后不可编辑
+  function isBlankRow(el) {
+    return el.tagName === 'LI' && !!(el.style && el.style.getPropertyValue('list-style-type'));
+  }
+  // 元素自身属性的签名（忽略编辑器标记），用来发现「取消列表序号」这类只改属性、内容没变的修改
+  function attrSig(el) {
+    var out = [];
+    Array.prototype.slice.call(el.attributes).forEach(function (a) {
+      if (/^data-prd-|^contenteditable$/i.test(a.name)) return;
+      out.push(a.name + '=' + a.value);
+    });
+    return out.sort().join('|');
+  }
+
+  /* ── 4. 变更收集 ── */
+  function mods() {
+    var m = {};
+    for (var i = 0; i < els.length; i++) {
+      if (deleted[i]) continue;
+      var attrChanged = snap[i].attrs !== undefined && attrSig(els[i]) !== snap[i].attrs;
+      // 属性变了（如取消列表序号）就必须整段替换，否则 innerHTML 带不出 style；
+      // 内容和属性都变时同样只能整段替换，只换 innerHTML 会把属性改动丢掉
+      if (els[i].innerHTML !== snap[i].inner) { m[i] = attrChanged ? { outer: serialize(els[i]) } : els[i].innerHTML; continue; }
+      if (attrChanged) m[i] = { outer: serialize(els[i]) };
+    }
+    return m;
+  }
+  function lists(owner) { if (!added[owner]) added[owner] = { above: [], below: [] }; return added[owner]; }
+  function addedOf(i) { var a = added[i]; return a ? a : null; }
+  function delCount() { var n = 0; for (var i = 0; i < els.length; i++) if (deleted[i]) n++; return n; }
+  function addCount() {
+    var n = 0;
+    for (var k in added) { var a = added[k]; if (a) n += (a.above ? a.above.length : 0) + (a.below ? a.below.length : 0); }
+    return n;
+  }
+  function changeCount() { return Object.keys(mods()).length + delCount() + addCount(); }
+
+  /* ── 5. 源码精确替换：改文本只动那一行，增删行只动那一段 ── */
+  // 浏览器序列化与手写源码常有出入：裸 & 变 &amp;、<br/> 变 <br>、属性引号被规整……逐个生成候选再匹配
+  function decodeEnt(s) {
+    return s.replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>')
+            .replace(/&quot;/gi, '"').replace(/&#39;/gi, "'").replace(/&#x27;/gi, "'")
+            .replace(/&apos;/gi, "'").replace(/&nbsp;/gi, '\u00a0');
+  }
+  function variants(s) {
+    var out = [s];
+    var noSelf = s.replace(/(<[a-zA-Z][\w:-]*\b[^>]*?)\s*\/>/g, '$1>');
+    if (noSelf !== s) out.push(noSelf);
+    if (/&[a-z]+;|&#\d+;|&#x[0-9a-f]+;/i.test(s)) {
+      var d = decodeEnt(s);
+      if (d !== s && out.indexOf(d) < 0) out.push(d);
+      var d2 = decodeEnt(noSelf);
+      if (d2 !== s && out.indexOf(d2) < 0) out.push(d2);
+    }
+    return out;
+  }
+  function findIn(raw, s, cursor) {
+    var v = variants(s);
+    for (var i = 0; i < v.length; i++) {
+      var at = raw.indexOf(v[i], cursor);
+      if (at < 0) continue;
+      var gt = v[i].indexOf('>'), lt = v[i].lastIndexOf('</');
+      if (gt < 0) continue;
+      if (lt <= gt) lt = v[i].length;
+      return { at: at, len: v[i].length, innerStart: at + gt + 1, innerEnd: at + lt };
+    }
+    return null;
+  }
+  // 兜底：只认开标签，内容边界靠 </tag> 或下一个同级标签推断（应对源码里省略闭合标签的写法）
+  function findLoose(raw, s, cursor) {
+    var gt = s.outer.indexOf('>');
+    if (gt < 0) return null;
+    var open = s.outer.slice(0, gt + 1), ov = variants(open), at = -1, used = '';
+    for (var i = 0; i < ov.length; i++) { var h = raw.indexOf(ov[i], cursor); if (h >= 0) { at = h; used = ov[i]; break; } }
+    if (at < 0) return null;
+    var mm = s.outer.match(/^<([a-zA-Z][\w:-]*)/);
+    if (!mm) return null;
+    var tag = mm[1], innerStart = at + used.length, rest = raw.slice(innerStart);
+    var c = new RegExp('</' + tag + '\\s*>', 'i').exec(rest);
+    if (c) return { at: at, len: innerStart + c.index + c[0].length - at, innerStart: innerStart, innerEnd: innerStart + c.index };
+    var n2 = new RegExp('<' + tag + '\\b', 'i').exec(rest);
+    if (!n2) return null;
+    return { at: at, len: innerStart + n2.index - at, innerStart: innerStart, innerEnd: innerStart + n2.index };
+  }
+  function apply(raw) {
+    var m = mods(), cursor = 0, out = '';
+    for (var i = 0; i < els.length; i++) {
+      var s = snap[i], loc = findIn(raw, s.outer, cursor) || findLoose(raw, s, cursor);
+      if (!loc) throw new Error('第 ' + (i + 1) + ' 处内容无法在文件中定位，文件可能已被其他工具改动，请刷新页面后重试');
+      // 定位到的片段必须以该元素自己的开标签开头，否则说明匹配串了行，宁可中止也不写坏文件
+      var seg = raw.slice(loc.at, loc.at + loc.len);
+      var mm = s.outer.match(/^<([a-zA-Z][\w:-]*)/);
+      if (mm && !new RegExp('^<' + mm[1] + '(?=[\\s/>])', 'i').test(seg)) {
+        throw new Error('第 ' + (i + 1) + ' 处内容定位异常（标签不匹配），已中止写入。请刷新页面后重试。');
+      }
+      var lead = raw.slice(cursor, loc.at);
+      var ind = (lead.match(/[ \t]*$/) || [''])[0];
+      if (deleted[i]) {
+        // 这一行连同挂在它名下的新增行一起移除
+        out += lead.replace(/[ \t]+$/, '');
+        var end = loc.at + loc.len;
+        var nl = /^[ \t]*\r?\n/.exec(raw.slice(end));
+        if (nl) end += nl[0].length;
+        cursor = end;
+        continue;
+      }
+      out += lead;
+      var add = addedOf(i);
+      // owner 后面紧跟换行 → 它独占一行，新增行也换行对齐；
+      // 否则是行内写法（表格常把多个 td 写在一行），直接内联插入，不要拆散原来那一行
+      var nl = /^[ \t]*\r?\n/.test(raw.slice(loc.at + loc.len, loc.at + loc.len + 8));
+      var sep = nl ? '\n' + ind : '';
+      // 元素被整体换掉了（比如段落转成了列表）：标签本身就变了，只能整段替换
+      if (s.tag && els[i].tagName !== s.tag) {
+        if (add && add.above.length) for (var a2 = 0; a2 < add.above.length; a2++) out += serialize(add.above[a2]) + sep;
+        out += serialize(els[i]);
+        cursor = loc.at + loc.len;
+        if (add && add.below.length) for (var b2 = 0; b2 < add.below.length; b2++) out += sep + serialize(add.below[b2]);
+        continue;
+      }
+      if (add && add.above.length) {
+        for (var a = 0; a < add.above.length; a++) out += serialize(add.above[a]) + sep;
+      }
+      if (m[i] === undefined) out += raw.slice(loc.at, loc.at + loc.len);
+      // 只改内容 → 只换 innerHTML；属性也变了（如取消列表序号）→ 整段替换
+      else if (typeof m[i] === 'string') out += raw.slice(loc.at, loc.innerStart) + m[i] + raw.slice(loc.innerEnd, loc.at + loc.len);
+      else out += m[i].outer;
+      cursor = loc.at + loc.len;
+      if (add && add.below.length) {
+        for (var b = 0; b < add.below.length; b++) out += sep + serialize(add.below[b]);
+      }
+    }
+    var result = out + raw.slice(cursor);
+    // 自检：结果行数不应少于「原文行数 − 被删行数」。少于说明定位把内容吞掉了，此时宁可中止也不写坏文件。
+    var rawLines = raw.split('\n').length, outLines = result.split('\n').length, dels = delCount();
+    if (outLines < rawLines - dels) {
+      throw new Error('保存自检未通过：结果比预期少 ' + (rawLines - dels - outLines) + ' 行，已中止写入，文件未被修改。请刷新页面后重试。');
+    }
+    return result;
+  }
+  function serialize(el) {
+    var attrs = ['data-prd-edit', 'data-prd-new', 'data-prd-deleted', 'data-prd-dirty', 'contenteditable'];
+    var c = el.cloneNode(true);
+    attrs.forEach(function (a) { c.removeAttribute(a); });
+    var d = c.querySelectorAll('[data-prd-edit],[data-prd-new],[data-prd-deleted],[data-prd-dirty],[contenteditable]');
+    for (var i = 0; i < d.length; i++) attrs.forEach(function (a) { d[i].removeAttribute(a); });
+    return c.outerHTML;
+  }
+  function docPath() {
+    var p = decodeURIComponent(location.pathname);
+    return p.indexOf('/p/') === 0 ? p.slice(3) : p;
+  }
+
+  /* ── 6. 本地服务：读写自己的源文件，点保存即改文件、不弹窗 ── */
+  async function probe() {
+    try {
+      var ctl = new AbortController();
+      var timer = setTimeout(function () { ctl.abort(); }, 900);
+      var r = await fetch('http://127.0.0.1:' + SVC_PORT + '/api/prd/ping', { signal: ctl.signal });
+      clearTimeout(timer);
+      if (r.ok) { var j = await r.json(); if (j && j.prdEdit) return 'http://127.0.0.1:' + SVC_PORT; }
+    } catch (e) { /* 服务没跑，保存时再降级 */ }
+    return null;
+  }
+  async function loadRaw() {
+    if (rawText !== null) return rawText;
+    if (svc) {
+      var r = await fetch(svc + '/api/prd/read', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: docPath() }) });
+      var j = await r.json();
+      if (!j.ok) throw new Error(j.error || '读取源文件失败');
+      rawText = j.html; baseHash = j.hash; return rawText;
+    }
+    var h = await acquireHandle();
+    var f = await h.getFile();
+    rawText = await f.text(); baseHash = null; return rawText;
+  }
+  async function writeBack(html) {
+    if (svc) {
+      var r = await fetch(svc + '/api/prd/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: docPath(), html: html, baseHash: baseHash }) });
+      var j = await r.json();
+      if (!j.ok) { rawText = null; throw new Error(j.error || '写入失败'); }
+      rawText = html; baseHash = j.hash; return '已直写本机文件';
+    }
+    var h = await acquireHandle();
+    var w = await h.createWritable();
+    await w.write(html); await w.close();
+    rawText = html; return '已直写本机文件';
+  }
+
+  /* ── 7. 浏览器直写兜底（无本地服务时）：句柄记在 IndexedDB，二次保存免弹窗 ── */
+  function idb() {
+    return new Promise(function (res, rej) {
+      var r = indexedDB.open(DB_NAME, 1);
+      r.onupgradeneeded = function () { if (!r.result.objectStoreNames.contains('h')) r.result.createObjectStore('h'); };
+      r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); };
+    });
+  }
+  function idbGet(k) { return idb().then(function (db) { return new Promise(function (res) { try { var q = db.transaction('h', 'readonly').objectStore('h').get(k); q.onsuccess = function () { res(q.result || null); }; q.onerror = function () { res(null); }; } catch (e) { res(null); } }); }).catch(function () { return null; }); }
+  function idbPut(k, v) { return idb().then(function (db) { return new Promise(function (res) { try { var t = db.transaction('h', 'readwrite'); t.objectStore('h').put(v, k); t.oncomplete = function () { res(true); }; t.onerror = function () { res(false); }; } catch (e) { res(false); } }); }).catch(function () { return false; }); }
+  async function acquireHandle() {
+    var h = await idbGet(location.pathname);
+    if (h) {
+      try {
+        var p = await h.queryPermission({ mode: 'readwrite' });
+        if (p === 'granted') return h;
+        if (p === 'prompt' && (await h.requestPermission({ mode: 'readwrite' })) === 'granted') return h;
+      } catch (e) { /* 句柄失效，走弹窗 */ }
+    }
+    if (typeof window.showOpenFilePicker !== 'function') throw new Error('当前浏览器不支持直接写回文件，请改用 Chrome / Edge');
+    toast('请在弹窗中选中本 PRD 文件（' + FILE_NAME + '）以直接写回', '');
+    await new Promise(function (r) { requestAnimationFrame(function () { setTimeout(r, 0); }); });
+    var nh = (await window.showOpenFilePicker({ types: [{ description: 'PRD HTML 文档', accept: { 'text/html': ['.html', '.htm'] } }] }))[0];
+    await idbPut(location.pathname, nh);
+    return nh;
+  }
+
+  /* ── 8. 保存 ── */
+  async function save() {
+    if (busy) return false;
+    var n = changeCount();
+    if (!n) { toast('没有需要保存的修改', ''); return false; }
+    busy = true; setBtns();
+    try {
+      if (!svc) svc = await probe();
+      var raw = await loadRaw();
+      var next = apply(raw);
+      var how = await writeBack(next);
+      commit();
+      toast('已保存到 ' + FILE_NAME + '（' + n + ' 处修改）· ' + clock() + ' · ' + how, 'ok');
+      return true;
+    } catch (e) {
+      if (e && e.name === 'AbortError') toast('已取消保存', '');
+      else toast('保存失败：' + ((e && e.message) || e), 'err');
+      return false;
+    } finally { busy = false; setBtns(); }
+  }
+  function commit() {
+    setEditing(false);
+    for (var i = 0; i < els.length; i++) { els[i].removeAttribute('data-prd-dirty'); els[i].removeAttribute('data-prd-deleted'); }
+    for (var k in added) {
+      var a = added[k];
+      if (!a) continue;
+      ['above', 'below'].forEach(function (key) {
+        (a[key] || []).forEach(function (n) { n.removeAttribute('data-prd-new'); n.removeAttribute('data-prd-edit'); n.removeAttribute('data-prd-deleted'); });
+      });
+    }
+    for (var j = 0; j < els.length; j++) if (deleted[j] && els[j].parentNode) els[j].parentNode.removeChild(els[j]);
+    try { localStorage.removeItem(LS_KEY); } catch (e) {}
+    collect();
+    paint();
+  }
+
+  /* ── 9. 增删行 ── */
+  var bound = new WeakSet();
+  function bindEditable(el) {
+    if (bound.has(el)) return;
+    bound.add(el);
+    el.addEventListener('input', function () {
+      var i = idxOf(el);
+      if (i < 0 || el.innerHTML !== snap[i].inner) el.setAttribute('data-prd-dirty', '1');
+      else el.removeAttribute('data-prd-dirty');
+      saveDraft(); paint();
+    });
+    el.addEventListener('keydown', function (ev) {
+      if (ev.key !== 'Enter') return;
+      ev.preventDefault();
+      // Ctrl/Cmd+Enter 在下方新增；加 Shift 则在上方新增
+      if (ev.ctrlKey || ev.metaKey || ev.altKey) addRow(el, ev.shiftKey ? 'above' : 'below');
+    });
+    el.addEventListener('paste', function (ev) {
+      if (el.getAttribute('contenteditable') !== 'true') return;
+      ev.preventDefault();
+      var t = ((ev.clipboardData || window.clipboardData).getData('text/plain') || '').replace(/\s*\n+\s*/g, ' ');
+      if (t) document.execCommand('insertText', false, t);
+      // 粘贴的文案里带网址就顺手变成可点击链接
+      setTimeout(function () { if (linkify(el)) { tidy(el); markHost(el); } }, 0);
+    });
+    // 手打网址的情况：失焦时补一次转换
+    el.addEventListener('blur', function () {
+      if (linkify(el)) { tidy(el); markHost(el); }
+    });
+    // 编辑态里按住 Cmd / Ctrl 点击链接直接新标签打开（普通点击仍用于定位光标）
+    el.addEventListener('click', function (ev) {
+      if (!(ev.metaKey || ev.ctrlKey)) return;
+      var a = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+      if (!a) return;
+      ev.preventDefault(); ev.stopPropagation();
+      try { window.open(a.href, '_blank', 'noopener'); } catch (e) {}
+    });
+  }
+  function makeRow(el, owner, dir, beforeNode) {
+    // 标题里新增时降级为正文段落，免得默认就又大又粗；其余保持同标签以维持结构（ul 里的 li、表格里的 td）
+    var tag = /^H[1-6]$/.test(el.tagName) ? 'P' : el.tagName;
+    var nu = document.createElement(tag);
+    // 故意不复制 className：否则会把参照行的加粗、放大、标红等样式一并带过来
+    ['colspan', 'rowspan', 'scope'].forEach(function (a) { if (el.getAttribute(a)) nu.setAttribute(a, el.getAttribute(a)); });
+    nu.setAttribute('data-prd-edit', 'new');
+    nu.setAttribute('data-prd-new', '1');
+    nu.setAttribute('data-prd-dirty', '1');
+    nu.textContent = tag === 'LI' ? '新增规则' : '新增内容';
+    if (beforeNode && beforeNode.parentNode) beforeNode.parentNode.insertBefore(nu, beforeNode);
+    else el.parentNode.insertBefore(nu, el.nextSibling);
+    lists(owner)[dir].push(nu);
+    bindEditable(nu);
+    nu.setAttribute('contenteditable', 'true');
+    // 新行就在悬停行旁边，一定在视口内；不 preventScroll 的话 focus 会滚动页面，
+    // 而 scroll 监听会把刚显示的行工具条立刻藏掉
+    try { nu.focus({ preventScroll: true }); } catch (e) { nu.focus(); }
+    try { var r = document.createRange(); r.selectNodeContents(nu); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+    // 新建行后把悬停目标也切到它身上。否则工具条还停在上一次悬停的那一行，
+    // 用户以为在删新行、实际删的是原来那一行，表现就是「点了删除没反应」。
+    hoverEl = nu;
+    showRowBar(nu);
+    paint();
+  }
+  function addRow(el, dir) {
+    dir = dir === 'above' ? 'above' : 'below';
+    var owner = idxOf(el);
+    if (owner < 0) {
+      // 光标在新增行上：找它名下的 owner 与方向
+      for (var k in added) {
+        var a = added[k];
+        if (!a) continue;
+        if (a.below.indexOf(el) >= 0) { owner = Number(k); dir = 'below'; break; }
+        if (a.above.indexOf(el) >= 0) { owner = Number(k); dir = 'above'; break; }
+      }
+    }
+    if (dir === 'above' && owner >= 0) {
+      // 归约：在 A 上方新增 == 在前一个可编辑行下方新增，这样保存位置与所见完全一致
+      var prev = el.previousElementSibling;
+      while (prev && idxOf(prev) < 0) prev = prev.previousElementSibling;
+      if (idxOf(prev) >= 0) { makeRow(el, idxOf(prev), 'below', el); return; }
+    }
+    if (owner < 0) { toast('这一行前面没有可参照的规则，暂时无法新增', 'err'); return; }
+    if (dir === 'above') {
+      // 列表首行：直接插在它前面
+      var first = lists(owner).above;
+      var anchor = first.length ? first[first.length - 1] : null;
+      makeRow(el, owner, 'above', anchor ? anchor.nextSibling : el);
+      return;
+    }
+    var below = lists(owner).below;
+    makeRow(el, owner, 'below', below.length ? below[below.length - 1].nextSibling : el.nextSibling);
+  }
+  function toggleDelete(el) {
+    var i = idxOf(el);
+    // 表格里「删除此行」必须删整行：只删一个 <td> 的话浏览器会重排表格，
+    // 后面的单元格顶上来补位，看起来就像"下一行被删了"。
+    var tr = i >= 0 && el.closest ? el.closest('tr') : null;
+    if (tr) {
+      var cells = tr.querySelectorAll('[data-prd-edit]');
+      var want = !deleted[i], hit = 0;
+      for (var c = 0; c < cells.length; c++) {
+        var ci = idxOf(cells[c]);
+        if (ci < 0) continue;
+        deleted[ci] = want;
+        if (want) cells[c].setAttribute('data-prd-deleted', '1');
+        else cells[c].removeAttribute('data-prd-deleted');
+        hit++;
+      }
+      if (hit) { showRowBar(el); paint(); return; }
+    }
+    if (i < 0) {
+      var owner = -1, dir = '', p = el.previousElementSibling;
+      while (p) { var pi = idxOf(p); if (pi >= 0) { owner = pi; break; } p = p.previousElementSibling; }
+      if (owner >= 0 && added[owner]) {
+        ['above', 'below'].forEach(function (k) { var at = added[owner][k].indexOf(el); if (at >= 0) { added[owner][k].splice(at, 1); dir = k; } });
+      }
+      el.parentNode.removeChild(el);
+      hideRowBar(); paint(); return;
+    }
+    deleted[i] = !deleted[i];
+    if (deleted[i]) el.setAttribute('data-prd-deleted', '1'); else el.removeAttribute('data-prd-deleted');
+    var a = addedOf(i);
+    if (a) {
+      ['above', 'below'].forEach(function (k) {
+        (a[k] || []).forEach(function (n) {
+          if (deleted[i]) n.setAttribute('data-prd-deleted', '1'); else n.removeAttribute('data-prd-deleted');
+        });
+      });
+    }
+    showRowBar(el); paint();
+  }
+  // 列表行的三种序号形态：ul（圆点）/ ol（数字）/ none（清空，前面什么都没有，可自由填字）
+  function listMode(el) {
+    if (!el || el.tagName !== 'LI') return '';
+    var v = (el.style.getPropertyValue('list-style-type') || '').trim().toLowerCase();
+    if (!v) {
+      var p = el.parentElement;
+      return p && p.tagName === 'OL' ? 'ol' : 'ul';
+    }
+    if (v === 'none') return 'none';
+    if (/^(decimal|lower-roman|upper-roman|lower-alpha|upper-alpha|lower-greek)/.test(v)) return 'ol';
+    return 'ul';
+  }
+  function setListMode(el, mode) {
+    if (!el || el.tagName !== 'LI') return;
+    var p = el.parentElement;
+    var inherited = p && p.tagName === 'OL' ? 'ol' : 'ul';
+    // 目标形态与父级本来给的一致就清掉内联样式，源码保持干净
+    if (mode !== 'none' && mode === inherited) {
+      el.style.removeProperty('list-style-type');
+      if (!el.getAttribute('style')) el.removeAttribute('style');
+    } else {
+      el.style.setProperty('list-style-type', mode === 'ol' ? 'decimal' : (mode === 'ul' ? 'disc' : 'none'));
+    }
+    markHost(el);
+    showRowBar(el);
+  }
+  /* ── 9b. 选中文字后的格式工具栏 ── */
+  function ensureFmtBar() {
+    if (fmtBar) return;
+    var colors = ['#303133', '#dc2626', '#ea580c', '#16a34a', '#2563eb', '#64748b'];
+    fmtBar = document.createElement('div');
+    fmtBar.id = 'prd-editor-fmt';
+    fmtBar.innerHTML =
+      '<button type="button" data-cmd="bold" title="加粗（Ctrl/Cmd+B）">B</button>' +
+      '<span class="pe-sep"></span>' +
+      '<button type="button" data-size="-2" title="缩小字号">A−</button>' +
+      '<button type="button" data-size="0" title="恢复正文字号">A</button>' +
+      '<button type="button" data-size="2" title="放大字号">A+</button>' +
+      '<span class="pe-sep"></span>' +
+      colors.map(function (c) { return '<button type="button" data-color="' + c + '" title="文字颜色"><span class="pe-sw" style="background:' + c + '"></span></button>'; }).join('') +
+      '<span class="pe-sep"></span>' +
+      '<button type="button" data-cmd="insertUnorderedList" title="无序列表">' + ICON.ul + '</button>' +
+      '<button type="button" data-cmd="insertOrderedList" title="有序列表">' + ICON.ol + '</button>' +
+      '<span class="pe-sep"></span>' +
+      '<button type="button" data-cmd="removeFormat" title="清除格式">' + ICON.clear + '</button>';
+    document.body.appendChild(fmtBar);
+    fmtBar.addEventListener('mousedown', function (e) { e.preventDefault(); });   // 别把选区弄丢
+    fmtBar.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('button') : null;
+      if (!b) return;
+      if (b.getAttribute('data-cmd')) execCmd(b.getAttribute('data-cmd'));
+      else if (b.getAttribute('data-color')) applyStyle('color', b.getAttribute('data-color'));
+      else if (b.getAttribute('data-size') !== null) {
+        var d = Number(b.getAttribute('data-size'));
+        applyStyle('fontSize', d ? Math.max(9, Math.min(40, currentFontSize() + d)) + 'px' : '');
+      }
+    });
+  }
+  function hostOf(node) {
+    var el = node && (node.nodeType === 1 ? node : node.parentElement);
+    return el && el.closest ? el.closest('[data-prd-edit]') : null;
+  }
+  function currentFontSize() {
+    var sel = window.getSelection();
+    if (!sel || !sel.anchorNode) return 14;
+    var el = sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement;
+    var v = el ? parseFloat(getComputedStyle(el).fontSize) : NaN;
+    return isNaN(v) ? 14 : Math.round(v);
+  }
+  function markHost(node) {
+    var host = hostOf(node);
+    if (!host) return;
+    var i = idxOf(host);
+    var changed = i < 0 || host.innerHTML !== snap[i].inner ||
+                  (snap[i].attrs !== undefined && attrSig(host) !== snap[i].attrs);
+    if (changed) host.setAttribute('data-prd-dirty', '1');
+    else host.removeAttribute('data-prd-dirty');
+    saveDraft(); paint();
+  }
+  function unwrap(el) {
+    var p = el.parentNode;
+    while (el.firstChild) p.insertBefore(el.firstChild, el);
+    p.removeChild(el);
+  }
+  // 清掉没用的包装：无属性的 span 提上来、空的行内标签删掉，免得源码越编辑越脏
+  function tidy(host) {
+    if (!host || !host.querySelectorAll) return;
+    var guard = 0, changed = true;
+    while (changed && guard++ < 12) {
+      changed = false;
+      Array.prototype.slice.call(host.querySelectorAll('span')).forEach(function (el) {
+        if (!el.attributes.length) { unwrap(el); changed = true; }
+      });
+      Array.prototype.slice.call(host.querySelectorAll('b,i,u,strong,em,font,span')).forEach(function (el) {
+        if (!el.textContent.length && !el.querySelector('img,br')) { el.parentNode.removeChild(el); changed = true; }
+      });
+    }
+  }
+  /* ── 9c. 文案里的裸链接自动变成可点击的 <a> ── */
+  // 只认标准 ASCII URL 字符集（去掉引号和中英文括号），这样网址后面紧跟中文或标点都不会被一起吃进链接
+  var URL_RE = /(?:https?:\/\/|www\.)[A-Za-z0-9\-._~:\/?#\[\]@!$&*+,;=%]+/gi;
+  var URL_TAIL = /[.,;:!?、。，；：！？]+$/;
+  var NO_LINK = /^(A|PRE|CODE|SCRIPT|STYLE|TEXTAREA)$/;
+  function linkify(host) {
+    if (!host || host.nodeType !== 1 || NO_LINK.test(host.tagName)) return 0;
+    var walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT, null);
+    var nodes = [], n;
+    while ((n = walker.nextNode())) {
+      var pe = n.parentNode;
+      if (!pe || NO_LINK.test(pe.tagName)) continue;
+      if (pe.closest && pe.closest('a[href]')) continue;
+      nodes.push(n);
+    }
+    var made = 0;
+    nodes.forEach(function (tn) {
+      var text = tn.nodeValue || '';
+      URL_RE.lastIndex = 0;
+      if (!URL_RE.test(text)) return;
+      URL_RE.lastIndex = 0;
+      var frag = document.createDocumentFragment(), last = 0, m, hit = 0;
+      while ((m = URL_RE.exec(text))) {
+        var url = m[0].replace(URL_TAIL, '');
+        if (url.length < 6) continue;
+        if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+        var a = document.createElement('a');
+        a.setAttribute('href', /^www\./i.test(url) ? 'https://' + url : url);
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener');
+        a.setAttribute('title', '按住 Cmd / Ctrl 点击可打开链接');
+        a.textContent = url;
+        frag.appendChild(a);
+        last = m.index + url.length;
+        hit++; made++;
+      }
+      if (!hit) return;
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      tn.parentNode.replaceChild(frag, tn);
+    });
+    return made;
+  }
+  // 换颜色 / 换字号时先摘掉同类旧样式，否则会一层套一层
+  function stripStyle(host, cssProp) {
+    if (!host || !host.querySelectorAll) return;
+    Array.prototype.slice.call(host.querySelectorAll('*')).forEach(function (el) {
+      if (el.style && el.style.getPropertyValue(cssProp)) {
+        el.style.removeProperty(cssProp);
+        if (!el.getAttribute('style')) el.removeAttribute('style');
+      }
+    });
+  }
+  // 把整个段落换成列表：<p>x</p> → <ol><li>x</li></ol>。
+  // 直接改 innerHTML 做不到（标签本身要变，而 <p> 里塞 <ul> 是非法嵌套），所以整体替换元素，
+  // 并把 els 指过去、保留 data-prd-edit 标识，保存时按「整段替换」处理。
+  function listify(host, ordered) {
+    var lst = document.createElement(ordered ? 'OL' : 'UL');
+    Array.prototype.slice.call(host.attributes).forEach(function (a) {
+      if (a.name !== 'class' && a.name !== 'style') lst.setAttribute(a.name, a.value);
+    });
+    var li = document.createElement('li');
+    li.innerHTML = host.innerHTML;
+    lst.appendChild(li);
+    var i = idxOf(host);
+    host.parentNode.replaceChild(lst, host);
+    if (i >= 0) els[i] = lst;
+    return lst;
+  }
+  function execCmd(cmd) {
+    var sel = window.getSelection();
+    var host = sel && sel.anchorNode ? hostOf(sel.anchorNode) : null;
+    var isList = cmd === 'insertUnorderedList' || cmd === 'insertOrderedList';
+    if (isList && host && /^(P|H[1-6]|DIV)$/.test(host.tagName)) {
+      host = listify(host, cmd === 'insertOrderedList');
+    } else {
+      try { document.execCommand('styleWithCSS', false, false); } catch (e) {}
+      try { document.execCommand(cmd, false, null); } catch (e) {}
+      var s2 = window.getSelection();
+      host = s2 && s2.anchorNode ? hostOf(s2.anchorNode) : null;
+    }
+    if (host) { tidy(host); markHost(host); }
+    showFmtBar();
+  }
+  // 颜色 / 字号统一包内联 span，避免 execCommand 生成已废弃的 <font>
+  function applyStyle(prop, val) {
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+    var range = sel.getRangeAt(0), host = hostOf(range.commonAncestorContainer);
+    if (!host) return;
+    var cssProp = prop === 'fontSize' ? 'font-size' : 'color';
+    // 先摘掉范围内已有的同类样式，避免一层套一层
+    stripStyle(host, cssProp);
+    var sc = range.startContainer;
+    // 整段被选中且宿主只有一个文本节点时直接改宿主，源码更干净
+    if (val && sc === range.endContainer && sc.nodeType === 3 && range.startOffset === 0 &&
+        range.endOffset === sc.length && sc.parentNode === host && host.childNodes.length === 1) {
+      host.style.setProperty(cssProp, val);
+      tidy(host); markHost(host); showFmtBar(); return;
+    }
+    var span = null;
+    if (val) {
+      span = document.createElement('span');
+      span.style.setProperty(cssProp, val);
+      try { range.surroundContents(span); }
+      catch (e) { var frag = range.extractContents(); span.appendChild(frag); range.insertNode(span); }
+    }
+    tidy(host);
+    if (span) {
+      sel.removeAllRanges();
+      var nr = document.createRange(); nr.selectNodeContents(span); sel.addRange(nr);
+    }
+    markHost(host); showFmtBar();
+  }
+  function hideFmtBar() { if (fmtBar) fmtBar.style.display = 'none'; }
+  function showFmtBar() {
+    if (!editing) { hideFmtBar(); return; }
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) { hideFmtBar(); return; }
+    var range = sel.getRangeAt(0);
+    if (!hostOf(range.commonAncestorContainer)) { hideFmtBar(); return; }
+    var r = range.getBoundingClientRect();
+    if (!r.width && !r.height) { hideFmtBar(); return; }
+    ensureFmtBar();
+    fmtBar.style.display = 'flex';
+    var w = fmtBar.offsetWidth, h = fmtBar.offsetHeight;
+    var left = r.left + r.width / 2 - w / 2 + window.scrollX;
+    var top = r.top - h - 10 + window.scrollY;
+    left = Math.max(window.scrollX + 8, Math.min(left, window.scrollX + window.innerWidth - w - 8));
+    if (r.top - h - 10 < 4) top = r.bottom + 10 + window.scrollY;
+    fmtBar.style.left = left + 'px';
+    fmtBar.style.top = top + 'px';
+  }
+
+  function ensureRowBar() {
+    if (rowBar) return;
+    rowBar = document.createElement('div');
+    rowBar.id = 'prd-editor-rowbar';
+    rowBar.innerHTML =
+      '<button type="button" data-act="up" title="在上方新增一行（Ctrl/Cmd+Shift+Enter）">' + ICON.up + '</button>' +
+      '<button type="button" data-act="down" title="在下方新增一行（Ctrl/Cmd+Enter）">' + ICON.down + '</button>' +
+      '<span class="pe-rb-sep"></span>' +
+      '<button type="button" data-list="ul" title="无序列表（圆点）">' + ICON.ul + '</button>' +
+      '<button type="button" data-list="ol" title="有序列表（数字）">' + ICON.ol + '</button>' +
+      '<button type="button" data-list="none" title="清空序号（前面没有序号，可自由填写文字）">' + ICON.nolist + '</button>' +
+      '<span class="pe-rb-sep"></span>' +
+      '<button type="button" data-act="del" title="删除此行">' + ICON.minus + '</button>';
+    document.body.appendChild(rowBar);
+    rowBar.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    rowBar.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('button') : null;
+      if (!b || !hoverEl || !hoverEl.parentNode) return;
+      var act = b.getAttribute('data-act'), lm = b.getAttribute('data-list');
+      if (lm) setListMode(hoverEl, lm);
+      else if (act === 'up') addRow(hoverEl, 'above');
+      else if (act === 'down') addRow(hoverEl, 'below');
+      else toggleDelete(hoverEl);
+    });
+  }
+  function showRowBar(el) {
+    if (!editing) return;
+    ensureRowBar();
+    rowBar.style.display = 'flex';
+    // 给当前操作的行描个蓝框，用户一眼就能确认工具条管的是哪一行
+    if (targetEl && targetEl !== el) targetEl.removeAttribute('data-prd-target');
+    targetEl = el;
+    el.setAttribute('data-prd-target', '1');
+    // 只有列表行才有序号形态可选；先定好按钮显隐与高亮再量宽度，否则定位会偏
+    var isLi = el.tagName === 'LI', mode = isLi ? listMode(el) : '';
+    ['ul', 'ol', 'none'].forEach(function (m) {
+      var b = rowBar.querySelector('[data-list="' + m + '"]');
+      if (!b) return;
+      b.style.display = isLi ? '' : 'none';
+      if (mode === m) b.classList.add('on'); else b.classList.remove('on');
+    });
+    var d = rowBar.querySelector('[data-act="del"]'), i = idxOf(el);
+    var isDel = i >= 0 && deleted[i];
+    d.innerHTML = isDel ? ICON.restore : ICON.minus;
+    d.title = isDel ? '恢复此行' : '删除此行';
+    if (isDel) d.classList.add('is-del'); else d.classList.remove('is-del');
+    var r = el.getBoundingClientRect();
+    var bw = rowBar.offsetWidth || 96;
+    var left = r.right + window.scrollX + 8;
+    if (r.right + bw + 8 > window.innerWidth) left = r.right + window.scrollX - bw - 6;
+    rowBar.style.top = (r.top + window.scrollY - 3) + 'px';
+    rowBar.style.left = Math.max(2, left) + 'px';
+  }
+  function hideRowBar() {
+    if (rowBar) rowBar.style.display = 'none';
+    if (targetEl) { targetEl.removeAttribute('data-prd-target'); targetEl = null; }
+  }
+
+  /* ── 10. 界面：右上角按钮条 + 轻提示 + 居中确认框 ── */
+  function clock() { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return p(d.getHours()) + ':' + p(d.getMinutes()); }
+  function toast(text, tone) {
+    if (!toastEl) { toastEl = document.createElement('div'); toastEl.id = 'prd-editor-toast'; document.body.appendChild(toastEl); }
+    toastEl.className = tone || '';
+    toastEl.textContent = text;
+    requestAnimationFrame(function () { toastEl.classList.add('show'); });
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, tone === 'err' ? 7000 : 4500);
+  }
+  // 居中确认框：替代原生 confirm，支持取消 / 放弃 / 保存并继续
+  function ask(opts) {
+    return new Promise(function (resolve) {
+      var m = document.getElementById('prd-editor-modal');
+      if (!m) {
+        m = document.createElement('div');
+        m.id = 'prd-editor-modal';
+        m.hidden = true;
+        m.innerHTML = '<div class="pe-mask"></div><div class="pe-card" role="dialog" aria-modal="true">' +
+          '<div class="pe-ico"></div><h3 class="pe-title"></h3><p class="pe-text"></p><div class="pe-actions"></div></div>';
+        document.body.appendChild(m);
+      }
+      m.setAttribute('data-tone', opts.tone || '');
+      m.querySelector('.pe-ico').innerHTML = opts.icon || ICON.info;
+      m.querySelector('.pe-title').textContent = opts.title || '';
+      m.querySelector('.pe-text').innerHTML = opts.text || '';
+      var acts = m.querySelector('.pe-actions');
+      acts.innerHTML = '';
+      var settled = false;
+      function close(act) {
+        if (settled) return;
+        settled = true;
+        m.classList.remove('in');
+        document.removeEventListener('keydown', onKey, true);
+        setTimeout(function () { m.hidden = true; }, 220);
+        resolve(act);
+      }
+      function onKey(ev) {
+        if (ev.key === 'Escape') { ev.preventDefault(); ev.stopPropagation(); close('cancel'); }
+      }
+      (opts.actions || []).forEach(function (a) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pe-mbtn ' + (a.kind || 'ghost');
+        b.textContent = a.label;
+        b.addEventListener('click', function () { close(a.act); });
+        acts.appendChild(b);
+      });
+      m.querySelector('.pe-mask').addEventListener('click', function () { close('cancel'); });
+      document.addEventListener('keydown', onKey, true);
+      m.hidden = false;
+      requestAnimationFrame(function () { m.classList.add('in'); });
+      setTimeout(function () { var f = acts.querySelector('.pe-mbtn.primary'); if (f) f.focus(); }, 240);
+    });
+  }
+  async function onRevert() {
+    var n = changeCount();
+    if (!n) { toast('没有需要撤回的修改', ''); return; }
+    var act = await ask({
+      tone: 'warn', icon: ICON.warn,
+      title: '放弃这 ' + n + ' 处修改？',
+      text: '内容会还原到打开页面时的状态，<b>此操作无法撤销</b>。',
+      actions: [
+        { label: '继续编辑', act: 'cancel', kind: 'ghost' },
+        { label: '放弃修改', act: 'discard', kind: 'danger' }
+      ]
+    });
+    if (act === 'discard') revert();
+  }
+  function paint() {
+    var n = changeCount();
+    var status = bar.querySelector('.pe-status');
+    if (editing) {
+      bar.classList.toggle('is-dirty', n > 0);
+      status.hidden = false;
+      bar.querySelector('.pe-status-text').textContent = n ? ('编辑中 · ' + n + ' 处未保存') : '编辑中 · 悬停文字即可修改';
+    } else {
+      bar.classList.remove('is-dirty');
+      status.hidden = true;
+    }
+    setBtns();
+  }
+  function setBtns() {
+    var q = function (c) { return bar.querySelector(c); };
+    q('.pe-edit').hidden = editing;
+    q('.pe-edit').disabled = busy;
+    q('.pe-revert').hidden = !editing;
+    q('.pe-revert').disabled = busy;
+    var sv = q('.pe-save');
+    sv.hidden = !editing;
+    sv.disabled = busy || !changeCount();
+    sv.innerHTML = ICON.save + (busy ? '保存中…' : '保存');
+    var r = q('.pe-resume'), dn = draftInfo();
+    r.hidden = editing || !dn;
+    if (dn) r.innerHTML = ICON.restore + '恢复 ' + dn + ' 处';
+  }
+  function setEditing(on) {
+    editing = on;
+    document.body.classList.toggle('prd-editing', on);
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (!on) { el.removeAttribute('contenteditable'); continue; }
+      bindEditable(el);
+      // 富文本模式：要支持加粗 / 颜色 / 字号 / 列表，plaintext-only 下这些命令不生效
+      el.setAttribute('contenteditable', 'true');
+    }
+    if (!on) { hideRowBar(); hideFmtBar(); }
+    paint();
+  }
+  function revert() {
+    setEditing(false);
+    for (var i = 0; i < els.length; i++) {
+      // 元素被整体换过（如段落转列表）或属性被改过（如取消列表序号）：整段重建
+      if ((snap[i].tag && els[i].tagName !== snap[i].tag) ||
+          (snap[i].attrs !== undefined && attrSig(els[i]) !== snap[i].attrs)) {
+        var box = document.createElement('div');
+        box.innerHTML = snap[i].outer;
+        var fresh = box.firstChild;
+        els[i].parentNode.replaceChild(fresh, els[i]);
+        els[i] = fresh;
+      } else {
+        els[i].innerHTML = snap[i].inner;
+      }
+      els[i].removeAttribute('data-prd-dirty');
+      els[i].removeAttribute('data-prd-deleted');
+    }
+    for (var k in added) {
+      var a = added[k];
+      if (!a) continue;
+      ['above', 'below'].forEach(function (key) { (a[key] || []).slice().forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); }); });
+    }
+    added = {}; deleted = [];
+    hideFmtBar();
+    try { localStorage.removeItem(LS_KEY); } catch (e) {}
+    collect();
+    toast('已放弃全部未保存的修改', '');
+  }
+  function saveDraft() {
+    try {
+      var d = { m: mods(), del: [], add: {} };
+      for (var i = 0; i < els.length; i++) if (deleted[i]) d.del.push(i);
+      for (var k in added) {
+        var a = added[k];
+        if (!a) continue;
+        var rec = {};
+        if (a.above.length) rec.above = a.above.map(function (n) { return n.outerHTML; });
+        if (a.below.length) rec.below = a.below.map(function (n) { return n.outerHTML; });
+        if (rec.above || rec.below) d.add[k] = rec;
+      }
+      if (!Object.keys(d.m).length && !d.del.length && !Object.keys(d.add).length) localStorage.removeItem(LS_KEY);
+      else localStorage.setItem(LS_KEY, JSON.stringify(d));
+    } catch (e) {}
+  }
+  function draftInfo() {
+    try {
+      var raw = localStorage.getItem(LS_KEY); if (!raw) return null;
+      var d = JSON.parse(raw);
+      var n = Object.keys(d.m || {}).length + (d.del || []).length;
+      for (var k in (d.add || {})) { var r = d.add[k]; n += (r.above || []).length + (r.below || []).length; }
+      return n || null;
+    } catch (e) { return null; }
+  }
+
+  /* ── 11. 未保存就离开的保护 ── */
+  // 刷新 / 关标签页：浏览器只允许原生确认框（网页无法自定义样式），这里保底拦截并同步存草稿
+  window.addEventListener('beforeunload', onLeaveBeforeUnload);
+  // F5 / Cmd+R（刷新）、Cmd+W（关闭标签页）、Cmd+Shift+W（关闭窗口）：这几类按键网页可以拦，所以给自定义确认框
+  function onLeaveKey(ev) {
+    var k = ev.key, mod = ev.metaKey || ev.ctrlKey;
+    var reload = k === 'F5' || (mod && !ev.altKey && (k === 'r' || k === 'R'));
+    var closeTab = mod && !ev.altKey && !ev.shiftKey && (k === 'w' || k === 'W');
+    var closeWin = mod && ev.shiftKey && (k === 'w' || k === 'W');
+    if ((!reload && !closeTab && !closeWin) || !changeCount()) return;
+    ev.preventDefault(); ev.stopPropagation();
+    if (closeTab || closeWin) {
+      guardLeave(closeWin ? '关闭这个窗口' : '关闭这个标签页', function () {
+        leaving = true;
+        // 用户自己打开的标签页，脚本无权关闭（window.close 会被忽略）；保存完提示用户手动关
+        try { window.close(); } catch (e) {}
+        setTimeout(function () { toast('修改已处理完，现在可以放心关闭了', 'ok'); }, 250);
+      });
+    } else {
+      guardLeave('刷新页面', function () { leaving = true; location.reload(); });
+    }
+  }
+  document.addEventListener('keydown', onLeaveKey, true);
+  window.addEventListener('keydown', onLeaveKey, true);
+  // 原型预览是同源 iframe，焦点进去后外层 document 收不到按键，得把监听也挂进每个 frame
+  // （注意：file:// 打开时 Chrome 把同目录的 file:// iframe 视为不同源，contentDocument 拿不到，这条只在
+  //   经需求管理台 http://127.0.0.1:PORT/p/... 打开时生效；file:// 下 iframe 里的按键只能落到原生确认框）
+  function hookFrames() {
+    var fs = document.querySelectorAll('iframe');
+    for (var i = 0; i < fs.length; i++) {
+      try {
+        var d = fs[i].contentDocument;
+        if (!d || d.__prdLeaveHooked) continue;
+        d.__prdLeaveHooked = true;
+        d.addEventListener('keydown', onLeaveKey, true);
+        d.addEventListener('beforeunload', onLeaveBeforeUnload, true);
+      } catch (e) {}
+    }
+  }
+  function onLeaveBeforeUnload(ev) {
+    if (leaving || !changeCount()) return;
+    saveDraft();
+    ev.preventDefault(); ev.returnValue = '';
+  }
+  // 站内链接跳转：同样给自定义确认框
+  document.addEventListener('click', function (ev) {
+    if (!changeCount() || !ev.target || !ev.target.closest) return;
+    var a = ev.target.closest('a[href]');
+    if (!a) return;
+    if (a.target && a.target !== '_self') return;
+    // 按住 Cmd / Ctrl 点击是新标签打开，不离开当前页，交给浏览器默认行为
+    if (ev.metaKey || ev.ctrlKey) return;
+    if (a.hasAttribute('download')) return;
+    var href = a.getAttribute('href') || '';
+    if (!href || href.charAt(0) === '#' || /^(javascript|mailto|tel):/i.test(href)) return;
+    ev.preventDefault(); ev.stopPropagation();
+    var abs = a.href;
+    guardLeave('离开当前页面', function () { leaving = true; location.href = abs; });
+  }, true);
+  async function guardLeave(actionLabel, go) {
+    var n = changeCount();
+    if (!n) { go(); return; }
+    var act = await ask({
+      tone: 'warn', icon: ICON.warn,
+      title: '有 ' + n + ' 处修改尚未保存',
+      text: actionLabel + '会丢失这些修改，建议先保存再继续。',
+      actions: [
+        { label: '取消', act: 'cancel', kind: 'ghost' },
+        { label: '放弃修改', act: 'discard', kind: 'danger' },
+        { label: '保存并继续', act: 'save', kind: 'primary' }
+      ]
+    });
+    if (act === 'cancel') return;
+    if (act === 'discard') { revert(); go(); return; }
+    if (act === 'save') { if (await save()) go(); }
+  }
+
+  /* ── 12. 装配 ── */
+  function build() {
+    bar = document.createElement('div');
+    bar.id = 'prd-editor-bar';
+    bar.innerHTML =
+      '<span class="pe-status" hidden><span class="pe-dot"></span><span class="pe-status-text"></span></span>' +
+      '<button type="button" class="pe-btn pe-resume" hidden></button>' +
+      '<button type="button" class="pe-btn pe-edit">' + ICON.edit + '编辑</button>' +
+      '<button type="button" class="pe-btn pe-revert" hidden>' + ICON.undo + '撤回</button>' +
+      '<button type="button" class="pe-btn primary pe-save" hidden>' + ICON.save + '保存</button>';
+    document.body.appendChild(bar);
+    bar.querySelector('.pe-edit').addEventListener('click', function () { setEditing(true); });
+    bar.querySelector('.pe-save').addEventListener('click', save);
+    bar.querySelector('.pe-revert').addEventListener('click', onRevert);
+    bar.querySelector('.pe-resume').addEventListener('click', resumeDraft);
+
+    for (var i = 0; i < els.length; i++) bindEditable(els[i]);
+    document.addEventListener('mouseover', function (e) {
+      if (!editing || !e.target || !e.target.closest) return;
+      if (e.target.closest('#prd-editor-rowbar')) return;
+      var el = e.target.closest('[data-prd-edit]');
+      // 兜底：行内元素高度异常或结构特殊时 closest 会落空，直接按坐标取元素栈
+      if (!el && typeof e.clientX === 'number') {
+        var stack = document.elementsFromPoint(e.clientX, e.clientY) || [];
+        for (var q = 0; q < stack.length; q++) {
+          var c = stack[q].closest ? stack[q].closest('[data-prd-edit]') : null;
+          if (c) { el = c; break; }
+        }
+      }
+      if (el) { hoverEl = el; showRowBar(el); }
+    });
+    var frames = document.querySelectorAll('iframe');
+    for (var f = 0; f < frames.length; f++) frames[f].addEventListener('load', hookFrames);
+    hookFrames();
+    window.addEventListener('scroll', function () { if (editing) hideRowBar(); }, true);
+    window.addEventListener('resize', function () { if (editing) hideRowBar(); });
+    document.addEventListener('mouseup', function (e) {
+      if (!editing || !e.target || !e.target.closest) return;
+      if (e.target.closest('#prd-editor-fmt')) return;
+      setTimeout(showFmtBar, 0);
+    });
+    document.addEventListener('keyup', function () { if (editing) setTimeout(showFmtBar, 0); });
+    document.addEventListener('selectionchange', function () {
+      if (!editing) return;
+      var s = window.getSelection();
+      if (!s || s.isCollapsed) hideFmtBar();
+    });
+
+    paint();
+    probe().then(function (s) { svc = s; if (!s && !editing) toast('本机保存服务未运行，保存时会弹一次文件选择框', ''); });
+  }
+  function resumeDraft() {
+    try {
+      var d = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+      for (var k in (d.m || {})) {
+        var el = els[k];
+        if (!el) continue;
+        var v = d.m[k];
+        if (typeof v === 'string') { el.innerHTML = v; el.setAttribute('data-prd-dirty', '1'); continue; }
+        // 属性类改动（如取消列表序号）存的是整段 HTML，按整段重建
+        if (!v || !v.outer || !el.parentNode) continue;
+        var box = document.createElement('div');
+        box.innerHTML = v.outer;
+        var fresh = box.firstElementChild;
+        if (!fresh) continue;
+        fresh.setAttribute('data-prd-edit', k);
+        fresh.setAttribute('data-prd-dirty', '1');
+        el.parentNode.replaceChild(fresh, el);
+        els[k] = fresh;
+        bindEditable(fresh);
+      }
+      (d.del || []).forEach(function (i) { if (els[i]) { deleted[i] = true; els[i].setAttribute('data-prd-deleted', '1'); } });
+      for (var o in (d.add || {})) {
+        var rec = d.add[o], owner = Number(o);
+        ['above', 'below'].forEach(function (dir) {
+          (rec[dir] || []).forEach(function (html) {
+            var t = document.createElement('div'); t.innerHTML = html;
+            var n = t.firstElementChild; if (!n) return;
+            if (!els[owner] || !els[owner].parentNode) return;
+            n.setAttribute('data-prd-edit', 'new'); n.setAttribute('data-prd-new', '1'); n.setAttribute('data-prd-dirty', '1');
+            var list = lists(owner)[dir], host = els[owner].parentNode;
+            if (dir === 'above') {
+              var ref = list.length ? list[list.length - 1].nextSibling : els[owner];
+              host.insertBefore(n, ref);
+            } else {
+              var anchor = list.length ? list[list.length - 1] : els[owner];
+              anchor.parentNode.insertBefore(n, anchor.nextSibling);
+            }
+            list.push(n);
+            bindEditable(n);
+          });
+        });
+      }
+      setEditing(true);
+      toast('已恢复上次未保存的修改，记得点保存', '');
+    } catch (e) { toast('草稿恢复失败', 'err'); }
+  }
+
+  function boot() {
+    collect();
+    if (!els.length) return;
+    build();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+<!-- PRD-EDITOR:END -->
 </body>
 </html>

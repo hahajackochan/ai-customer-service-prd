@@ -192,7 +192,7 @@ function renderCounts(){const a=account(h5.currentAccount),list=typeSessions(),a
 function renderAll(){renderAcct();renderCurrent();renderList();}
 function setBusy(v){busy=v;renderCurrent();renderCounts();}
 $('#slist').addEventListener('click',e=>{const sw=e.target.closest('[data-sw]');if(!sw||busy||sw.disabled)return;const s=allSessions.find(x=>x.id===sw.dataset.sw),next=!sessionOn(s);sw.classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'已启用「'+s.name+'」AI接管':'已禁用「'+s.name+'」AI接管',next?'ok':'info');},260);});
-$('#cur-sw').addEventListener('click',()=>{if(busy||$('#cur-sw').disabled)return;const s=currentSession(),next=!sessionOn(s);$('#cur-sw').classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();toast(next?'当前会话已启用AI接管':'当前会话已禁用AI接管',next?'ok':'info');},260);});
+$('#cur-sw').addEventListener('click',()=>{if(busy||$('#cur-sw').disabled)return;const s=currentSession(),next=!sessionOn(s);$('#cur-sw').classList.add('busy');setTimeout(()=>{saveSession(s,next);renderAll();$('#cur-sw').classList.remove('busy');toast(next?'当前会话已启用AI接管':'当前会话已禁用AI接管',next?'ok':'info');},260);});
 
 $('#all-on').addEventListener('click',()=>applyAll(typeSessions(),true));$('#all-off').addEventListener('click',()=>applyAll(typeSessions(),false));
 function applyAll(list,val){if(!list.length){toast('没有可操作的会话','err');return;}setBusy(true);setTimeout(()=>{list.forEach(s=>{state.sessions[s.id]=!!val;});saveShared();setBusy(false);renderAll();toast((val?'已启用 ':'已禁用 ')+list.length+' 个单聊会话AI接管','ok');},520);}

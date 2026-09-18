@@ -408,7 +408,7 @@ td.strong{color:var(--ink)}
       <div class="table-card">
         <table style="min-width:1055px">
           <thead><tr>
-            <th style="min-width:70px">供应商</th><th style="min-width:100px">账号ID</th><th style="min-width:150px">账号名称</th><th style="min-width:60px">头像</th><th style="min-width:105px">手机号</th><th style="min-width:140px">开启AI接管联系人数</th><th style="min-width:100px">单聊AI接管</th><th style="min-width:100px">群聊AI接管</th><th style="min-width:130px">更新时间</th><th style="min-width:100px">操作</th>
+            <th style="min-width:70px">供应商</th><th style="min-width:100px">账号ID</th><th style="min-width:150px">账号名称</th><th style="min-width:60px">头像</th><th style="min-width:105px">手机号</th><th style="min-width:140px">开启AI接管客户数</th><th style="min-width:100px">单聊AI接管</th><th style="min-width:100px">群聊AI接管</th><th style="min-width:130px">更新时间</th><th style="min-width:100px">操作</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -697,7 +697,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   function detailItem(k,v){return '<div class="detail-item"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v==null||v===''?'—':v)+'</span></div>';}
   function openDetail(i){
     current=rows[i];
-    var base='<div class="detail-section">账号基础信息</div>'+detailItem('供应商',current.supplier)+detailItem('账号ID',current.uid)+detailItem('账号名称',current.name)+detailItem('头像','菲')+detailItem('手机号',current.phone)+detailItem('开启AI接管联系人数',current.count);
+    var base='<div class="detail-section">账号基础信息</div>'+detailItem('供应商',current.supplier)+detailItem('账号ID',current.uid)+detailItem('账号名称',current.name)+detailItem('头像','菲')+detailItem('手机号',current.phone)+detailItem('开启AI接管客户数',current.count);
     if(current.supplier==='艾客')base+='<div class="detail-section">艾客供应商扩展信息</div>'+detailItem('企业名称',current.corp)+detailItem('联系人',current.contact)+detailItem('设备名称',current.device)+detailItem('设备保管者',current.keeper)+detailItem('是否在线',current.online?'在线':'离线')+detailItem('所属组',current.group);
     document.getElementById('detail-grid').innerHTML=base;detailModal.classList.add('active');document.getElementById('detail-close').focus();
   }
