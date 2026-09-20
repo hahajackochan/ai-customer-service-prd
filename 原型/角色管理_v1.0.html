@@ -52,17 +52,19 @@ tbody td.weak{color:var(--weak)}
 .pager input.jump{width:48px;height:30px;border:1px solid #dcdfe6;border-radius:4px;text-align:center;color:var(--muted);outline:none}
 .modal{position:fixed;inset:0;background:rgba(31,35,41,.45);display:none;align-items:center;justify-content:center;z-index:100}
 .modal.active{display:flex}
-.modal-box{width:760px;max-width:calc(100vw - 40px);background:#fff;border-radius:8px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 60px)}
+.modal-box{width:900px;max-width:calc(100vw - 40px);background:#fff;border-radius:8px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 60px)}
 .modal-head{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 18px;border-bottom:1px solid var(--line);font-weight:700}
 .modal-close{border:0;background:transparent;font-size:18px;color:#909399;cursor:pointer;line-height:1;padding:4px}
 .modal-close:hover{color:var(--ink)}
 .modal-body{padding:16px 18px;overflow:auto}
-.perm-types{display:flex;align-items:flex-end;gap:10px;margin:-4px 0 10px;border-bottom:1px solid var(--line)}
-.perm-types-label{font-size:12.5px;color:var(--weak);flex:0 0 auto;padding-bottom:9px}
-.perm-tabs{display:flex;align-items:flex-end;gap:4px;flex-wrap:wrap}
-.perm-tab{height:32px;padding:0 14px;border:0;background:transparent;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;border-radius:4px 4px 0 0}
+.perm-layout{display:flex;gap:16px;align-items:stretch}
+.perm-types{flex:0 0 168px;width:168px;border-right:1px solid var(--line);padding-right:14px;box-sizing:border-box}
+.perm-types-label{font-size:12.5px;color:var(--weak);margin-bottom:8px}
+.perm-tabs{display:flex;flex-direction:column;gap:4px}
+.perm-tab{width:100%;height:34px;padding:0 12px;border:0;background:transparent;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;text-align:left;border-radius:4px;border-left:2px solid transparent;box-sizing:border-box}
 .perm-tab:hover{color:var(--gold);background:#faf6ec}
-.perm-tab.on{color:var(--gold);font-weight:600;border-bottom-color:var(--gold);background:#fdf8f3}
+.perm-tab.on{color:var(--gold);font-weight:600;background:#fdf8f3;border-left-color:var(--gold)}
+.perm-main{flex:1;min-width:0}
 .perm-tab:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 .perm-sub{font-size:12.5px;color:var(--weak);margin-bottom:12px}
 .perm-xfer{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -159,20 +161,27 @@ tbody td.weak{color:var(--weak)}
   <div class="modal-box">
     <div class="modal-head"><span id="perm-title">设置数据权限</span><button type="button" class="modal-close" id="perm-close" aria-label="关闭">×</button></div>
     <div class="modal-body">
-      <div class="perm-types"><span class="perm-types-label">数据类型</span><div class="perm-tabs" id="perm-tabs" role="tablist" aria-label="数据类型"></div></div>
-      <div class="perm-sub" id="perm-sub"></div>
-      <div class="perm-xfer">
-        <section class="xfer-panel">
-          <div class="xfer-head"><span id="perm-left-title">AI托管账号</span></div>
-          <input type="search" class="xfer-search" id="perm-search" placeholder="搜索账号名称 / 账号ID" aria-label="搜索AI托管账号" autocomplete="off">
-          <div class="xfer-bar"><span id="perm-match">共 0 个账号</span><button type="button" class="perm-link" id="perm-pick-all">全选</button></div>
-          <div class="xfer-list" id="perm-list"></div>
-        </section>
-        <section class="xfer-panel">
-          <div class="xfer-head"><span id="perm-picked-title">已选账号</span></div>
-          <div class="xfer-bar"><span id="perm-tip">已选 0 / 0 个账号</span><button type="button" class="perm-link" id="perm-clear">清空已选</button></div>
-          <div class="xfer-list" id="perm-picked"></div>
-        </section>
+      <div class="perm-layout">
+        <aside class="perm-types">
+          <div class="perm-types-label">数据类型</div>
+          <div class="perm-tabs" id="perm-tabs" role="tablist" aria-orientation="vertical" aria-label="数据类型"></div>
+        </aside>
+        <div class="perm-main">
+          <div class="perm-sub" id="perm-sub"></div>
+          <div class="perm-xfer">
+            <section class="xfer-panel">
+              <div class="xfer-head"><span id="perm-left-title">AI托管账号</span></div>
+              <input type="search" class="xfer-search" id="perm-search" placeholder="搜索账号名称 / 账号ID" aria-label="搜索AI托管账号" autocomplete="off">
+              <div class="xfer-bar"><span id="perm-match">共 0 个账号</span><button type="button" class="perm-link" id="perm-pick-all">全选</button></div>
+              <div class="xfer-list" id="perm-list"></div>
+            </section>
+            <section class="xfer-panel">
+              <div class="xfer-head"><span id="perm-picked-title">已选账号</span></div>
+              <div class="xfer-bar"><span id="perm-tip">已选 0 / 0 个账号</span><button type="button" class="perm-link" id="perm-clear">清空已选</button></div>
+              <div class="xfer-list" id="perm-picked"></div>
+            </section>
+          </div>
+        </div>
       </div>
     </div>
     <div class="modal-foot"><button type="button" class="btn" id="perm-cancel">取消</button><button type="button" class="btn primary" id="perm-save">保存</button></div>
