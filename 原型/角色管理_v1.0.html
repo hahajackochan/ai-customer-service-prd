@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>原型 · 角色管理 v1.0（租户管理-角色管理 · AI托管账号权限）</title>
+<title>原型 · 角色管理 v1.0（租户管理-角色管理 · 数据权限）</title>
 <style>
 :root{--gold:#b8860b;--gold-deep:#a1760a;--amber:#f9ecc9;--ink:#303133;--text:#4a4f55;--muted:#606266;--weak:#909399;--line:#ebeef4;--page:#f0f1f2;--ok:#67c23a;--blue:#6f8db5;--danger:#f56c6c}
 *{box-sizing:border-box}
@@ -57,6 +57,13 @@ tbody td.weak{color:var(--weak)}
 .modal-close{border:0;background:transparent;font-size:18px;color:#909399;cursor:pointer;line-height:1;padding:4px}
 .modal-close:hover{color:var(--ink)}
 .modal-body{padding:16px 18px;overflow:auto}
+.perm-types{display:flex;align-items:flex-end;gap:10px;margin:-4px 0 10px;border-bottom:1px solid var(--line)}
+.perm-types-label{font-size:12.5px;color:var(--weak);flex:0 0 auto;padding-bottom:9px}
+.perm-tabs{display:flex;align-items:flex-end;gap:4px;flex-wrap:wrap}
+.perm-tab{height:32px;padding:0 14px;border:0;background:transparent;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;border-radius:4px 4px 0 0}
+.perm-tab:hover{color:var(--gold);background:#faf6ec}
+.perm-tab.on{color:var(--gold);font-weight:600;border-bottom-color:var(--gold);background:#fdf8f3}
+.perm-tab:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 .perm-sub{font-size:12.5px;color:var(--weak);margin-bottom:12px}
 .perm-xfer{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .xfer-panel{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff;min-width:0}
@@ -150,18 +157,19 @@ tbody td.weak{color:var(--weak)}
 
 <div class="modal" id="perm-modal" role="dialog" aria-modal="true" aria-labelledby="perm-title">
   <div class="modal-box">
-    <div class="modal-head"><span id="perm-title">设置AI托管账号权限</span><button type="button" class="modal-close" id="perm-close" aria-label="关闭">×</button></div>
+    <div class="modal-head"><span id="perm-title">设置数据权限</span><button type="button" class="modal-close" id="perm-close" aria-label="关闭">×</button></div>
     <div class="modal-body">
-      <div class="perm-sub">勾选该角色可查看的AI托管账号；中台的AI托管账号、客户会话管理、会话消息管理、AI响应明细等列表按此权限展示数据</div>
+      <div class="perm-types"><span class="perm-types-label">数据类型</span><div class="perm-tabs" id="perm-tabs" role="tablist" aria-label="数据类型"></div></div>
+      <div class="perm-sub" id="perm-sub"></div>
       <div class="perm-xfer">
         <section class="xfer-panel">
-          <div class="xfer-head"><span>AI托管账号</span></div>
+          <div class="xfer-head"><span id="perm-left-title">AI托管账号</span></div>
           <input type="search" class="xfer-search" id="perm-search" placeholder="搜索账号名称 / 账号ID" aria-label="搜索AI托管账号" autocomplete="off">
-          <div class="xfer-bar"><span id="perm-match">共 0 个账号</span><button type="button" class="perm-link" id="perm-pick-all">全选当前 0 条</button></div>
+          <div class="xfer-bar"><span id="perm-match">共 0 个账号</span><button type="button" class="perm-link" id="perm-pick-all">全选</button></div>
           <div class="xfer-list" id="perm-list"></div>
         </section>
         <section class="xfer-panel">
-          <div class="xfer-head"><span>已选账号</span></div>
+          <div class="xfer-head"><span id="perm-picked-title">已选账号</span></div>
           <div class="xfer-bar"><span id="perm-tip">已选 0 / 0 个账号</span><button type="button" class="perm-link" id="perm-clear">清空已选</button></div>
           <div class="xfer-list" id="perm-picked"></div>
         </section>
@@ -178,6 +186,20 @@ tbody td.weak{color:var(--weak)}
 'use strict';
 var STORE_KEY='dsh_proto_role_agent_scope_v1';
 var ACCOUNTS=(function(){var arr=[];for(var i=1;i<=36;i++){arr.push({id:'wx_10'+(i<10?'0'+i:i),name:'会员助理 小菲'+i});}return arr;})();
+var DATA_TYPES=[
+  {
+    key:'agent',
+    label:'AI托管账号',
+    desc:'勾选该角色可查看的AI托管账号；中台的AI托管账号、客户会话管理、会话消息管理、AI响应明细等列表按此权限展示数据',
+    leftTitle:'AI托管账号',
+    pickedTitle:'已选账号',
+    unit:'个账号',
+    noun:'账号',
+    searchPlaceholder:'搜索账号名称 / 账号ID',
+    emptyText:'当前租户暂无AI托管账号',
+    items:ACCOUNTS
+  }
+];
 var ROLES=[
   {id:127,name:'建行支付分账服务能力',code:'ccb_payment',creator:'钟进星',createdAt:'2026-09-02 15:03:56',updater:'赵建辉',updatedAt:'2026-09-03 11:57:34'},
   {id:124,name:'异业合作管理员',code:'cooperation_admin',creator:'梁烨彤',createdAt:'2026-08-26 14:54:07',updater:'梁烨彤',updatedAt:'2026-09-17 16:28:29'},
@@ -203,7 +225,8 @@ var tbody=document.getElementById('tbody');
 var modal=document.getElementById('perm-modal');
 var permList=document.getElementById('perm-list'),permTip=document.getElementById('perm-tip'),permTitle=document.getElementById('perm-title');
 var permSearch=document.getElementById('perm-search'),permPicked=document.getElementById('perm-picked'),permMatch=document.getElementById('perm-match'),permPickAll=document.getElementById('perm-pick-all');
-var editingRoleId=null,draft=[],lastFocus=null;
+var permTabs=document.getElementById('perm-tabs'),permSub=document.getElementById('perm-sub'),permLeftTitle=document.getElementById('perm-left-title'),permPickedTitle=document.getElementById('perm-picked-title');
+var editingRoleId=null,draftByType={},activeType=DATA_TYPES[0].key,lastFocus=null;
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function showToast(message,type){var el=document.getElementById('toast');el.textContent=message;el.className='toast '+(type||'ok');el.style.display='block';clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){el.style.display='none';},2200);}
 function loadScopes(){try{var raw=localStorage.getItem(STORE_KEY);if(raw){var d=JSON.parse(raw);if(d&&typeof d==='object')return d;}}catch(e){}return {};}
@@ -213,7 +236,7 @@ function render(){
   var start=(page-1)*PAGE_SIZE,list=ROLES.slice(start,start+PAGE_SIZE);
   tbody.innerHTML=list.map(function(r){
     return '<tr><td class="weak">'+r.id+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.code)+'</td><td>'+esc(r.creator)+'</td><td class="weak">'+esc(r.createdAt)+'</td><td>'+esc(r.updater)+'</td><td class="weak">'+esc(r.updatedAt)+'</td>'+
-      '<td><button type="button" class="op-btn js-nothing">编辑</button><button type="button" class="op-btn danger js-nothing">删除</button><button type="button" class="op-btn btn-perm" data-id="'+r.id+'" id="btn-perm-'+r.id+'">设置AI托管账号权限</button></td></tr>';
+      '<td><button type="button" class="op-btn js-nothing">编辑</button><button type="button" class="op-btn danger js-nothing">删除</button><button type="button" class="op-btn btn-perm" data-id="'+r.id+'" id="btn-perm-'+r.id+'">数据权限</button></td></tr>';
   }).join('');
   document.getElementById('pager-total').textContent='共 '+ROLES.length+' 条';
   var total=pageCount(),nums='';
@@ -229,37 +252,68 @@ function bind(){
   tbody.querySelectorAll('.btn-perm').forEach(function(b){b.onclick=function(){openModal(Number(b.dataset.id));};});
   document.querySelectorAll('#page-nums .page-num').forEach(function(b){b.onclick=function(){page=Number(b.dataset.page);render();};});
 }
-function visibleAccounts(){
-  var q=(permSearch.value||'').trim().toLowerCase();
-  if(!q)return ACCOUNTS.slice();
-  return ACCOUNTS.filter(function(a){return a.name.toLowerCase().indexOf(q)>=0||a.id.toLowerCase().indexOf(q)>=0;});
+function currentType(){
+  for(var i=0;i<DATA_TYPES.length;i++){if(DATA_TYPES[i].key===activeType)return DATA_TYPES[i];}
+  return DATA_TYPES[0];
 }
-function accountById(id){return ACCOUNTS.filter(function(a){return a.id===id;})[0];}
+function draft(){
+  if(!draftByType[activeType])draftByType[activeType]=[];
+  return draftByType[activeType];
+}
+function typeItems(){return currentType().items||[];}
+function itemById(id){return typeItems().filter(function(a){return a.id===id;})[0];}
+function visibleItems(){
+  var q=(permSearch.value||'').trim().toLowerCase();
+  if(!q)return typeItems().slice();
+  return typeItems().filter(function(a){return String(a.name).toLowerCase().indexOf(q)>=0||String(a.id).toLowerCase().indexOf(q)>=0;});
+}
+function renderTypeTabs(){
+  permTabs.innerHTML=DATA_TYPES.map(function(t){
+    var on=t.key===activeType;
+    return '<button type="button" class="perm-tab'+(on?' on':'')+'" role="tab" aria-selected="'+on+'" data-key="'+esc(t.key)+'">'+esc(t.label)+'</button>';
+  }).join('');
+  permTabs.querySelectorAll('.perm-tab').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(b.dataset.key===activeType)return;
+      activeType=b.dataset.key;permSearch.value='';
+      renderTypeTabs();applyType();
+    });
+  });
+}
+function applyType(){
+  var t=currentType();
+  permSub.textContent=t.desc||'';
+  permLeftTitle.textContent=t.leftTitle||t.label;
+  permPickedTitle.textContent=t.pickedTitle||'已选';
+  permSearch.placeholder=t.searchPlaceholder||'搜索';
+  renderPermList();
+}
 function renderPermList(){
-  var keyword=(permSearch.value||'').trim(),list=visibleAccounts();
-  permMatch.textContent=keyword?('匹配 '+list.length+' 个账号'):('共 '+ACCOUNTS.length+' 个账号');
-  var allPicked=list.length>0&&list.every(function(a){return draft.indexOf(a.id)>=0;});
+  var t=currentType(),d=draft(),unit=t.unit||'条',noun=t.noun||unit,keyword=(permSearch.value||'').trim(),list=visibleItems(),all=typeItems();
+  permMatch.textContent=keyword?('匹配 '+list.length+' '+unit):('共 '+all.length+' '+unit);
+  var allPicked=list.length>0&&list.every(function(a){return d.indexOf(a.id)>=0;});
   permPickAll.disabled=!list.length;
-  permPickAll.textContent=allPicked?('移出当前 '+list.length+' 条'):('全选当前 '+list.length+' 条');
-  if(!ACCOUNTS.length){permList.innerHTML='<div class="xfer-empty">当前租户暂无AI托管账号</div>';}
-  else if(!list.length){permList.innerHTML='<div class="xfer-empty">没有匹配「'+esc(keyword)+'」的账号</div>';}
+  permPickAll.textContent=allPicked?'取消全选':'全选';
+  if(!all.length){permList.innerHTML='<div class="xfer-empty">'+esc(t.emptyText||'暂无可选数据')+'</div>';}
+  else if(!list.length){permList.innerHTML='<div class="xfer-empty">没有匹配「'+esc(keyword)+'」的'+esc(noun)+'</div>';}
   else{
     permList.innerHTML=list.map(function(a){
-      var on=draft.indexOf(a.id)>=0;
+      var on=d.indexOf(a.id)>=0;
       return '<div class="xfer-item'+(on?' on':'')+'" data-id="'+esc(a.id)+'" role="button" tabindex="0" aria-pressed="'+on+'" title="'+(on?'点击移出已选':'点击加入已选')+'"><span class="xfer-name">'+esc(a.name)+'</span><span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-flag'+(on?'':' plus')+'">'+(on?'已选':'＋')+'</span></div>';
     }).join('');
-    bindXferItems(permList,function(id){toggleAccount(id,draft.indexOf(id)<0);renderPermList();});
+    bindXferItems(permList,function(id){toggleItem(id,draft().indexOf(id)<0);renderPermList();});
   }
   renderPicked();
   syncPermState();
 }
 function renderPicked(){
-  if(!draft.length){permPicked.innerHTML='<div class="xfer-empty">尚未选择账号<br>点击左侧账号即可添加</div>';return;}
-  permPicked.innerHTML=draft.map(function(id){
-    var a=accountById(id);if(!a)return '';
+  var t=currentType(),d=draft(),noun=t.noun||'数据';
+  if(!d.length){permPicked.innerHTML='<div class="xfer-empty">尚未选择'+esc(noun)+'<br>点击左侧'+esc(noun)+'即可添加</div>';return;}
+  permPicked.innerHTML=d.map(function(id){
+    var a=itemById(id);if(!a)return '';
     return '<div class="xfer-item" data-id="'+esc(a.id)+'" role="button" tabindex="0" title="点击移出已选"><span class="xfer-name">'+esc(a.name)+'</span><span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-x">×</span></div>';
   }).join('');
-  bindXferItems(permPicked,function(id){toggleAccount(id,false);renderPermList();});
+  bindXferItems(permPicked,function(id){toggleItem(id,false);renderPermList();});
 }
 function bindXferItems(container,handler){
   container.querySelectorAll('.xfer-item').forEach(function(el){
@@ -268,41 +322,48 @@ function bindXferItems(container,handler){
   });
 }
 function syncPermState(){
-  permTip.textContent='已选 '+draft.length+' / '+ACCOUNTS.length+' 个账号';
+  permTip.textContent='已选 '+draft().length+' / '+typeItems().length+' '+(currentType().unit||'条');
 }
-function toggleAccount(id,checked){
-  var i=draft.indexOf(id);
-  if(checked&&i<0)draft.push(id);
-  if(!checked&&i>=0)draft.splice(i,1);
+function toggleItem(id,checked){
+  var d=draft(),i=d.indexOf(id);
+  if(checked&&i<0)d.push(id);
+  if(!checked&&i>=0)d.splice(i,1);
   syncPermState();
 }
 function openModal(roleId){
   var role=ROLES.filter(function(r){return r.id===roleId;})[0];if(!role)return;
   editingRoleId=roleId;lastFocus=document.activeElement;
-  var scopes=loadScopes();
-  draft=(scopes[roleId]||[]).slice();
-  permTitle.textContent='设置AI托管账号权限';
+  var saved=loadScopes()[roleId],byType={};
+  if(Object.prototype.toString.call(saved)==='[object Array]'){byType[DATA_TYPES[0].key]=saved.slice();}
+  else if(saved&&typeof saved==='object'){byType=saved;}
+  draftByType={};
+  DATA_TYPES.forEach(function(t){draftByType[t.key]=(byType[t.key]||[]).slice();});
+  activeType=DATA_TYPES[0].key;
+  permTitle.textContent='设置数据权限';
   permSearch.value='';
-  renderPermList();
+  renderTypeTabs();
+  applyType();
   modal.classList.add('active');
   setTimeout(function(){permSearch.focus();},0);
 }
-function closeModal(){modal.classList.remove('active');draft=[];editingRoleId=null;if(lastFocus&&lastFocus.focus)lastFocus.focus();}
+function closeModal(){modal.classList.remove('active');draftByType={};editingRoleId=null;if(lastFocus&&lastFocus.focus)lastFocus.focus();}
 permSearch.addEventListener('input',function(){renderPermList();});
 permSearch.addEventListener('keydown',function(e){if(e.key==='Escape'){permSearch.value='';renderPermList();}});
 permPickAll.addEventListener('click',function(){
-  var list=visibleAccounts(),allPicked=list.length>0&&list.every(function(a){return draft.indexOf(a.id)>=0;});
+  var list=visibleItems(),d=draft(),allPicked=list.length>0&&list.every(function(a){return d.indexOf(a.id)>=0;});
   list.forEach(function(a){
-    var i=draft.indexOf(a.id);
-    if(allPicked){if(i>=0)draft.splice(i,1);}
-    else if(i<0)draft.push(a.id);
+    var i=d.indexOf(a.id);
+    if(allPicked){if(i>=0)d.splice(i,1);}
+    else if(i<0)d.push(a.id);
   });
   renderPermList();
 });
-document.getElementById('perm-clear').addEventListener('click',function(){draft=[];renderPermList();});
+document.getElementById('perm-clear').addEventListener('click',function(){draftByType[activeType]=[];renderPermList();});
 document.getElementById('perm-save').addEventListener('click',function(){
   if(editingRoleId==null)return;
-  var scopes=loadScopes();scopes[editingRoleId]=draft.slice();saveScopes(scopes);
+  var scopes=loadScopes(),out={};
+  DATA_TYPES.forEach(function(t){out[t.key]=(draftByType[t.key]||[]).slice();});
+  scopes[editingRoleId]=out;saveScopes(scopes);
   closeModal();showToast('保存成功','ok');
 });
 document.getElementById('perm-close').addEventListener('click',closeModal);
@@ -311,8 +372,9 @@ document.addEventListener('keydown',function(e){
   if(!modal.classList.contains('active'))return;
   if(e.key==='Escape'){closeModal();return;}
   if(e.key==='Tab'){
-    var controls=[document.getElementById('perm-close'),permSearch,permPickAll]
-      .concat([].slice.call(permList.querySelectorAll('.xfer-item')),
+    var controls=[document.getElementById('perm-close')]
+      .concat([].slice.call(permTabs.querySelectorAll('.perm-tab')),[permSearch,permPickAll],
+        [].slice.call(permList.querySelectorAll('.xfer-item')),
         [].slice.call(permPicked.querySelectorAll('.xfer-item')),
         [document.getElementById('perm-clear'),document.getElementById('perm-cancel'),document.getElementById('perm-save')]);
     var first=controls[0],last=controls[controls.length-1];
