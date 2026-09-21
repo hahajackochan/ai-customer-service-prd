@@ -375,9 +375,9 @@ td.strong{color:var(--ink)}
 /* Inline, deterministic sample records. No production API or inference. */
 (function(){
 'use strict';
-const REASONS=['用户主动要求人工','意图未识别','意图误判','知识缺失','知识命中但未解决','流程未触发','流程无法完成','系统接口异常','业务规则要求人工','高风险问题兜底'];
-const CODES=['USER_REQUEST','INTENT_UNKNOWN','INTENT_WRONG','KNOWLEDGE_MISSING','KNOWLEDGE_UNRESOLVED','FLOW_NOT_TRIGGERED','FLOW_INCOMPLETE','INTERFACE_ERROR','BUSINESS_RULE','HIGH_RISK'];
-const reasonExamples=['用户明确提出“请帮我转人工”。','当前表达未匹配到可用业务意图。','原识别结果与客户澄清内容不一致，转人工核实。','现有知识库没有覆盖此问题。','已命中知识，但客户反馈仍未解决。','命中场景后未启动对应业务流程。','流程缺少必要资料，无法继续完成。','调用业务接口超时，未取得结果。','此业务按规则必须由人工核实。','涉及高风险诉求，停止自动答复并转人工。'];
+const REASONS=['用户主动要求人工','FAQ知识缺失','商品知识缺失','智能体工作流异常','业务API异常','业务规则要求人工'];
+const CODES=['USER_REQUEST','FAQ_KNOWLEDGE_MISSING','PRODUCT_KNOWLEDGE_MISSING','AGENT_WORKFLOW_ERROR','BUSINESS_API_ERROR','BUSINESS_RULE'];
+const reasonExamples=['用户输入关键词“人工、转人工”。','查询FAQ知识库没有对应的知识片段。','查询商品知识库没有对应的知识片段。','进入智能体工作流时，智能体平台返回异常（如飞书aily、扣子等）。','查询业务API时返回400、500等报错（业务系统返回的异常）。','命中意图库中要求转人工的意图（含高风险问题、情绪投诉等）。'];
 const ACCOUNTS=Array.from({length:9},(_,i)=>({id:'wx_100'+(i+1),name:'会员助理 小菲'+(i+1),single:[1,2,5,6].includes(i+1),group:[1,6,8].includes(i+1)}));
 const NAMES=['王女士','李先生','张女士','赵先生','刘女士','陈先生','孙女士','周先生','吴女士','郑先生','冯女士','蒋先生'];
 const MIDS=[1,1,2,3,4,4,5,6,7,8,9,5];
@@ -412,24 +412,24 @@ for(let sidx=0;sidx<sessions.length;sidx++){
  else if([2,3,8,10].includes(sidx))kind=j===count-1?'pending':'human';
  else kind=j===count-1?'pending':j%3===1?'transfer':'ai';
  let reasonIndex=-1;
- if(sidx===0&&((j>=6&&j<=15)||j===41)){reasonIndex=j===41?0:j-6;kind='transfer';} // j=41：列表第2条示例，用户主动要求人工
- else if(kind==='transfer')reasonIndex=(sidx+j)%10;
+ if(sidx===0&&((j>=6&&j<=11)||j===41)){reasonIndex=j===41?0:j-6;kind='transfer';} // j=41：列表第2条示例，用户主动要求人工
+ else if(kind==='transfer')reasonIndex=(sidx+j)%6;
  const off=sidx===0?(j<14?-2:j<28?-1:0):-(sidx%3);
  const base=day(off);base.setHours(9+Math.floor((j%14)/4),10+(j%4)*10,(j*7)%50,0);
  const sentAt=base.getTime(), receivedAt=sentAt+120+(j%5)*30;
  const durations=[180+(j%4)*70,260+(j%5)*160,90+(j%3)*40,640+(j%7)*340,100+(j%3)*80,80+(j%4)*50];
  let at=receivedAt;const stages=durations.map((duration,i)=>({name:STAGES[i],duration,at:(at+=duration)}));
- const r={id:'CM_'+pad(sidx+1,2)+'_'+pad(seq,3),sid:s.id,cid:s.cid,cname:s.cname,mid:s.mid,mname:s.mname,supplier:s.supplier,corp:s.corp,kind,sentAt,receivedAt,question:tmpl[0],type:'文本',replyType:'文本',intent:tmpl[2],knowledge:tmpl[3],strategy:tmpl[4],reason:reasonIndex>=0?{code:CODES[reasonIndex],label:REASONS[reasonIndex],detail:reasonExamples[reasonIndex],stage:reasonIndex===7?'知识检索':'匹配决策',type:kind==='error'?'异常':'转人工'}:null,traceId:'TR_'+pad(sidx+1,2)+'_'+pad(seq,3),stages,replyId:null,reply:null,replyAt:null,ai:false,total:null,trace:kind!=='human'&&kind!=='pending'};
+ const r={id:'CM_'+pad(sidx+1,2)+'_'+pad(seq,3),sid:s.id,cid:s.cid,cname:s.cname,mid:s.mid,mname:s.mname,supplier:s.supplier,corp:s.corp,kind,sentAt,receivedAt,question:tmpl[0],type:'文本',replyType:'文本',intent:tmpl[2],knowledge:tmpl[3],strategy:tmpl[4],reason:reasonIndex>=0?{code:CODES[reasonIndex],label:REASONS[reasonIndex],detail:reasonExamples[reasonIndex],stage:['意图识别','知识检索','知识检索','匹配决策','知识检索','匹配决策'][reasonIndex],type:kind==='error'?'异常':'转人工'}:null,traceId:'TR_'+pad(sidx+1,2)+'_'+pad(seq,3),stages,replyId:null,reply:null,replyAt:null,ai:false,total:null,trace:kind!=='human'&&kind!=='pending'};
  if(kind==='ai'||kind==='human'){
  r.replyId='RM_'+pad(sidx+1,2)+'_'+pad(seq,3);r.reply=kind==='ai'?tmpl[1]:'您好，我是'+s.mname+'，已收到您的问题，我为您进一步核实。';r.replyAt=kind==='ai'?at:receivedAt+85000;r.ai=kind==='ai';r.total=r.ai?at-receivedAt:null;
  }
  if(r.reason){
- const messagesByReason=['我想找人工客服，请帮我转人工。','嗯那个就是之前那个，怎么弄？','不是查积分余额，我是想问积分到期日。','这款新上市的配色有没有维护手册？','我按你给的积分查询方法操作了，还是查不到。','我已提交预约，为什么预约流程没有开始？','预约修改做到一半，缺少资料，无法继续。','请帮我查一下订单接口返回的进度。','我想办理一项需要人工身份核实的业务。','我的账户疑似被盗用，请帮我处理安全问题。'];
- const intents=['人工客服诉求','未识别','积分查询（本次误判，实际为积分有效期咨询）','配色维护咨询','积分查询','到店预约','预约修改','安装进度查询','身份核实业务','账户安全'];
+ const messagesByReason=['我想找人工客服，请帮我转人工。','你们的会员卡能不能转赠给家人？','这款新上市的配色有没有维护手册？','帮我预约上门测量，可以吗？','请帮我查一下订单接口返回的进度。','我的账户疑似被盗用，请帮我处理安全问题。'];
+ const intents=['人工客服诉求','会员卡转赠咨询','配色维护咨询','到店预约','安装进度查询','账户安全'];
  r.question=messagesByReason[reasonIndex];r.intent=intents[reasonIndex];
  r.strategy=kind==='error'?'记录接口异常，停止本次自动答复':'转人工核实并处理';
- r.eventAt=stages[reasonIndex===7?1:2].at;r.stages=stages.slice(0,reasonIndex===7?2:3);
- if(reasonIndex===7)r.knowledge='订单进度接口';
+ r.eventAt=stages[[1,2,2,3,2,3][reasonIndex]-1].at;r.stages=stages.slice(0,[1,2,2,3,2,3][reasonIndex]);
+ if(reasonIndex===4)r.knowledge='订单进度接口';
  if(reasonIndex===0)r.knowledge='未检索（用户直接要求人工）';
  }
  if(kind==='human'||kind==='pending')r.stages=[];
@@ -439,13 +439,11 @@ for(let sidx=0;sidx<sessions.length;sidx++){
  r.intentSummary='暂无意图识别记录';r.knowledgeSummary='暂无知识匹配记录';
  if(r.trace){
  const code=r.reason?.code, multi=r.ai&&j%2===0;
- r.intentSummary=code==='INTENT_UNKNOWN'?'已执行识别，未获得可用意图结果。':'以下为当次日志中的识别结果，按记录顺序展示。';
- if(code!=='INTENT_UNKNOWN'){
- r.intentResults.push({result:r.intent,score:r.ai?'0.92':code==='INTERFACE_ERROR'?null:'0.46',reason:r.ai?'问题表达与该意图的适用范围一致。':r.reason.detail,scene:r.intent,strategy:r.strategy,status:'已采用'});
+ r.intentSummary='以下为当次日志中的识别结果，按记录顺序展示。';
+  r.intentResults.push({result:r.intent,score:r.ai?'0.92':code==='BUSINESS_API_ERROR'?null:'0.46',reason:r.ai?'问题表达与该意图的适用范围一致。':r.reason.detail,scene:r.intent,strategy:r.strategy,status:'已采用'});
  if(multi){const other=templates[(j+1)%templates.length];r.intentResults.push({result:other[2],score:'0.61',reason:'包含相近业务词，但没有该意图所需的明确诉求。',scene:other[2],strategy:other[4],status:'未采用'},{result:'其他会员服务咨询',score:j%4===0?0:null,reason:j%4===0?'未发现支持该候选的业务信息。':'原始日志未记录该候选的评分，保留结果供核对。',scene:'会员服务',strategy:null,status:'未采用'});}
- }
- r.knowledgeSummary=r.ai?'已记录候选及过滤结果，是否采用以当次日志为准。':code==='USER_REQUEST'?'用户直接要求人工，未执行知识检索。':code==='INTERFACE_ERROR'?'接口异常，未获得有效检索结果。':code==='KNOWLEDGE_UNRESOLVED'?'命中知识并尝试提供方案，但客户反馈仍未解决。':'已执行检索，未获得可直接解决问题的有效匹配。';
- if(r.ai||code==='KNOWLEDGE_UNRESOLVED'){
+ r.knowledgeSummary=r.ai?'已记录候选及过滤结果，是否采用以当次日志为准。':code==='USER_REQUEST'?'用户直接要求人工，未执行知识检索。':code==='FAQ_KNOWLEDGE_MISSING'?'已检索FAQ知识库，未命中对应的知识片段。':code==='PRODUCT_KNOWLEDGE_MISSING'?'已检索商品知识库，未命中对应的知识片段。':code==='BUSINESS_API_ERROR'?'业务API返回异常，未获得有效检索结果。':'已执行检索，未获得可直接解决问题的有效匹配。';
+ if(r.ai){
  r.knowledgeResults.push({result:r.knowledge,score:r.ai?'0.89':'0.82',reason:r.ai?'内容适用于本次问题，版本有效。':'条目内容相关，但已有方案未解决客户问题。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v1',filter:'有效版本，适用范围一致',status:r.ai?'已采用':'已命中·未解决'});
  if(multi)r.knowledgeResults.push({result:r.knowledge+'（历史版本）',score:'0.86',reason:'内容相关，但该版本已过期，不能用于本次答复。',source:'会员服务知识库 / '+r.knowledge+' / 示例快照 v0',filter:'版本已过期，已排除',status:'未采用'},{result:'会员服务通用说明',score:j%4===0?null:'0.37',reason:j%4===0?'仅记录了召回内容，匹配评分未采集。':'内容较宽泛，不能直接回答本次具体问题。',source:'会员服务知识库 / 通用说明 / 示例快照 v1',filter:'有效版本，但不满足当前问句范围',status:'未采用'});
  }

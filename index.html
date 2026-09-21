@@ -257,7 +257,6 @@ th{background:var(--head);color:var(--ink);font-weight:700}
           <h4>后端处理逻辑</h4>
           <ul class="rules">
             <li>保存前校验智能体类型为「飞书aily-工作流应用」，并校验智能体名称、智能体标识、应用Key、应用密钥非空；应用密钥加密存储，查询列表仅返回脱敏值。</li>
-            <li>更新时以记录已保存的智能体名称、智能体标识、智能体类型为准，仅接收应用Key与应用密钥的变更；请求携带的名称、标识与库中不一致时按编辑不可修改处理，不更新该字段。</li>
           </ul>
           <div class="proto-card">
             <div class="block-head"><span>原型 · 智能体管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 智能体管理','原型/智能体管理_v1.0.html')">放大查看</button></span></div>
@@ -277,9 +276,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>新增 / 编辑包含智能体、工作流类型、工作流名称、工作流ID，均为必填；智能体为下拉选择，选项为「智能体管理」已维护的智能体，下拉文案为「智能体名称（智能体标识）」（如「企微AI客服智能体（ai_customer_service）」）；工作流类型可选择「意图识别」「业务API」「商品知识库」「FAQ知识库」。</li>
             <li>编辑工作流时，智能体与工作流类型只读、不可修改；新增时两项均可选择。编辑保存只更新工作流名称与工作流ID。</li>
           </ul>
-          <h4>后端处理逻辑</h4>
           <ul class="rules">
-            <li>更新时以记录已保存的智能体、工作流类型为准，仅接收工作流名称与工作流ID的变更；请求携带的类型与库中不一致时按编辑不可修改处理，不更新该字段。</li>
           </ul>
 
           <div class="proto-card">
@@ -674,6 +671,7 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
     ol: '<svg viewBox="0 0 20 20"><path d="M8 6h8M8 10h8M8 14h8"/><text x="2" y="8" font-size="6" fill="currentColor" stroke="none" font-family="sans-serif">1</text><text x="2" y="12" font-size="6" fill="currentColor" stroke="none" font-family="sans-serif">2</text><text x="2" y="16" font-size="6" fill="currentColor" stroke="none" font-family="sans-serif">3</text></svg>',
     clear: '<svg viewBox="0 0 20 20"><path d="M7.5 4h8M11 4l-2 12M5 16h10"/></svg>',
     nolist: '<svg viewBox="0 0 20 20"><path d="M8 6h8M8 10h8M8 14h8"/><path d="M2.4 12.2l3.2-3.2"/><path d="M2.4 9l3.2 3.2"/></svg>',
+    close: '<svg viewBox="0 0 20 20"><path d="M6.2 6.2l7.6 7.6"/><path d="M13.8 6.2l-7.6 7.6"/></svg>',
     info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11.5v4.5"/><path d="M12 8h.01"/></svg>'
   };
 
@@ -700,7 +698,9 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
           var p = c.parentElement;
           if ((!p || !isTextLeaf(p)) && (c.textContent.trim().length || isBlankRow(c))) {
             // 快照前清掉所有编辑器标记：否则二次收集时 outerHTML 会带上 data-prd-edit，源码里就找不到这一行了
-            ['data-prd-edit', 'data-prd-dirty', 'data-prd-deleted', 'data-prd-new', 'contenteditable'].forEach(function (a) { c.removeAttribute(a); });
+            // data-prd-target 是行工具条的悬停高亮标记，同样必须剥离：它只存在于 DOM，
+            // 若带进快照，悬停移开后 DOM 少了这个属性、快照还留着，下一次保存就定位不到这一行
+            ['data-prd-edit', 'data-prd-dirty', 'data-prd-deleted', 'data-prd-new', 'contenteditable', 'data-prd-target'].forEach(function (a) { c.removeAttribute(a); });
             var inner0 = c.innerHTML, outer0 = c.outerHTML;
             c.setAttribute('data-prd-edit', String(els.length));
             els.push(c);
@@ -854,7 +854,7 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
     return result;
   }
   function serialize(el) {
-    var attrs = ['data-prd-edit', 'data-prd-new', 'data-prd-deleted', 'data-prd-dirty', 'contenteditable'];
+    var attrs = ['data-prd-edit', 'data-prd-new', 'data-prd-deleted', 'data-prd-dirty', 'contenteditable', 'data-prd-target'];
     var c = el.cloneNode(true);
     attrs.forEach(function (a) { c.removeAttribute(a); });
     var d = c.querySelectorAll('[data-prd-edit],[data-prd-new],[data-prd-deleted],[data-prd-dirty],[contenteditable]');
@@ -1469,13 +1469,19 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
   }
   function setBtns() {
     var q = function (c) { return bar.querySelector(c); };
+    var n = changeCount();
     q('.pe-edit').hidden = editing;
     q('.pe-edit').disabled = busy;
-    q('.pe-revert').hidden = !editing;
+    // 没改动 → 显示「取消编辑」（直接退出，不用确认）；有改动 → 换成「撤回」（要确认）
+    var cn = q('.pe-cancel');
+    cn.hidden = !editing || n > 0;
+    cn.disabled = busy;
+    q('.pe-revert').hidden = !editing || n === 0;
     q('.pe-revert').disabled = busy;
     var sv = q('.pe-save');
-    sv.hidden = !editing;
-    sv.disabled = busy || !changeCount();
+    // 没有改动就没有可保存的东西，连保存一起收起来
+    sv.hidden = !editing || n === 0;
+    sv.disabled = busy;
     sv.innerHTML = ICON.save + (busy ? '保存中…' : '保存');
     var r = q('.pe-resume'), dn = draftInfo();
     r.hidden = editing || !dn;
@@ -1633,12 +1639,15 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
       '<span class="pe-status" hidden><span class="pe-dot"></span><span class="pe-status-text"></span></span>' +
       '<button type="button" class="pe-btn pe-resume" hidden></button>' +
       '<button type="button" class="pe-btn pe-edit">' + ICON.edit + '编辑</button>' +
+      '<button type="button" class="pe-btn pe-cancel" hidden>' + ICON.close + '取消编辑</button>' +
       '<button type="button" class="pe-btn pe-revert" hidden>' + ICON.undo + '撤回</button>' +
       '<button type="button" class="pe-btn primary pe-save" hidden>' + ICON.save + '保存</button>';
     document.body.appendChild(bar);
     bar.querySelector('.pe-edit').addEventListener('click', function () { setEditing(true); });
     bar.querySelector('.pe-save').addEventListener('click', save);
     bar.querySelector('.pe-revert').addEventListener('click', onRevert);
+    // 没有改动时退出编辑态，不需要确认，直接走
+    bar.querySelector('.pe-cancel').addEventListener('click', function () { setEditing(false); });
     bar.querySelector('.pe-resume').addEventListener('click', resumeDraft);
 
     for (var i = 0; i < els.length; i++) bindEditable(els[i]);
