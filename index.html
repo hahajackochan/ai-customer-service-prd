@@ -81,7 +81,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 <div class="layout">
   <nav class="toc">
     <h1>AI客服 PRD</h1>
-    <div class="meta">v1.82 · 产品经理：陈嘉豪 · 2026-09-20</div>
+    <div class="meta">v1.88 · 产品经理：陈嘉豪 · 2026-09-22</div>
     <a href="#info">一、项目信息</a>
     <a href="#background">二、需求背景</a>
     <a href="#scope">三、需求功能清单</a>
@@ -98,6 +98,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <a href="#feature-6">4.8 AI响应明细</a>
         <a href="#feature-config">4.9 AI客服配置</a>
         <a href="#feature-role">4.10 角色管理（数据权限）</a>
+        <a href="#feature-intent">4.11 意图管理</a>
       </span>
     </div>
     <a href="#appendix">五、附录</a>
@@ -105,7 +106,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
   <main class="main">
     <header class="hero">
       <h1>AI客服 PRD</h1>
-      <p>本期建设三方账号管理、会话接待插件H5、AI会话管理、智能体管理及租户基础配置（AI客服配置），支持单聊 / 群聊AI接管独立配置、按工作日 / 非工作日定时自动启用单聊AI接管、会话 / 消息查询、转人工归因追溯、AI回复耗时分析，以及智能体应用凭证与工作流配置；不实现真实AI执行。原型均为模拟数据。</p>
+      <p>本期建设三方账号管理、会话接待插件H5、AI会话管理、智能体管理（含意图管理）及租户基础配置（AI客服配置），支持单聊 / 群聊AI接管独立配置、按工作日 / 非工作日定时自动启用单聊AI接管、会话 / 消息查询、转人工归因追溯、AI回复耗时分析，以及智能体应用凭证、工作流与意图配置；不实现真实AI执行。原型均为模拟数据。</p>
     </header>
 
     <section id="info" class="section">
@@ -114,16 +115,22 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th style="width:160px">字段</th><th>内容</th></tr>
         <tr><td>产品/系统</td><td>消费者业务中台（租户端）</td></tr>
         <tr><td>需求名称</td><td>AI客服</td></tr>
-        <tr><td>版本</td><td>v1.82</td></tr>
+        <tr><td>版本</td><td>v1.88</td></tr>
         <tr><td>文档负责人</td><td>陈嘉豪</td></tr>
         <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息，支持在租户基础配置中按工作日 / 非工作日定时自动启用单聊AI接管。</td></tr>
         <tr><td>涉及三方</td><td>艾客客服系统（前期）；京东、天猫等仅预留供应商维度扩展</td></tr>
-        <tr><td>更新时间</td><td>2026-09-20</td></tr>
+        <tr><td>更新时间</td><td>2026-09-22</td></tr>
       </table>
       <div style="display:none" aria-hidden="true">
       <h3>版本记录</h3>
       <table>
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-09-22</td><td>v1.88</td><td>按需求方确认，4.11 意图管理展示调整：①明确列表记录按创建时间倒序展示；②列表「业务类型」列由彩色标签样式调整为纯文本展示。同步原型与README。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-22</td><td>v1.87</td><td>按需求方确认，4.11 意图管理界面调整：①新增 / 编辑弹窗删除「工作流ID」输入框，工作流下拉已同时展示工作流名称与ID，保存时记录所选工作流ID；②列表新增「最后同步时间」列，未同步或缺少意图扩写的意图显示 -，同步成功后自动刷新；③筛选条件新增「二级意图分类标识」与「工作流ID」，文本输入、支持包含匹配与回车提交，重置时一并清空。同步原型与README。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-22</td><td>v1.86</td><td>按需求方确认，4.11 意图管理同步与标识规则细化：①新增意图输入二级意图分类名称命中现有分类时自动带出对应二级意图分类标识（标识只读），输入全新分类时二级意图分类标识需唯一，保存重复时提示「该二级意图分类标识已存在，请修改后重试」；②「同步」仅同步已配置意图扩写（经典提问）的意图，同步完成后提示「X条记录同步成功，Y条记录缺少意图扩写」。同步原型与README。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-22</td><td>v1.85</td><td>按需求方确认，4.11 意图管理增强：①列表筛选区左侧新增「同步」按钮，点击后将意图数据同步至飞书知识空间；②新增意图弹窗新增必填「二级意图分类标识」字段（输入标识如 product_price），列表同步新增该列（14列）；③编辑意图时业务类型、一级意图分类、二级意图分类、二级意图分类标识只读不可修改，仅工作流名称与追问话术可修改。同步原型与README。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-22</td><td>v1.84</td><td>新增 4.11 意图管理：在「智能体管理」菜单下新增意图管理模块，列表含ID、业务类型、一级 / 二级意图分类、意图扩写（经典提问）、工作流名称与工作流ID、追问话术及创建人、创建时间、最后更新人、最后更新时间，按创建时间倒序；业务类型选项来自中台数据字典（当前：成品销售、会员服务）；一级 / 二级意图分类由本模块自行创建维护（输入时联想已有分类）；意图扩写（经典提问）通过列表「配置扩写」单独维护（0–10条，新增意图时为空，全部清空表示暂无经典提问）；工作流名称自「工作流管理」选择并自动带出工作流ID；新增意图弹窗不放置输入框下方的注释说明。新增原型 原型/意图管理_v1.0.html。同步目录、功能清单、附录数据字典与README。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-09-21</td><td>v1.83</td><td>按需求方确认，4.7 会话消息管理的「转人工归因」固定为 6 个枚举：用户主动要求人工、FAQ知识缺失、商品知识缺失、智能体工作流异常、业务API异常、业务规则要求人工。①前端规则新增「转人工归因」的列表展示与筛选项说明；②后端处理逻辑新增上述各枚举的映射判定逻辑。PRD 与原型同步。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-20</td><td>v1.77</td><td>按需求方确认，4.10 角色管理改为「角色管理（数据权限）」：①功能点名称、列表操作列按钮由【设置AI托管账号权限】改为【数据权限】，弹窗标题改为「设置数据权限」；②弹窗在现有穿梭框基础上新增「数据类型」维度——顶部为数据类型页签（当前仅「AI托管账号」一个类型，默认选中），切换页签即切换下方该类型的数据勾选区，各类型已选数据按「角色 + 数据类型」独立保存，页签由类型配置渲染、支持后续扩展更多数据类型；③4.4 AI托管账号、4.6 客户会话管理、4.7 会话消息管理、4.8 AI响应明细中引用的入口名称同步改为【数据权限】。同步目录、功能清单、README 与原型。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-20</td><td>v1.78</td><td>按需求方确认，4.10 角色管理（数据权限）弹窗左侧批量操作按钮文案简化：由「全选当前 N 条 / 移出当前 N 条」改为「全选 / 取消全选」，按钮不再展示当前命中条数。同步原型与 4.10 交互逻辑。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-20</td><td>v1.79</td><td>按需求方确认，新增「五、附录」——数据字典使用说明：集中说明系统以数据字典维护、各界面以枚举 / 下拉选项呈现的字段及当前取值：①4.1 智能体管理·智能体类型（飞书aily-工作流应用）；②4.2 工作流管理·工作流类型（意图识别、业务API、商品知识库、FAQ知识库）；③4.3 供应商管理·供应商类型（艾客）；④4.10 角色管理（数据权限）·数据权限类型（AI托管账号）。同步目录与 README。</td><td>陈嘉豪</td></tr>
@@ -241,6 +248,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI响应明细</td><td><span class="tag p0">P0</span></td><td>以AI决策追溯ID为主查看AI响应总时长与各环节耗时，用于分析耗时过长的环节。</td><td><a href="#feature-6">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>租户管理（基础配置）</td><td>AI客服配置</td><td><span class="tag p0">P0</span></td><td>配置执行AI接管等待时长与按工作日 / 非工作日自动启用单聊AI托管的定时规则，定时把所有AI托管账号的单聊AI接管全部启用。</td><td><a href="#feature-config">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>租户管理（角色管理）</td><td>角色管理（数据权限）</td><td><span class="tag p0">P0</span></td><td>按数据类型为角色设置可查看的数据范围（当前类型为AI托管账号，支持勾选多个账号），中台各AI客服列表按角色授权范围展示数据。</td><td><a href="#feature-role">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>意图管理</td><td><span class="tag p0">P0</span></td><td>维护业务类型下的意图分类、二级意图分类标识、意图扩写（经典提问）、工作流绑定与追问话术，支持新增、编辑、导出、扩写单独配置与同步至飞书知识空间。</td><td><a href="#feature-intent">查看</a></td></tr>
       </table>
     </section>
 
@@ -419,12 +427,24 @@ th{background:var(--head);color:var(--ink);font-weight:700}
           <ul class="rules">
             <li>列表-成员回复内容：当成员未回复或转人工的情况下，显示-，若为AI回复的则显示AI回复内容，需注意AI存在回复多条消息的情况，多条消息的情况下，每条消息需要新增一个序号 并且 换行展示。</li>
             <li>列表-转人工：当AI转人工后，此字段显示是，反之显示否；</li>
+            <li>列表-转人工归因：AI转人工时展示该次转人工的归因枚举（用户主动要求人工、FAQ知识缺失、商品知识缺失、智能体工作流异常、业务API异常、业务规则要求人工），非转人工的记录显示-；筛选条件「转人工归因」可选择上述任一枚举，选定后仅展示该归因的记录。</li>
             <li>列表-AI决策追溯按钮：当客户消息是通过AI回复或转人工的情况下，需要显示AI决策追溯按钮；</li>
             <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.10）。</li>
           </ul>
           <h4>交互逻辑</h4>
           <ul class="rules">
             <li>当客户消息有AI回复、或由AI判定转人工时，显示「AI决策追溯」按钮，点击后在右侧展示该客户消息所属的追溯过程；被并入后续追溯的客户消息，按钮指向所属的那条追溯。</li>
+          </ul>
+          <h4>后端处理逻辑</h4>
+          <p>转人工归因枚举值及映射逻辑处理：</p>
+          <ul class="rules">
+            <li>用户主动要求人工（对应逻辑：用户输入关键词“人工、转人工”）</li>
+            <li>FAQ知识缺失（对应逻辑：查询FAQ知识库没有对应的知识片段）</li>
+            <li>商品知识缺失（对应逻辑：查询商品知识库没有对应的知识片段）</li>
+            <li>智能体工作流异常（对应逻辑：进入智能体工作流异常了，这里是智能体平台返回异常，如飞书aily、扣子等）</li>
+            <li>业务API异常（对应逻辑：查询业务API时返回400、500等报错，这里指业务系统返回的异常）</li>
+            <li>业务规则要求人工（对应逻辑：命中意图库的要求转人工的意图，含高风险问题情绪投诉等）</li>
+            <li>待确认：同一条客户消息同时满足多个归因条件时的取值口径（例如用户主动要求人工的同时，FAQ知识库也没有对应知识片段），需确认按哪个归因记录、或是否允许一条记录挂多个归因。</li>
           </ul>
           <div class="proto-card">
             <div class="block-head"><span>原型 · 会话消息管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 会话消息管理','原型/会话消息管理_v1.0.html')">放大查看</button></span></div>
@@ -530,6 +550,32 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
     </section>
 
+      <article id="feature-intent" class="feature">
+        <div class="feature-head"><h3 class="feature-title">4.11 意图管理</h3><span class="feature-id">消费者业务中台 / 智能体管理</span></div>
+        <div class="feature-content">
+          <h4>前端规则逻辑</h4>
+          <ul class="rules">
+            <li>新增 / 编辑弹窗包含业务类型、一级意图分类、二级意图分类、二级意图分类标识、工作流名称、追问话术，均为必填：<br>1. 业务类型为下拉选择，选项值取数据字典；<br>2. 一级 / 二级意图分类为输入框，支持自行创建维护，输入时可联想已有一、二级分类（注意：输入二级分类时只能联想当前一级分类下的二级）；<br>3. 二级意图分类标识为输入框必填（如 product_price），若二级分类意图已存在，则自动带入对应的已有的二级分类意图标识，不可编辑；<br>4. 工作流名称为下拉选择，选项为「工作流管理」已维护的工作流（展示「工作流名称（工作流ID）」）；<br></li>
+            <li>编辑意图时业务类型、一级意图分类、二级意图分类、二级意图分类标识只读不可修改，仅工作流名称与追问话术可修改。</li>
+            <li>意图扩写（经典提问）通过列表操作列「配置扩写」单独维护：弹窗顶部展示该意图的业务类型 / 一级 / 二级意图分类，支持逐条添加与删除，最多10条；新增意图时扩写为空（列表显示 -），空白条目保存时自动忽略，全部清空表示该意图暂无经典提问。</li>
+            <li>列表筛选条件：业务类型、一级意图分类、二级意图分类、二级意图分类标识、工作流名称、工作流ID，其中二级意图分类标识与工作流ID为文本输入、支持包含匹配；列表含「最后同步时间」列，未同步或缺少意图扩写的意图显示 -；列表记录按创建时间倒序展示，业务类型列以纯文本展示。</li>
+          </ul>
+          <h4>交互逻辑</h4>
+          <ul class="rules">
+            <li>点击列表筛选区左侧「同步」按钮，系统将意图数据同步至飞书知识空间；仅同步已配置意图扩写（经典提问）的意图，同步完成后提示「X条记录同步成功，Y条记录缺少意图扩写」。</li>
+          </ul>
+          <h4>后端处理逻辑</h4>
+          <ul class="rules">
+            <li>意图同步至飞书后，需要更新最后记录的最后同步时间；</li>
+          </ul>
+          <div class="proto-card">
+            <div class="block-head"><span>原型 · 意图管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 意图管理','原型/意图管理_v1.0.html')">放大查看</button></span></div>
+            <iframe class="proto-frame" src="原型/意图管理_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="意图管理原型"></iframe>
+            <div class="proto-tip">模拟中台「智能体管理 / 意图管理」列表与新增 / 编辑、配置扩写弹窗；左侧「同步」按钮为同步至飞书知识空间的入口模拟。示例数据中售后服务咨询的二级分类、会员服务的分类与部分工作流为演示补全，以需求方确认为准。</div>
+          </div>
+        </div>
+      </article>
+
     <section id="appendix" class="section">
       <h2>五、附录</h2>
       <div class="note">数据字典：以下列表字段需要使用数据字典。</div>
@@ -540,6 +586,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><td>4.2 工作流管理</td><td>工作流类型</td><td>意图识别、业务API、商品知识库、FAQ知识库</td></tr>
         <tr><td>4.3 供应商管理</td><td>供应商类型</td><td>艾客</td></tr>
         <tr><td>4.10 角色管理（数据权限）</td><td>数据权限类型</td><td>AI托管账号</td></tr>
+        <tr><td>4.11 意图管理</td><td>业务类型</td><td>成品销售、会员服务</td></tr>
       </table>
     </section>
 
@@ -979,8 +1026,11 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
     el.addEventListener('keydown', function (ev) {
       if (ev.key !== 'Enter') return;
       ev.preventDefault();
-      // Ctrl/Cmd+Enter 在下方新增；加 Shift 则在上方新增
-      if (ev.ctrlKey || ev.metaKey || ev.altKey) addRow(el, ev.shiftKey ? 'above' : 'below');
+      // Shift / Ctrl / Cmd / Alt + Enter 都是软换行：同一个元素里断成两行，不新增行、列表序号不变
+      if (ev.shiftKey || ev.ctrlKey || ev.metaKey || ev.altKey) { softBreak(el); return; }
+      // 普通 Enter：列表项里换行 = 同一个列表里再开一项，形态跟着当前行；
+      // 其余元素走同一套新增逻辑，这样新行能进变更集、保存时不会丢
+      if (!splitRow(el)) addRow(el, 'below');
     });
     el.addEventListener('paste', function (ev) {
       if (el.getAttribute('contenteditable') !== 'true') return;
@@ -1002,6 +1052,93 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
       ev.preventDefault(); ev.stopPropagation();
       try { window.open(a.href, '_blank', 'noopener'); } catch (e) {}
     });
+  }
+  // 软换行：在同一个元素里插 <br>，光标落到它后面。不产生新行，列表序号也不变。
+  function softBreak(el) {
+    var br = document.createElement('br');
+    var sel = window.getSelection();
+    if (sel && sel.rangeCount) {
+      var range = sel.getRangeAt(0);
+      if (el.contains(range.startContainer)) {
+        range.deleteContents();
+        range.insertNode(br);
+      } else {
+        el.appendChild(br);
+      }
+    } else {
+      el.appendChild(br);
+    }
+    // <br> 落在末尾时浏览器不显示这一空行，得再补一个占位
+    if (!br.nextSibling) el.appendChild(document.createElement('br'));
+    try {
+      var r2 = document.createRange();
+      r2.setStartAfter(br);
+      r2.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(r2);
+    } catch (e) {}
+    tidy(el);
+    markHost(el);
+  }
+  // 列表项里按 Enter 换行：光标后面的内容切到一个新的同级 <li>，
+  // 形态（无序 / 有序 / 清空）跟着当前行，而不是跳出列表。
+  function splitRow(el) {
+    if (el.tagName !== 'LI') return false;
+    var owner = idxOf(el);
+    // 新增行（data-prd-edit="new"）也要能继续拆，否则在刚加的行里再按 Enter 会掉回"新增规则"模板
+    var isNew = owner < 0 && el.getAttribute('data-prd-new') === '1';
+    if (owner < 0 && !isNew) return false;
+    var sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return false;
+    var range = sel.getRangeAt(0);
+    if (!el.contains(range.startContainer)) return false;
+    var tail = document.createElement('div');
+    try {
+      var after = document.createRange();
+      after.selectNodeContents(el);
+      after.setStart(range.endContainer, range.endOffset);
+      tail.appendChild(after.extractContents());
+    } catch (e) { return false; }
+    var nu = document.createElement('li');
+    while (tail.firstChild) nu.appendChild(tail.firstChild);
+    // 形态跟着当前行走：清空态复制 none；有序态若父级不是 ol 就得显式写 decimal；无序态交给父级
+    var mode = listMode(el), pe = el.parentElement;
+    var inherited = pe && pe.tagName === 'OL' ? 'ol' : 'ul';
+    if (mode === 'none') nu.style.setProperty('list-style-type', 'none');
+    else if (mode !== inherited) nu.style.setProperty('list-style-type', mode === 'ol' ? 'decimal' : 'disc');
+    nu.setAttribute('data-prd-edit', 'new');
+    nu.setAttribute('data-prd-new', '1');
+    nu.setAttribute('data-prd-dirty', '1');
+    // 先定好这一行挂在谁名下：原有行挂到自己 owner 的 below 末尾，
+    // 新增行则接在它自己在数组里的位置后面（同一个 owner 可能已经有多条新增行，顺序不能乱）
+    var slot = null, at = -1;
+    if (owner >= 0) { slot = lists(owner).below; at = slot.length - 1; }
+    else {
+      for (var k2 in added) {
+        var a2 = added[k2];
+        if (!a2 || slot) continue;
+        ['above', 'below'].forEach(function (kk) {
+          var p2 = a2[kk].indexOf(el);
+          if (p2 >= 0) { slot = a2[kk]; at = p2; }
+        });
+      }
+    }
+    if (!slot) return false;   // 找不到归属就不插，免得产生一行保存不了的内容
+    el.parentNode.insertBefore(nu, el.nextSibling);
+    slot.splice(at + 1, 0, nu);
+    bindEditable(nu);
+    nu.setAttribute('contenteditable', 'true');
+    try {
+      nu.focus({ preventScroll: true });
+      var r2 = document.createRange();
+      r2.setStart(nu, 0); r2.collapse(true);
+      var s2 = window.getSelection(); s2.removeAllRanges(); s2.addRange(r2);
+    } catch (e) {}
+    markHost(el);
+    hoverEl = nu;
+    showRowBar(nu);
+    paint();
+    return true;
   }
   function makeRow(el, owner, dir, beforeNode) {
     // 标题里新增时降级为正文段落，免得默认就又大又粗；其余保持同标签以维持结构（ul 里的 li、表格里的 td）
@@ -1332,8 +1469,8 @@ body.prd-editing [data-prd-deleted="1"]:has(> br:only-child)::before{content:'�
     rowBar = document.createElement('div');
     rowBar.id = 'prd-editor-rowbar';
     rowBar.innerHTML =
-      '<button type="button" data-act="up" title="在上方新增一行（Ctrl/Cmd+Shift+Enter）">' + ICON.up + '</button>' +
-      '<button type="button" data-act="down" title="在下方新增一行（Ctrl/Cmd+Enter）">' + ICON.down + '</button>' +
+      '<button type="button" data-act="up" title="在上方新增一行">' + ICON.up + '</button>' +
+      '<button type="button" data-act="down" title="在下方新增一行">' + ICON.down + '</button>' +
       '<span class="pe-rb-sep"></span>' +
       '<button type="button" data-list="ul" title="无序列表（圆点）">' + ICON.ul + '</button>' +
       '<button type="button" data-list="ol" title="有序列表（数字）">' + ICON.ol + '</button>' +
