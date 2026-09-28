@@ -123,7 +123,7 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
   <section class="card" aria-label="会话列表">
     <h3 id="list-title">单聊设置</h3>
     <div class="search">
-      <input id="q" placeholder="搜索会话名称" autocomplete="off">
+      <input id="q" placeholder="搜索客户名称" autocomplete="off">
       <button type="button" class="clear" id="q-clear" aria-label="清空搜索">×</button>
     </div>
     <div class="bulk-acts">
@@ -185,7 +185,7 @@ function visibleList(){const kw=($('#q').value||'').trim();let list=typeSessions
 function renderList(){
  const a=account(h5.currentAccount),list=visibleList(),el=$('#slist');
  if(!list.length)el.innerHTML='<div class="empty">'+((($('#q').value||'').trim())?'未找到匹配会话，可修改关键词或重置搜索':'该账号暂无单聊会话')+'</div>';
- else el.innerHTML=list.map(s=>{const allow=sessionAllowed(s,a),on=sessionOn(s);return '<div class="srow" data-id="'+s.id+'"><span class="avatar">'+esc(fmtName(s.name))+'</span><span class="body"><span class="n1"><span class="sname">'+esc(s.name)+'</span></span><span class="n2">'+esc(s.summary)+'</span></span><button type="button" class="sw'+(on?' on':'')+'" data-sw="'+s.id+'" '+(allow.ok?'':'disabled ')+'aria-label="'+esc(s.name)+' AI接管开关"></button></div>';}).join('');
+ else el.innerHTML=list.map(s=>{const allow=sessionAllowed(s,a),on=sessionOn(s);return '<div class="srow" data-id="'+s.id+'"><span class="avatar">'+esc(fmtName(s.name))+'</span><span class="body"><span class="n1"><span class="sname">'+esc(s.name)+'</span></span></span><button type="button" class="sw'+(on?' on':'')+'" data-sw="'+s.id+'" '+(allow.ok?'':'disabled ')+'aria-label="'+esc(s.name)+' AI接管开关"></button></div>';}).join('');
  renderCounts();
 }
 function renderCounts(){const a=account(h5.currentAccount),list=typeSessions(),allowed=allowedForAccount(a);$('#list-title').textContent='单聊设置（'+list.length+'）';$('#all-on').disabled=busy||!allowed||!list.length;$('#all-off').disabled=busy||!allowed||!list.length;}
