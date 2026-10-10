@@ -81,7 +81,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 <div class="layout">
   <nav class="toc">
     <h1>AI客服 PRD</h1>
-    <div class="meta">v1.103 · 产品经理：陈嘉豪 · 2026-09-28</div>
+    <div class="meta">v1.104 · 产品经理：陈嘉豪 · 2026-10-09</div>
     <a href="#info">一、项目信息</a>
     <a href="#background">二、需求背景</a>
     <a href="#scope">三、需求功能清单</a>
@@ -106,7 +106,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
   <main class="main">
     <header class="hero">
       <h1>AI客服 PRD</h1>
-      <p>本期建设三方账号管理、会话接待插件H5、AI会话管理、智能体管理（含意图管理）及租户基础配置（AI客服配置），支持单聊 / 群聊AI接管独立配置、按工作日 / 非工作日定时自动启用单聊AI接管、会话 / 消息查询、转人工归因追溯、AI回复耗时分析，以及智能体应用凭证、工作流与意图配置；不实现真实AI执行。原型均为模拟数据。</p>
+      <p>本期建设三方账号管理、会话接待插件H5、AI会话管理、智能体管理（含意图管理）及租户基础配置（AI客服配置），支持单聊 / 群聊AI接管独立配置、按工作日 / 非工作日定时自动启用单聊AI接管、会话 / 消息查询、转人工归因追溯、AI回复耗时分析，以及智能体应用凭证、工作流与意图配置、按用途维护飞书多维表格配置；不实现真实AI执行。原型均为模拟数据。</p>
     </header>
 
     <section id="info" class="section">
@@ -115,16 +115,17 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th style="width:160px">字段</th><th>内容</th></tr>
         <tr><td>产品/系统</td><td>消费者业务中台（租户端）</td></tr>
         <tr><td>需求名称</td><td>AI客服</td></tr>
-        <tr><td>版本</td><td>v1.103</td></tr>
+        <tr><td>版本</td><td>v1.104</td></tr>
         <tr><td>文档负责人</td><td>陈嘉豪</td></tr>
-        <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息，支持在租户基础配置中按工作日 / 非工作日定时自动启用单聊AI接管。</td></tr>
+        <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息，支持在租户基础配置中按工作日 / 非工作日定时自动启用单聊AI接管及按用途维护飞书多维表格配置。</td></tr>
         <tr><td>涉及三方</td><td>艾客客服系统（前期）；京东、天猫等仅预留供应商维度扩展</td></tr>
-        <tr><td>更新时间</td><td>2026-09-22</td></tr>
+        <tr><td>更新时间</td><td>2026-10-09</td></tr>
       </table>
       <div style="display:none" aria-hidden="true">
       <h3>版本记录</h3>
       <table>
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-10-09</td><td>v1.104</td><td>按需求方确认：①4.2 工作流管理新增 / 编辑弹窗在工作流ID下方新增必填「Aily应用ID」「Aily技能ID」，支持回显、修改与非空校验；②4.9 AI客服配置在自动启用单聊AI托管下方新增「飞书多维表格配置」，支持新增并选择数据字典用途，app_token、table_id必填，同一租户相同用途不可重复维护；③数据字典新增用途示例「同步意图库」「拉取AI追溯日志」，同步两份交互原型与README。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-28</td><td>v1.103</td><td>按需求方确认，4.5 会话接待插件H5：搜索框文案由「搜索会话名称」改为「搜索客户名称」；客户列表删除姓名下方的会话摘要文案。两个H5原型同步。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-28</td><td>v1.102</td><td>按需求方确认，清空工作流中「槽位参数=无」记录的默认追问话术「请问您能再描述得具体一些吗？」；新增 / 编辑输入框默认保持空白。同步原型与README。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-09-28</td><td>v1.101</td><td>按需求方确认，4.2 工作流编辑弹窗调整：①取消与保存按钮移动到追问话术输入框下方并修复弹窗结构；②槽位参数空选项由「无」改为「请选择」；③追问话术输入框新增/编辑默认保持空白。同步原型与README。</td><td>陈嘉豪</td></tr>
@@ -254,14 +255,14 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <colgroup><col style="width:15%"><col style="width:12%"><col style="width:12%"><col style="width:6%"><col><col style="width:8%"></colgroup>
         <tr><th>系统</th><th>模块</th><th>功能点</th><th>优先级</th><th>说明</th><th>详细方案</th></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>智能体管理</td><td><span class="tag p0">P0</span></td><td>维护智能体名称、标识、应用密钥等信息（当前为飞书aily-工作流应用），支持新增、编辑。</td><td><a href="#feature-agent">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护智能体所用的工作流（意图识别、业务API、商品知识库、FAQ知识库）及槽位参数与追问话术配置（1对1联动、条件必填），支持新增、编辑与导出。</td><td><a href="#feature-workflow">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护工作流、Aily应用ID与技能ID及槽位参数 / 追问话术配置，支持新增、编辑与导出。</td><td><a href="#feature-workflow">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>供应商管理</td><td><span class="tag p0">P0</span></td><td>维护艾客等供应商的接入配置（服务地址、应用密钥、回调配置等），支持新增、编辑与导出。</td><td><a href="#feature-1">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>AI托管账号</td><td><span class="tag p0">P0</span></td><td>管理艾客托管账号及其单聊 / 群聊AI接管配置，支持同步、编辑与导出。</td><td><a href="#feature-3">查看</a></td></tr>
         <tr><td>消费者业务中台 / 会话接待插件H5</td><td>AI接管配置（艾客客服端内嵌）</td><td>会话接待插件H5</td><td><span class="tag p0">P0</span></td><td>内嵌艾客客服端，管理当前账号下各单聊会话的AI接管开关（单个 / 全部启停）。</td><td><a href="#feature-h5">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>客户会话管理</td><td><span class="tag p0">P0</span></td><td>按客户 × 成员管理每个会话的AI接管状态、聊天记录与AI决策追溯，支持导出。</td><td><a href="#feature-5">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>逐条查看客户消息、AI回复与转人工归因，可关联查看AI决策追溯，支持导出。</td><td><a href="#feature-4">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI响应明细</td><td><span class="tag p0">P0</span></td><td>以AI决策追溯ID为主查看AI响应总时长与各环节耗时，用于分析耗时过长的环节。</td><td><a href="#feature-6">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>租户管理（基础配置）</td><td>AI客服配置</td><td><span class="tag p0">P0</span></td><td>配置执行AI接管等待时长与按工作日 / 非工作日自动启用单聊AI托管的定时规则，定时把所有AI托管账号的单聊AI接管全部启用。</td><td><a href="#feature-config">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>租户管理（基础配置）</td><td>AI客服配置</td><td><span class="tag p0">P0</span></td><td>配置AI接管等待时长、自动启用单聊AI托管的定时规则及按用途维护的飞书多维表格。</td><td><a href="#feature-config">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>租户管理（角色管理）</td><td>角色管理（数据权限）</td><td><span class="tag p0">P0</span></td><td>按数据类型为角色设置可查看的数据范围（当前类型为AI托管账号，支持勾选多个账号），中台各AI客服列表按角色授权范围展示数据。</td><td><a href="#feature-role">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>意图管理</td><td><span class="tag p0">P0</span></td><td>维护业务类型下的意图分类、二级意图分类标识、意图扩写（经典提问）与工作流绑定，支持新增、编辑、导出与同步至飞书知识空间。</td><td><a href="#feature-intent">查看</a></td></tr>
       </table>
@@ -295,11 +296,13 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
-            <li>新增 / 编辑包含智能体、工作流类型、工作流名称、工作流ID，均为必填；智能体为下拉选择，选项为「智能体管理」已维护的智能体，下拉文案为「智能体名称（智能体标识）」（如「企微AI客服智能体（ai_customer_service）」）；工作流类型可选择「意图识别」「业务API」「商品知识库」「FAQ知识库」。</li>
+            <li>新增 / 编辑包含智能体、工作流类型、工作流名称、工作流ID、Aily应用ID、Aily技能ID，均为必填；在工作流ID输入框下方依次新增「Aily应用ID」「Aily技能ID」输入框，空值或仅空格时保存拦截，分别提示「请输入Aily应用ID」「请输入Aily技能ID」；智能体为下拉选择，选项为「智能体管理」已维护的智能体，下拉文案为「智能体名称（智能体标识）」（如「企微AI客服智能体（ai_customer_service）」）；工作流类型可选择「意图识别」「业务API」「商品知识库」「FAQ知识库」。</li>
             <li>新增 / 编辑弹窗提供「槽位参数」下拉与「追问话术」人工输入框，一个槽位参数对应一条追问话术：槽位参数空选项文案为「请选择」，为空时追问话术非必填；槽位参数不为空时追问话术必填（未填写保存时提示「请填写追问话术」并拦截）</li>
-            <li>编辑工作流时，智能体与工作流类型只读、不可修改；新增时两项均可选择。编辑保存只更新工作流名称、工作流ID、槽位参数与追问话术。</li>
+            <li>编辑工作流时，智能体与工作流类型只读、不可修改；新增时两项均可选择。编辑保存只更新工作流名称、工作流ID、Aily应用ID、Aily技能ID、槽位参数与追问话术。</li>
           </ul>
+          <h4>后端处理逻辑</h4>
           <ul class="rules">
+            <li>新增 / 编辑保存前校验Aily应用ID、Aily技能ID去除首尾空格后非空；与工作流记录一并保存，查询记录详情时返回这两个字段供编辑回显。</li>
           </ul>
 
           <div class="proto-card">
@@ -514,12 +517,15 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       <article id="feature-config" class="feature">
         <div class="feature-head"><h3 class="feature-title">4.9 AI客服配置</h3><span class="feature-id">消费者业务中台 / 租户管理（基础配置）</span></div>
         <div class="feature-content">
-          <div class="note">AI客服配置：租户在「租户管理 / 基础配置」维护的AI客服入口配置，包含执行AI接管等待时长与自动启用单聊AI托管的定时设置；点击卡片【配置】按钮，以弹窗形式设置。</div>
+          <div class="note">AI客服配置：租户在「租户管理 / 基础配置」维护的AI客服入口配置，包含执行AI接管等待时长、自动启用单聊AI托管的定时设置与飞书多维表格配置；点击卡片【配置】按钮，以弹窗形式设置。</div>
           <h4>前端规则逻辑</h4>
           <ul class="rules">
             <li>执行AI接管等待时长：只能填写正整数，不填写的情况下默认0；</li>
             <li>自动启用单聊AI托管：支持按工作日和非工作日自动启用AI账号和所有单聊会话；当勾选自动启用后，必须选择启用的时间；</li>
-            <li><br></li>
+            <li>在「自动启用单聊AI托管」模块下方新增「飞书多维表格配置」，提供【新增】按钮；点击新增一条配置，先下拉选择用途，选项由数据字典配置，示例为「同步意图库」「拉取AI追溯日志」。</li>
+            <li>选择用途后展示app_token、table_id输入框，两项均为必填，去除首尾空格后为空时标红并拦截保存；每条配置必须选择用途。</li>
+            <li>当前租户相同用途只能维护一条飞书多维表格配置：其他配置已使用的用途在下拉中不可重复选择，保存时再次校验并拦截重复；编辑当前配置可保留自身用途。</li>
+            <li>已保存配置打开弹窗时回显并可修改；支持移除配置行，点击外层【保存】统一提交，点击【取消】或关闭弹窗不保存本次变更；未新增配置时不强制填写多维表格信息。</li>
           </ul>
           <ul class="rules">
             <li>等待时长：当AI托管账号的AI接管状态为启用 且 会话的AI接管状态为启用时，客户发送消息达到等待时长后，AI将自动获取客户最近发送的消息，执行AI客户流程。</li>
@@ -528,10 +534,15 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>（2）查询工作日，可考虑采用此外部接口 或 技术另寻其他接口，下方接口支持传入日期，接口会返回类型 工作日/节假日/周末。</li>
             <li>万维易源-节假日查询接口&nbsp; <a href="https://www.showapi.com/apiGateway/view/894/6" target="_blank" rel="noopener" title="按住 Cmd / Ctrl 点击可打开链接">https://www.showapi.com/apiGateway/view/894/6</a></li>
           </ul>
+          <h4>后端处理逻辑（飞书多维表格配置）</h4>
+          <ul class="rules">
+            <li>配置按当前租户维护，以「租户 + 用途字典值」作为唯一约束；新增与修改保存时校验用途属于数据字典、app_token与table_id去除首尾空格后非空，并校验用途不重复，不满足时整次配置不保存。</li>
+            <li>保存用途、app_token、table_id并在读取配置时返回；app_token为多维表格标识、table_id为数据表标识，本次仅维护配置，不新增真实同步意图库或拉取日志的执行流程。</li>
+          </ul>
           <div class="proto-card">
             <div class="block-head"><span>原型 · AI客服配置</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · AI客服配置','原型/AI客服配置_v1.0.html')">放大查看</button></span></div>
             <iframe class="proto-frame" src="原型/AI客服配置_v1.0.html?embed=1&focus=card-ai-config" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="AI客服配置原型"></iframe>
-            <div class="proto-tip">模拟租户管理「基础配置」页的AI客服配置卡片与配置弹窗，支持执行AI接管等待时长（正整数 · 单位秒）、工作日 / 非工作日独立开关、开启时间必填校验与保存。</div>
+            <div class="proto-tip">模拟租户管理「基础配置」页的AI客服配置卡片与配置弹窗，保留等待时长与自动启用单聊AI托管设置；新增飞书多维表格配置，演示用途下拉、app_token / table_id必填、同用途唯一、保存回显与取消不落库（配置存于浏览器本地）。</div>
           </div>
         </div>
       </article>
@@ -599,6 +610,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><td>4.1 智能体管理</td><td>智能体类型</td><td>飞书aily-工作流应用</td></tr>
         <tr><td>4.2 工作流管理</td><td>工作流类型</td><td>意图识别、业务API、商品知识库、FAQ知识库</td></tr>
         <tr><td>4.3 供应商管理</td><td>供应商类型</td><td>艾客</td></tr>
+        <tr><td>4.9 AI客服配置</td><td>飞书多维表格用途</td><td>同步意图库、拉取AI追溯日志</td></tr>
         <tr><td>4.10 角色管理（数据权限）</td><td>数据权限类型</td><td>AI托管账号</td></tr>
         <tr><td>4.11 意图管理</td><td>业务类型</td><td>成品销售、会员服务</td></tr>
       </table>
