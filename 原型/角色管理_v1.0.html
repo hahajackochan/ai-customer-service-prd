@@ -73,6 +73,7 @@ tbody td.weak{color:var(--weak)}
 .xfer-search{height:32px;margin:8px 10px 0;padding:0 10px;border:1px solid #dcdfe6;border-radius:4px;outline:none;font-size:13px;color:var(--ink);font-family:inherit;box-sizing:border-box;width:auto}
 .xfer-search:focus{border-color:var(--gold)}
 .xfer-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;height:32px;padding:0 10px;font-size:12.5px;color:var(--weak)}
+.xfer-bar[hidden]{display:none}
 .perm-link{border:0;background:transparent;color:var(--gold);font-size:12.5px;cursor:pointer;padding:0;font-family:inherit}
 .perm-link:hover{text-decoration:underline}
 .perm-link:disabled{color:#c8ccd2;cursor:default;text-decoration:none}
@@ -88,6 +89,18 @@ tbody td.weak{color:var(--weak)}
 .xfer-flag.plus{color:#b9bec6;border-color:#e6e8ec;background:#fff}
 .xfer-x{flex:0 0 auto;color:#b9bec6;font-size:14px;line-height:1;padding:0 2px}
 .xfer-item:hover .xfer-x{color:var(--gold)}
+.supplier-toggle{display:flex;align-items:center;gap:8px;width:100%;min-height:36px;padding:8px 10px;border:0;border-bottom:1px solid var(--line);background:#f7f8fa;color:var(--ink);text-align:left;cursor:pointer;font-weight:600;font-size:13px}
+.supplier-toggle:hover{background:#faf6ec}
+.supplier-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.supplier-chevron{flex:0 0 auto;color:var(--weak);transition:transform .15s ease}
+.supplier-toggle[aria-expanded="true"] .supplier-chevron{transform:rotate(90deg)}
+.supplier-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.supplier-count{flex:0 0 auto;color:var(--weak);font-size:12px;font-weight:400}
+.supplier-children[hidden]{display:none}
+.supplier-batch{display:flex;align-items:center;justify-content:flex-end;min-height:30px;padding:4px 10px 4px 26px;border-bottom:1px dashed var(--line)}
+.supplier-pick-all:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.supplier-children .xfer-item{padding-left:26px}
+.xfer-supplier{flex:0 0 auto;max-width:72px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--weak);font-size:12px}
 .xfer-empty{padding:26px 10px;text-align:center;color:var(--weak);font-size:12.5px;line-height:1.8}
 .modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:14px 18px;border-top:1px solid var(--line)}
 .toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:200;display:none;padding:9px 18px;border-radius:4px;color:#fff;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
@@ -172,12 +185,12 @@ tbody td.weak{color:var(--weak)}
             <section class="xfer-panel">
               <div class="xfer-head"><span id="perm-left-title">AI托管账号</span></div>
               <input type="search" class="xfer-search" id="perm-search" placeholder="搜索账号名称 / 账号ID" aria-label="搜索AI托管账号" autocomplete="off">
-              <div class="xfer-bar"><span id="perm-match">共 0 个账号</span><button type="button" class="perm-link" id="perm-pick-all">全选</button></div>
+              <div class="xfer-bar" id="perm-left-bar" hidden><span id="perm-match"></span><button type="button" class="perm-link" id="perm-pick-all">全选</button></div>
               <div class="xfer-list" id="perm-list"></div>
             </section>
             <section class="xfer-panel">
               <div class="xfer-head"><span id="perm-picked-title">已选账号</span></div>
-              <div class="xfer-bar"><span id="perm-tip">已选 0 / 0 个账号</span><button type="button" class="perm-link" id="perm-clear">清空已选</button></div>
+              <div class="xfer-bar"><span id="perm-tip">已选 0 个账号</span><button type="button" class="perm-link" id="perm-clear">清空已选</button></div>
               <div class="xfer-list" id="perm-picked"></div>
             </section>
           </div>
@@ -194,18 +207,19 @@ tbody td.weak{color:var(--weak)}
 (function(){
 'use strict';
 var STORE_KEY='dsh_proto_role_agent_scope_v1';
-var ACCOUNTS=(function(){var arr=[];for(var i=1;i<=36;i++){arr.push({id:'wx_10'+(i<10?'0'+i:i),name:'会员助理 小菲'+i});}return arr;})();
+var ACCOUNTS=(function(){var arr=[];for(var i=1;i<=36;i++){arr.push({id:'wx_10'+(i<10?'0'+i:i),name:'会员助理 小菲'+i,supplierId:i<=18?'aike':'tanma',supplierName:i<=18?'艾客':'探马'});}return arr;})();
 var DATA_TYPES=[
   {
     key:'agent',
     label:'AI托管账号',
-    desc:'勾选该角色可查看的AI托管账号；中台的AI托管账号、客户会话管理、会话消息管理、AI响应明细等列表按此权限展示数据',
+    desc:'展开供应商并选择该角色可查看的AI托管账号；中台的AI托管账号、客户会话管理、会话消息管理、AI响应明细等列表按此权限展示数据',
     leftTitle:'AI托管账号',
     pickedTitle:'已选账号',
     unit:'个账号',
     noun:'账号',
     searchPlaceholder:'搜索账号名称 / 账号ID',
     emptyText:'当前租户暂无AI托管账号',
+    groupBy:'supplier',
     items:ACCOUNTS
   }
 ];
@@ -233,9 +247,10 @@ var PAGE_SIZE=10,page=1;
 var tbody=document.getElementById('tbody');
 var modal=document.getElementById('perm-modal');
 var permList=document.getElementById('perm-list'),permTip=document.getElementById('perm-tip'),permTitle=document.getElementById('perm-title');
-var permSearch=document.getElementById('perm-search'),permPicked=document.getElementById('perm-picked'),permMatch=document.getElementById('perm-match'),permPickAll=document.getElementById('perm-pick-all');
+var permSearch=document.getElementById('perm-search'),permPicked=document.getElementById('perm-picked'),permMatch=document.getElementById('perm-match'),permPickAll=document.getElementById('perm-pick-all'),permLeftBar=document.getElementById('perm-left-bar');
 var permTabs=document.getElementById('perm-tabs'),permSub=document.getElementById('perm-sub'),permLeftTitle=document.getElementById('perm-left-title'),permPickedTitle=document.getElementById('perm-picked-title');
 var editingRoleId=null,draftByType={},activeType=DATA_TYPES[0].key,lastFocus=null;
+var supplierStateByType=Object.create(null);
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function showToast(message,type){var el=document.getElementById('toast');el.textContent=message;el.className='toast '+(type||'ok');el.style.display='block';clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){el.style.display='none';},2200);}
 function loadScopes(){try{var raw=localStorage.getItem(STORE_KEY);if(raw){var d=JSON.parse(raw);if(d&&typeof d==='object')return d;}}catch(e){}return {};}
@@ -276,6 +291,69 @@ function visibleItems(){
   if(!q)return typeItems().slice();
   return typeItems().filter(function(a){return String(a.name).toLowerCase().indexOf(q)>=0||String(a.id).toLowerCase().indexOf(q)>=0;});
 }
+function supplierInfo(a){
+  var id=a.supplierId==null?'':String(a.supplierId);if(!id.trim())id='';
+  return {id:id,key:id?'supplier:'+id:'ungrouped',name:id?(String(a.supplierName||'').trim()||id):'未分组'};
+}
+function supplierGroups(list){
+  var groups=[],byId=Object.create(null);
+  list.forEach(function(a){
+    var supplier=supplierInfo(a),group=byId[supplier.key];
+    if(!group){group={id:supplier.id,key:supplier.key,name:supplier.name,items:[]};byId[supplier.key]=group;groups.push(group);}
+    group.items.push(a);
+  });
+  return groups;
+}
+function supplierState(){
+  if(!supplierStateByType[activeType])supplierStateByType[activeType]={expanded:[],searchExpanded:[],keyword:''};
+  return supplierStateByType[activeType];
+}
+function syncSupplierSearch(groups,keyword){
+  var state=supplierState(),q=keyword.toLowerCase();
+  if(q===state.keyword)return;
+  state.keyword=q;
+  // 搜索展开单独维护，清空搜索时使用未受影响的搜索前展开状态。
+  state.searchExpanded=q?groups.map(function(g){return g.key;}):[];
+}
+function renderAvailableItem(a,open){
+  var on=draft().indexOf(a.id)>=0;
+  return '<div class="xfer-item'+(on?' on':'')+'" data-id="'+esc(a.id)+'" role="button" tabindex="'+(open===false?'-1':'0')+'" aria-pressed="'+on+'" title="'+(on?'点击移出已选':'点击加入已选')+'"><span class="xfer-name">'+esc(a.name)+'</span><span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-flag'+(on?'':' plus')+'">'+(on?'已选':'＋')+'</span></div>';
+}
+function renderSupplierGroups(groups){
+  var state=supplierState(),expanded=state.keyword?state.searchExpanded:state.expanded;
+  return groups.map(function(g,index){
+    var open=expanded.indexOf(g.key)>=0,childrenId='perm-supplier-children-'+index,batchLabel=itemsAllPicked(g.items)?'取消全选':'全选';
+    return '<div class="supplier-group" data-supplier-id="'+esc(g.id)+'"><button type="button" class="supplier-toggle" data-supplier-id="'+esc(g.id)+'" aria-expanded="'+open+'" aria-controls="'+childrenId+'"><span class="supplier-chevron" aria-hidden="true">▸</span><span class="supplier-name">'+esc(g.name)+'</span><span class="supplier-count">'+g.items.length+' '+esc(currentType().unit||'条')+'</span></button><div class="supplier-children" id="'+childrenId+'"'+(open?'':' hidden')+'><div class="supplier-batch"><button type="button" class="perm-link supplier-pick-all" data-supplier-id="'+esc(g.id)+'" tabindex="'+(open?'0':'-1')+'" aria-label="'+esc(g.name+' '+batchLabel)+'">'+batchLabel+'</button></div>'+g.items.map(function(a){return renderAvailableItem(a,open);}).join('')+'</div></div>';
+  }).join('');
+}
+function bindSupplierToggles(){
+  permList.querySelectorAll('.supplier-toggle').forEach(function(button){
+    function toggle(){
+      var state=supplierState(),expanded=state.keyword?state.searchExpanded:state.expanded;
+      var id=button.dataset.supplierId,key=id?'supplier:'+id:'ungrouped',index=expanded.indexOf(key),open=index<0;
+      if(open)expanded.push(key);else expanded.splice(index,1);
+      button.setAttribute('aria-expanded',String(open));
+      var children=document.getElementById(button.getAttribute('aria-controls'));
+      children.hidden=!open;
+      children.querySelectorAll('.supplier-pick-all,.xfer-item').forEach(function(el){el.setAttribute('tabindex',open?'0':'-1');});
+    }
+    button.addEventListener('click',toggle);
+    button.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  });
+}
+function bindSupplierBatch(){
+  permList.querySelectorAll('.supplier-pick-all').forEach(function(button){
+    button.addEventListener('click',function(){
+      var id=button.dataset.supplierId,restoreFocus=document.activeElement===button;
+      toggleBatchItems(visibleItems().filter(function(a){return supplierInfo(a).id===id;}));
+      renderPermList();
+      if(restoreFocus){
+        var next=[].slice.call(permList.querySelectorAll('.supplier-pick-all')).filter(function(el){return el.dataset.supplierId===id;})[0];
+        if(next&&!next.disabled&&!next.closest('[hidden]'))next.focus({preventScroll:true});
+      }
+    });
+  });
+}
 function renderTypeTabs(){
   permTabs.innerHTML=DATA_TYPES.map(function(t){
     var on=t.key===activeType;
@@ -295,21 +373,22 @@ function applyType(){
   permLeftTitle.textContent=t.leftTitle||t.label;
   permPickedTitle.textContent=t.pickedTitle||'已选';
   permSearch.placeholder=t.searchPlaceholder||'搜索';
+  permLeftBar.hidden=t.groupBy==='supplier';
   renderPermList();
 }
 function renderPermList(){
   var t=currentType(),d=draft(),unit=t.unit||'条',noun=t.noun||unit,keyword=(permSearch.value||'').trim(),list=visibleItems(),all=typeItems();
-  permMatch.textContent=keyword?('匹配 '+list.length+' '+unit):('共 '+all.length+' '+unit);
-  var allPicked=list.length>0&&list.every(function(a){return d.indexOf(a.id)>=0;});
+  var groups=t.groupBy==='supplier'?supplierGroups(list):null;
+  if(groups)syncSupplierSearch(groups,keyword);
+  permMatch.textContent=groups?'':(keyword?('匹配 '+list.length+' '+unit):('共 '+all.length+' '+unit));
+  var allPicked=itemsAllPicked(list);
   permPickAll.disabled=!list.length;
   permPickAll.textContent=allPicked?'取消全选':'全选';
   if(!all.length){permList.innerHTML='<div class="xfer-empty">'+esc(t.emptyText||'暂无可选数据')+'</div>';}
   else if(!list.length){permList.innerHTML='<div class="xfer-empty">没有匹配「'+esc(keyword)+'」的'+esc(noun)+'</div>';}
   else{
-    permList.innerHTML=list.map(function(a){
-      var on=d.indexOf(a.id)>=0;
-      return '<div class="xfer-item'+(on?' on':'')+'" data-id="'+esc(a.id)+'" role="button" tabindex="0" aria-pressed="'+on+'" title="'+(on?'点击移出已选':'点击加入已选')+'"><span class="xfer-name">'+esc(a.name)+'</span><span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-flag'+(on?'':' plus')+'">'+(on?'已选':'＋')+'</span></div>';
-    }).join('');
+    permList.innerHTML=groups?renderSupplierGroups(groups):list.map(function(a){return renderAvailableItem(a);}).join('');
+    if(groups){bindSupplierToggles();bindSupplierBatch();}
     bindXferItems(permList,function(id){toggleItem(id,draft().indexOf(id)<0);renderPermList();});
   }
   renderPicked();
@@ -320,7 +399,8 @@ function renderPicked(){
   if(!d.length){permPicked.innerHTML='<div class="xfer-empty">尚未选择'+esc(noun)+'<br>点击左侧'+esc(noun)+'即可添加</div>';return;}
   permPicked.innerHTML=d.map(function(id){
     var a=itemById(id);if(!a)return '';
-    return '<div class="xfer-item" data-id="'+esc(a.id)+'" role="button" tabindex="0" title="点击移出已选"><span class="xfer-name">'+esc(a.name)+'</span><span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-x">×</span></div>';
+    var supplier=t.groupBy==='supplier'?supplierInfo(a):null;
+    return '<div class="xfer-item" data-id="'+esc(a.id)+'" role="button" tabindex="0" title="点击移出已选"><span class="xfer-name">'+esc(a.name)+'</span>'+(supplier?'<span class="xfer-supplier" title="'+esc(supplier.name)+'">'+esc(supplier.name)+'</span>':'')+'<span class="xfer-id">'+esc(a.id)+'</span><span class="xfer-x">×</span></div>';
   }).join('');
   bindXferItems(permPicked,function(id){toggleItem(id,false);renderPermList();});
 }
@@ -331,7 +411,8 @@ function bindXferItems(container,handler){
   });
 }
 function syncPermState(){
-  permTip.textContent='已选 '+draft().length+' / '+typeItems().length+' '+(currentType().unit||'条');
+  var t=currentType();
+  permTip.textContent='已选 '+draft().length+(t.groupBy==='supplier'?'':' / '+typeItems().length)+' '+(t.unit||'条');
 }
 function toggleItem(id,checked){
   var d=draft(),i=d.indexOf(id);
@@ -343,9 +424,9 @@ function openModal(roleId){
   var role=ROLES.filter(function(r){return r.id===roleId;})[0];if(!role)return;
   editingRoleId=roleId;lastFocus=document.activeElement;
   var saved=loadScopes()[roleId],byType={};
-  if(Object.prototype.toString.call(saved)==='[object Array]'){byType[DATA_TYPES[0].key]=saved.slice();}
+  if(Object.prototype.toString.call(saved)==='[object Array]'){byType.agent=saved.slice();}
   else if(saved&&typeof saved==='object'){byType=saved;}
-  draftByType={};
+  draftByType={};supplierStateByType=Object.create(null);
   DATA_TYPES.forEach(function(t){draftByType[t.key]=(byType[t.key]||[]).slice();});
   activeType=DATA_TYPES[0].key;
   permTitle.textContent='设置数据权限';
@@ -355,16 +436,23 @@ function openModal(roleId){
   modal.classList.add('active');
   setTimeout(function(){permSearch.focus();},0);
 }
-function closeModal(){modal.classList.remove('active');draftByType={};editingRoleId=null;if(lastFocus&&lastFocus.focus)lastFocus.focus();}
+function closeModal(){modal.classList.remove('active');draftByType={};supplierStateByType=Object.create(null);editingRoleId=null;if(lastFocus&&lastFocus.focus)lastFocus.focus();}
 permSearch.addEventListener('input',function(){renderPermList();});
 permSearch.addEventListener('keydown',function(e){if(e.key==='Escape'){permSearch.value='';renderPermList();}});
-permPickAll.addEventListener('click',function(){
-  var list=visibleItems(),d=draft(),allPicked=list.length>0&&list.every(function(a){return d.indexOf(a.id)>=0;});
+function itemsAllPicked(list){
+  var d=draft();return list.length>0&&list.every(function(a){return d.indexOf(a.id)>=0;});
+}
+function toggleBatchItems(list){
+  var d=draft(),allPicked=itemsAllPicked(list);
   list.forEach(function(a){
     var i=d.indexOf(a.id);
     if(allPicked){if(i>=0)d.splice(i,1);}
     else if(i<0)d.push(a.id);
   });
+}
+permPickAll.addEventListener('click',function(){
+  if(currentType().groupBy==='supplier')return;
+  toggleBatchItems(visibleItems());
   renderPermList();
 });
 document.getElementById('perm-clear').addEventListener('click',function(){draftByType[activeType]=[];renderPermList();});
@@ -383,9 +471,10 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Tab'){
     var controls=[document.getElementById('perm-close')]
       .concat([].slice.call(permTabs.querySelectorAll('.perm-tab')),[permSearch,permPickAll],
-        [].slice.call(permList.querySelectorAll('.xfer-item')),
+        [].slice.call(permList.querySelectorAll('.supplier-toggle,.supplier-pick-all,.xfer-item')),
         [].slice.call(permPicked.querySelectorAll('.xfer-item')),
-        [document.getElementById('perm-clear'),document.getElementById('perm-cancel'),document.getElementById('perm-save')]);
+        [document.getElementById('perm-clear'),document.getElementById('perm-cancel'),document.getElementById('perm-save')])
+      .filter(function(el){return !el.disabled&&!el.closest('[hidden]')&&el.getAttribute('tabindex')!=='-1';});
     var first=controls[0],last=controls[controls.length-1];
     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
