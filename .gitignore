@@ -1,1 +1,27 @@
 .DS_Store
+# IT prototype manager: private files never publish
+.DS_Store
+.token
+.env
+.env.*
+.*
+!.gitignore
+!.nojekyll
+[cC][oO][nN][fF][iI][gG]
+[cC][oO][nN][fF][iI][gG].*
+[cC][rR][eE][dD][eE][nN][tT][iI][aA][lL]
+[cC][rR][eE][dD][eE][nN][tT][iI][aA][lL].*
+[cC][rR][eE][dD][eE][nN][tT][iI][aA][lL][sS]
+[cC][rR][eE][dD][eE][nN][tT][iI][aA][lL][sS].*
+[sS][eE][cC][rR][eE][tT]
+[sS][eE][cC][rR][eE][tT].*
+[sS][eE][cC][rR][eE][tT][sS]
+[sS][eE][cC][rR][eE][tT][sS].*
+[tT][oO][kK][eE][nN]
+[tT][oO][kK][eE][nN].*
+[tT][oO][kK][eE][nN][sS]
+[tT][oO][kK][eE][nN][sS].*
+[iI][dD]_[rR][sS][aA]
+[iI][dD]_[rR][sS][aA].*
+[iI][dD]_[eE][dD]25519
+[iI][dD]_[eE][dD]25519.*
