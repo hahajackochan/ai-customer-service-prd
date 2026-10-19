@@ -81,7 +81,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 <div class="layout">
   <nav class="toc">
     <h1>AI客服 PRD</h1>
-    <div class="meta">v1.115 · 产品经理：陈嘉豪 · 2026-10-19</div>
+    <div class="meta">v1.116 · 产品经理：陈嘉豪 · 2026-10-19</div>
     <a href="#info">一、项目信息</a>
     <a href="#background">二、需求背景</a>
     <a href="#scope">三、需求功能清单</a>
@@ -115,7 +115,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th style="width:160px">字段</th><th>内容</th></tr>
         <tr><td>产品/系统</td><td>消费者业务中台（租户端）</td></tr>
         <tr><td>需求名称</td><td>AI客服</td></tr>
-        <tr><td>版本</td><td>v1.115</td></tr>
+        <tr><td>版本</td><td>v1.116</td></tr>
         <tr><td>文档负责人</td><td>陈嘉豪</td></tr>
         <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息，支持在租户基础配置中按工作日 / 非工作日定时自动启用单聊AI接管及按用途维护飞书多维表格配置。</td></tr>
         <tr><td>涉及三方</td><td>艾客客服系统（前期）；京东、天猫等仅预留供应商维度扩展</td></tr>
@@ -125,6 +125,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       <h3>版本记录</h3>
       <table>
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-10-19</td><td>v1.116</td><td>按需求方要求，4.10 AI客服配置中的「转人工预警」统一更名为「转人工告警」，配置项、备注与消息推送口径不变；同步原型与README。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-10-19</td><td>v1.115</td><td>按需求方调整：AI托管账号不再维护转人工预警，相关配置整体迁移至 4.10 AI客服配置——在配置弹窗新增「转人工预警」区块，维护「推送飞书应用ID」，备注为「当会话转人工时，消息将推送到此应用」；AI托管账号工具栏移除【转人工预警】按钮及其弹窗，仅保留按账号的设置运营人员。同步原型、功能清单及README。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-10-19</td><td>v1.114</td><td>按需求方调整：AI托管账号的【转人工预警】由行内操作移至【同步】按钮旁，统一维护推送应用配置；意图管理移至工作流管理下方（4.3），目录、功能清单、正文及当前引用同步顺延；客户会话管理、会话消息管理、AI响应明细原型补齐意图管理菜单与跳转。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-10-19</td><td>v1.113</td><td>按需求方要求，4.4 AI托管账号新增【设置运营人员】与【转人工预警】入口：运营人员按员工工号校验后添加，支持多人并展示姓名（工号）；转人工预警维护推送应用ID，备注为「当会话转人工时，消息将推送到此应用」。同步原型、功能清单及README。</td><td>陈嘉豪</td></tr>
@@ -274,7 +275,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>客户会话管理</td><td><span class="tag p0">P0</span></td><td>按客户 × 成员管理每个会话的AI接管状态、聊天记录与AI决策追溯，支持导出。</td><td><a href="#feature-5">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>逐条查看客户消息、AI回复与转人工归因，可关联查看AI决策追溯，支持导出。</td><td><a href="#feature-4">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI响应明细</td><td><span class="tag p0">P0</span></td><td>以AI决策追溯ID为主查看AI响应总时长与各环节耗时，用于分析耗时过长的环节。</td><td><a href="#feature-6">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>租户管理（基础配置）</td><td>AI客服配置</td><td><span class="tag p0">P0</span></td><td>配置AI接管等待时长、自动启用单聊AI托管的定时规则、转人工预警的推送飞书应用及按用途维护的飞书多维表格。</td><td><a href="#feature-config">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>租户管理（基础配置）</td><td>AI客服配置</td><td><span class="tag p0">P0</span></td><td>配置AI接管等待时长、自动启用单聊AI托管的定时规则、转人工告警的推送飞书应用及按用途维护的飞书多维表格。</td><td><a href="#feature-config">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>租户管理（角色管理）</td><td>角色管理（数据权限）</td><td><span class="tag p0">P0</span></td><td>按数据类型为角色设置可查看的数据范围（当前类型为AI托管账号，按供应商树形分组、分供应商独立全选并支持选择多个账号），中台各AI客服列表按角色授权范围展示数据。</td><td><a href="#feature-role">查看</a></td></tr>
       </table>
     </section>
@@ -563,13 +564,13 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       <article id="feature-config" class="feature">
         <div class="feature-head"><h3 class="feature-title">4.10 AI客服配置</h3><span class="feature-id">消费者业务中台 / 租户管理（基础配置）</span></div>
         <div class="feature-content">
-          <div class="note">AI客服配置：租户在「租户管理 / 基础配置」维护的AI客服入口配置，包含执行AI接管等待时长、自动启用单聊AI托管的定时设置、转人工预警的推送飞书应用与飞书多维表格配置；点击卡片【配置】按钮，以弹窗形式设置。</div>
+          <div class="note">AI客服配置：租户在「租户管理 / 基础配置」维护的AI客服入口配置，包含执行AI接管等待时长、自动启用单聊AI托管的定时设置、转人工告警的推送飞书应用与飞书多维表格配置；点击卡片【配置】按钮，以弹窗形式设置。</div>
           <h4>前端规则逻辑</h4>
           <ul class="rules">
             <li>执行AI接管等待时长：只能填写正整数，不填写的情况下默认0；</li>
             <li>自动启用单聊AI托管：支持按工作日和非工作日自动启用AI账号和所有单聊会话；当勾选自动启用后，必须选择启用的时间；</li>
-            <li>在「自动启用单聊AI托管」模块下方新增「转人工预警」配置项：提供「推送飞书应用ID」输入框，输入框下方备注为「当会话转人工时，消息将推送到此应用」；该配置为租户级统一维护，允许为空，保存后重新打开回显。</li>
-            <li>在「转人工预警」下方新增「飞书多维表格配置」，提供【新增】按钮；点击新增一条配置，先下拉选择用途，选项由数据字典配置，示例为「同步意图库」「拉取AI追溯日志」。</li>
+            <li>在「自动启用单聊AI托管」模块下方新增「转人工告警」配置项：提供「推送飞书应用ID」输入框，输入框下方备注为「当会话转人工时，消息将推送到此应用」；该配置为租户级统一维护，允许为空，保存后重新打开回显。</li>
+            <li>在「转人工告警」下方新增「飞书多维表格配置」，提供【新增】按钮；点击新增一条配置，先下拉选择用途，选项由数据字典配置，示例为「同步意图库」「拉取AI追溯日志」。</li>
             <li>选择用途后展示app_token、table_id输入框，两项均为必填，去除首尾空格后为空时标红并拦截保存；每条配置必须选择用途。</li>
             <li>当前租户相同用途只能维护一条飞书多维表格配置：其他配置已使用的用途在下拉中不可重复选择，保存时再次校验并拦截重复；编辑当前配置可保留自身用途。</li>
           </ul>
@@ -581,9 +582,9 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>（2）查询工作日，可考虑采用此外部接口 或 技术另寻其他接口，下方接口支持传入日期，接口会返回类型 工作日/节假日/周末。</li>
             <li>万维易源-节假日查询接口&nbsp; <a href="https://www.showapi.com/apiGateway/view/894/6" target="_blank" rel="noopener" title="按住 Cmd / Ctrl 点击可打开链接">https://www.showapi.com/apiGateway/view/894/6</a></li>
           </ul>
-          <h4>后端处理逻辑（转人工预警）</h4>
+          <h4>后端处理逻辑（转人工告警）</h4>
           <ul class="rules">
-            <li>转人工预警的推送飞书应用ID按当前租户保存，供该租户下全部AI托管账号的转人工提醒共用，不随账号记录维护；本次仅维护配置，不执行真实消息推送。</li>
+            <li>转人工告警的推送飞书应用ID按当前租户保存，供该租户下全部AI托管账号的转人工提醒共用，不随账号记录维护；本次仅维护配置，不执行真实消息推送。</li>
           </ul>
           <h4>后端处理逻辑（飞书多维表格配置）</h4>
           <ul class="rules">
@@ -593,7 +594,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
           <div class="proto-card">
             <div class="block-head"><span>原型 · AI客服配置</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · AI客服配置','原型/AI客服配置_v1.0.html')">放大查看</button></span></div>
             <iframe class="proto-frame" src="原型/AI客服配置_v1.0.html?embed=1&focus=card-ai-config" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="AI客服配置原型"></iframe>
-            <div class="proto-tip">模拟租户管理「基础配置」页的AI客服配置卡片与配置弹窗，保留等待时长与自动启用单聊AI托管设置；新增转人工预警的推送飞书应用ID配置，以及飞书多维表格配置，演示用途下拉、app_token / table_id必填、同用途唯一、保存回显与取消不落库（配置存于浏览器本地）。</div>
+            <div class="proto-tip">模拟租户管理「基础配置」页的AI客服配置卡片与配置弹窗，保留等待时长与自动启用单聊AI托管设置；新增转人工告警的推送飞书应用ID配置，以及飞书多维表格配置，演示用途下拉、app_token / table_id必填、同用途唯一、保存回显与取消不落库（配置存于浏览器本地）。</div>
           </div>
         </div>
       </article>
