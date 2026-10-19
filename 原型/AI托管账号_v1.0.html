@@ -348,7 +348,7 @@ td.strong{color:var(--ink)}
 .op-btn:hover{background:#eceef2}
 .op-btn.danger{color:#c0392b}
 .row-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-/* Prototype settings: account operators and an independent page-level warning. */
+/* Prototype settings: per-account operators only. */
 .account-actions .row-tools{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 10px;width:240px;max-width:100%}
 td.account-actions{padding-top:8px;padding-bottom:8px}
 .account-settings-modal{padding:12px;overflow:auto;overscroll-behavior:contain}
@@ -434,7 +434,7 @@ td.account-actions{padding-top:8px;padding-bottom:8px}
     </div>
       <div class="page-body">
       <div class="card list-filter-card">
-        <div class="list-toolbar"><div class="list-toolbar-primary"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步</button><button type="button" class="btn" id="btn-warning" aria-haspopup="dialog" aria-controls="warning-modal">转人工预警</button></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div>
+        <div class="list-toolbar"><div class="list-toolbar-primary"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步</button></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div>
         <div class="filter-popover" id="filter-popover" hidden><div class="filter-bar">
           <span class="fitem"><label for="q-name">账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
           <span class="fitem"><label for="q-uid">账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
@@ -509,20 +509,6 @@ td.account-actions{padding-top:8px;padding-bottom:8px}
         <div class="settings-save-error" id="operators-save-error" role="alert" tabindex="-1" hidden></div>
       </div>
       <div class="modal-foot"><button type="button" class="btn" id="operators-cancel">取消</button><button type="button" class="btn primary" id="operators-save">保存</button></div>
-    </div>
-  </div>
-  <div class="modal account-settings-modal" id="warning-modal" role="dialog" aria-modal="true" aria-labelledby="warning-title">
-    <div class="modal-box" tabindex="-1">
-      <div class="modal-head"><span id="warning-title">转人工预警</span><button type="button" class="modal-close" id="warning-close" aria-label="关闭转人工预警">×</button></div>
-      <div class="modal-body">
-        <div class="field" style="margin-bottom:0">
-          <label for="warning-app-id">推送飞书应用ID</label>
-          <input type="text" id="warning-app-id" placeholder="请输入推送飞书应用ID" autocomplete="off" aria-describedby="warning-app-id-tip">
-          <div class="tip2" id="warning-app-id-tip">当会话转人工时，消息将推送到此应用</div>
-        </div>
-        <div class="settings-save-error" id="warning-save-error" role="alert" tabindex="-1" hidden></div>
-      </div>
-      <div class="modal-foot"><button type="button" class="btn" id="warning-cancel">取消</button><button type="button" class="btn primary" id="warning-save">保存</button></div>
     </div>
   </div>
   <div class="toast" id="toast"></div>
@@ -788,14 +774,12 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     pager.textContent='共 '+list.length+' 条';
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-detail'),function(a){a.addEventListener('click',function(){openDetail(parseInt(a.getAttribute('data-i'),10))});});
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-edit'),function(a){a.addEventListener('click',function(){openConfig(parseInt(a.getAttribute('data-i'),10))});});
-    Array.prototype.forEach.call(tbody.querySelectorAll('[data-operators]'),function(a){a.addEventListener('click',function(){openAccountSettings('operators',a.getAttribute('data-operators'),a);});});
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-operators]'),function(a){a.addEventListener('click',function(){openAccountSettings(a.getAttribute('data-operators'),a);});});
   }
   var modeModal=document.getElementById('mode-modal');
   var detailModal=document.getElementById('detail-modal');
   /* Prototype-only employee directory and isolated account settings. No production API. */
   var SETTINGS_KEY='dsh_proto_ai_account_settings_v1';
-  // Keep legacy per-account pushAppId values untouched; do not migrate or use them as defaults.
-  var WARNING_KEY='dsh_proto_ai_transfer_warning_v1';
   var DEMO_EMPLOYEES=[
     {name:'陈嘉豪',employeeNo:'11021267',status:'active'},
     {name:'林晓敏',employeeNo:'11021268',status:'active'},
@@ -803,7 +787,6 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     {name:'赵明',employeeNo:'11029999',status:'inactive'}
   ];
   var operatorsModal=document.getElementById('operators-modal');
-  var warningModal=document.getElementById('warning-modal');
   var employeeInput=document.getElementById('operators-employee-no');
   var employeeAdd=document.getElementById('operators-add');
   var operatorsList=document.getElementById('operators-list');
@@ -842,24 +825,6 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(all));return {ok:true};}
     catch(_){return {ok:false,error:'保存失败：无法写入本机原型设置，请检查浏览器存储权限或空间后重试。'};}
   }
-  function readWarningSettings(){
-    var raw;
-    try{raw=localStorage.getItem(WARNING_KEY);}catch(_){return {data:{},error:'无法读取页面级转人工预警设置，请检查浏览器存储权限后重新打开弹窗。'};}
-    if(raw===null)return {data:{pushAppId:''},error:''};
-    try{
-      var data=JSON.parse(raw);
-      if(!isSettingsRecord(data)||typeof data.pushAppId!=='string')throw new Error('invalid warning settings');
-      return {data:data,error:''};
-    }catch(_){return {data:{},error:'页面级转人工预警设置数据损坏，未覆盖原数据；请修复此原型设置后重新打开弹窗。'};}
-  }
-  function writeWarningSetting(value){
-    // This separate store has no account UID and never writes modes or operators.
-    var loaded=readWarningSettings();
-    if(loaded.error)return {ok:false,error:'保存失败：'+loaded.error};
-    var next=Object.assign(Object.create(null),loaded.data,{pushAppId:value});
-    try{localStorage.setItem(WARNING_KEY,JSON.stringify(next));return {ok:true};}
-    catch(_){return {ok:false,error:'保存失败：无法写入页面级转人工预警设置，草稿已保留，请检查浏览器存储权限或空间后重试。'};}
-  }
   function settingsError(type,message){
     var el=document.getElementById(type+'-save-error');
     el.textContent=message||'';el.hidden=!message;
@@ -890,33 +855,30 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     if(!session)return;
     settingsSession=null;session.queryVersion++;
     session.modal.classList.remove('active');
-    if(session.type==='operators'){setEmployeeBusy(session,false);employeeInput.value='';employeeMessage('');}
+    setEmployeeBusy(session,false);employeeInput.value='';employeeMessage('');
     if(restoreFocus===false)return;
     var trigger=session.opener;
-    if(!trigger||!trigger.isConnected||!trigger.getClientRects().length)trigger=session.type==='warning'?document.getElementById('btn-warning'):tbody.querySelector('[data-operators="'+session.uid+'"]');
+    if(!trigger||!trigger.isConnected||!trigger.getClientRects().length)trigger=tbody.querySelector('[data-operators="'+session.uid+'"]');
     if(!trigger||!trigger.getClientRects().length)trigger=document.getElementById('btn-filter');
     if(trigger)trigger.focus();
   }
-  function openAccountSettings(type,uid,opener){
-    var row=type==='operators'?rows.find(function(item){return item.uid===uid;}):null;
-    if(type==='operators'&&!row)return;
-    // Switching account/type discards the old draft and invalidates its async lookup.
+  function openAccountSettings(uid,opener){
+    var row=rows.find(function(item){return item.uid===uid;});
+    if(!row)return;
+    // Switching account discards the old draft and invalidates its async lookup.
     closeAccountSettings(false);
     modeModal.classList.remove('active');detailModal.classList.remove('active');
     setFilterOpen(false);
-    var loaded=type==='operators'?readSettingsStore():readWarningSettings();
-    var stored=type==='operators'?(isSettingsRecord(loaded.data[uid])?loaded.data[uid]:{}):loaded.data;
-    var session={type:type,uid:type==='operators'?uid:null,opener:opener,modal:type==='operators'?operatorsModal:warningModal,draft:[],busy:false,queryVersion:0,readError:loaded.error};
+    var loaded=readSettingsStore();
+    var stored=isSettingsRecord(loaded.data[uid])?loaded.data[uid]:{};
+    var session={uid:uid,opener:opener,modal:operatorsModal,draft:[],busy:false,queryVersion:0,readError:loaded.error};
     settingsSession=session;
-    settingsError(type,loaded.error);
-    if(type==='operators'){
-      session.draft=normalizedOperators(stored.operators);
-      employeeInput.value='';employeeInput.removeAttribute('aria-invalid');employeeMessage('');setEmployeeBusy(session,false);renderOperators(session);
-    }else if(!loaded.error)document.getElementById('warning-app-id').value=stored.pushAppId;
+    settingsError('operators',loaded.error);
+    session.draft=normalizedOperators(stored.operators);
+    employeeInput.value='';employeeInput.removeAttribute('aria-invalid');employeeMessage('');setEmployeeBusy(session,false);renderOperators(session);
     session.modal.classList.add('active');session.modal.querySelector('.modal-body').scrollTop=0;
-    (type==='operators'?employeeInput:document.getElementById('warning-app-id')).focus();
+    employeeInput.focus();
   }
-  document.getElementById('btn-warning').addEventListener('click',function(){openAccountSettings('warning',null,this);});
   function queryDemoEmployee(employeeNo){
     return new Promise(function(resolve){
       setTimeout(function(){
@@ -927,7 +889,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   }
   function addOperator(){
     var session=settingsSession;
-    if(!session||session.type!=='operators'||session.busy)return;
+    if(!session||session.busy)return;
     var employeeNo=employeeInput.value.trim();
     if(!employeeNo){employeeInput.setAttribute('aria-invalid','true');employeeMessage('请输入员工工号','error');employeeInput.focus();return;}
     employeeInput.removeAttribute('aria-invalid');
@@ -953,7 +915,7 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
   employeeInput.addEventListener('input',function(){employeeInput.removeAttribute('aria-invalid');employeeMessage('');});
   operatorsList.addEventListener('click',function(e){
     var button=e.target.closest('[data-operator-remove]'),session=settingsSession;
-    if(!button||!session||session.type!=='operators')return;
+    if(!button||!session)return;
     var employeeNo=button.getAttribute('data-operator-remove');
     session.draft=session.draft.filter(function(item){return item.employeeNo!==employeeNo;});
     renderOperators(session);
@@ -961,24 +923,21 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
     var next=operatorsList.querySelector('[data-operator-remove]');
     (next||(session.busy?document.getElementById('operators-cancel'):employeeInput)).focus();
   });
-  ['operators','warning'].forEach(function(type){
-    ['close','cancel'].forEach(function(action){document.getElementById(type+'-'+action).addEventListener('click',function(){closeAccountSettings();});});
-    document.getElementById(type+'-save').addEventListener('click',function(){
-      var session=settingsSession;
-      if(!session||session.type!==type||session.busy)return;
-      if(type==='warning'&&session.readError){settingsError(type,'保存失败：'+session.readError+' 当前输入未保存。');document.getElementById('warning-save-error').focus();return;}
-      var result=type==='operators'?writeAccountSetting(session.uid,'operators',session.draft):writeWarningSetting(document.getElementById('warning-app-id').value);
-      if(!result.ok){settingsError(type,result.error);document.getElementById(type+'-save-error').focus();return;}
-      closeAccountSettings();showToast((type==='operators'?'运营人员设置':'转人工预警')+'已保存（仅本机原型）','ok');
-    });
-    var modal=document.getElementById(type+'-modal');
-    // Backdrop is intentionally inert: never save or discard by mask click.
-    modal.addEventListener('click',function(e){e.stopPropagation();});
-    modal.addEventListener('keydown',function(e){
-      if(e.key!=='Enter')return;
-      e.stopPropagation();
-      if(e.isComposing||e.keyCode===229||e.repeat||e.target===document.getElementById('warning-app-id'))e.preventDefault();
-    });
+  ['close','cancel'].forEach(function(action){document.getElementById('operators-'+action).addEventListener('click',function(){closeAccountSettings();});});
+  document.getElementById('operators-save').addEventListener('click',function(){
+    var session=settingsSession;
+    if(!session||session.busy)return;
+    if(session.readError){settingsError('operators','保存失败：'+session.readError+' 当前输入未保存。');document.getElementById('operators-save-error').focus();return;}
+    var result=writeAccountSetting(session.uid,'operators',session.draft);
+    if(!result.ok){settingsError('operators',result.error);document.getElementById('operators-save-error').focus();return;}
+    closeAccountSettings();showToast('运营人员设置已保存（仅本机原型）','ok');
+  });
+  // Backdrop is intentionally inert: never save or discard by mask click.
+  operatorsModal.addEventListener('click',function(e){e.stopPropagation();});
+  operatorsModal.addEventListener('keydown',function(e){
+    if(e.key!=='Enter')return;
+    e.stopPropagation();
+    if(e.isComposing||e.keyCode===229||e.repeat)e.preventDefault();
   });
   document.addEventListener('keydown',function(e){
     var session=settingsSession;

@@ -68,6 +68,7 @@ button,input,select{font:inherit}
 .cfg-row-single.invalid input{border-color:var(--danger)}
 .cfg-row-single.invalid .err{display:block}
 .day-label{font-weight:700;color:var(--ink)}
+.day-label.plain{font-weight:400}
 .cell{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cell-label{font-size:13px;color:var(--muted)}
 .switch{width:38px;height:20px;border-radius:10px;background:#c0c4cc;position:relative;border:0;cursor:pointer;transition:background .2s;flex:0 0 auto;padding:0}
@@ -76,6 +77,8 @@ button,input,select{font:inherit}
 .switch.on .knob{left:20px}
 .time-input{height:32px;border:1px solid #dcdfe6;border-radius:4px;padding:0 8px;color:var(--ink);background:#fff;outline:none;width:140px}
 .time-input:focus{border-color:var(--gold)}
+.cfg-text-input{height:32px;border:1px solid #dcdfe6;border-radius:4px;padding:0 8px;color:var(--ink);background:#fff;outline:none;width:280px;max-width:100%}
+.cfg-text-input:focus{border-color:var(--gold)}
 .time-input:disabled{background:#f5f7fa;border-color:#e4e7ed;color:#c0c4cc;cursor:not-allowed}
 .field{display:flex;flex-direction:column;gap:4px}
 .field .err{display:none;font-size:12px;color:var(--danger)}
@@ -174,6 +177,12 @@ button,input,select{font:inherit}
         <span class="cell"><button type="button" class="switch" id="sw-holiday" role="switch" aria-checked="false" aria-label="非工作日是否开启单聊AI托管"><span class="knob"></span></button></span>
         <span class="cell field" id="field-holiday"><span class="cell-label">开启时间</span><input type="time" class="time-input" id="time-holiday" aria-label="非工作日开启时间" disabled><span class="err">请选择非工作日的开启时间</span></span>
       </div>
+      <div class="cfg-block-title sep">转人工预警</div>
+      <div class="cfg-row-single">
+        <span class="day-label plain">推送飞书应用ID</span>
+        <input type="text" class="cfg-text-input" id="warn-app-id" autocomplete="off" placeholder="请输入推送飞书应用ID" aria-label="推送飞书应用ID" aria-describedby="warn-app-id-tip">
+      </div>
+      <div class="cfg-block-sub" id="warn-app-id-tip">当会话转人工时，消息将推送到此应用</div>
       <div id="bitable-config-section">
         <div class="cfg-block-title sep bitable-head"><span>飞书多维表格配置</span><button type="button" class="btn" id="bitable-add">新增</button></div>
         <div id="bitable-configs"></div>
@@ -191,7 +200,7 @@ button,input,select{font:inherit}
 var STORE_KEY='dsh_proto_ai_config_v1';
 // 数据字典中的用途演示项；app_token 为多维表格资源标识，并非认证令牌。
 var BITABLE_PURPOSES=['同步意图库','拉取AI追溯日志'];
-var DEFAULT_CONFIG={waitSeconds:'',work:{on:true,time:'09:00'},holiday:{on:false,time:''},bitableConfigs:[],updatedAt:'2026-09-18 09:30:00'};
+var DEFAULT_CONFIG={waitSeconds:'',work:{on:true,time:'09:00'},holiday:{on:false,time:''},pushAppId:'',bitableConfigs:[],updatedAt:'2026-09-18 09:30:00'};
 var cards=[
   {title:'微信小程序配置',configured:true,desc:'租户维护的微信小程序配置，如小程序应用ID、推送安全配置',time:'2026-04-08 17:36:58'},
   {title:'微信公众号配置',configured:true,desc:'租户维护的微信公众号配置，如公众号应用ID、推送安全配置',time:'2025-04-08 18:50:36'},
@@ -215,13 +224,14 @@ var swWork=document.getElementById('sw-work'),swHoliday=document.getElementById(
 var timeWork=document.getElementById('time-work'),timeHoliday=document.getElementById('time-holiday');
 var fieldWork=document.getElementById('field-work'),fieldHoliday=document.getElementById('field-holiday');
 var waitInput=document.getElementById('wait-seconds'),fieldWait=document.getElementById('field-wait');
+var warnInput=document.getElementById('warn-app-id');
 var modal=document.getElementById('config-modal');
 var bitableList=document.getElementById('bitable-configs'),bitableEmpty=document.getElementById('bitable-empty'),bitableAdd=document.getElementById('bitable-add');
 function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function pad(v){return String(v).padStart(2,'0');}
 function now(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}
 function showToast(message,type){var el=document.getElementById('toast');el.textContent=message;el.className='toast '+(type||'ok');el.style.display='block';clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){el.style.display='none';},2200);}
-function loadConfig(){try{var raw=localStorage.getItem(STORE_KEY);if(raw){var c=JSON.parse(raw);if(c&&c.work&&c.holiday){if(c.waitSeconds==null)c.waitSeconds='';if(!Array.isArray(c.bitableConfigs))c.bitableConfigs=[];return c;}}}catch(e){}return JSON.parse(JSON.stringify(DEFAULT_CONFIG));}
+function loadConfig(){try{var raw=localStorage.getItem(STORE_KEY);if(raw){var c=JSON.parse(raw);if(c&&c.work&&c.holiday){if(c.waitSeconds==null)c.waitSeconds='';if(c.pushAppId==null||typeof c.pushAppId!=='string')c.pushAppId='';if(!Array.isArray(c.bitableConfigs))c.bitableConfigs=[];return c;}}}catch(e){}return JSON.parse(JSON.stringify(DEFAULT_CONFIG));}
 function saveConfig(c){try{localStorage.setItem(STORE_KEY,JSON.stringify(c));}catch(e){}}
 var config=loadConfig();
 var draft=null;
@@ -327,6 +337,7 @@ function syncModal(){
   paintSwitch(swHoliday,timeHoliday,draft.holiday.on);
   timeWork.value=draft.work.time||'';timeHoliday.value=draft.holiday.time||'';
   waitInput.value=draft.waitSeconds||'';
+  warnInput.value=draft.pushAppId||'';
   renderBitableConfigs();
   fieldWork.classList.remove('invalid');fieldHoliday.classList.remove('invalid');fieldWait.classList.remove('invalid');
 }
@@ -346,7 +357,7 @@ waitInput.addEventListener('input',function(){
   if(/^[1-9]\d*$/.test(v))fieldWait.classList.remove('invalid');
 });
 document.getElementById('modal-save').addEventListener('click',function(){
-  draft.work.time=timeWork.value;draft.holiday.time=timeHoliday.value;draft.waitSeconds=waitInput.value.trim();
+  draft.work.time=timeWork.value;draft.holiday.time=timeHoliday.value;draft.waitSeconds=waitInput.value.trim();draft.pushAppId=warnInput.value.trim();
   var invalid=null;
   if(!/^[1-9]\d*$/.test(draft.waitSeconds)){fieldWait.classList.add('invalid');invalid='请输入正整数';}
   if(draft.work.on&&!draft.work.time){fieldWork.classList.add('invalid');invalid='请选择工作日的开启时间';}
