@@ -81,7 +81,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 <div class="layout">
   <nav class="toc">
     <h1>AI客服 PRD</h1>
-    <div class="meta">v1.112 · 产品经理：陈嘉豪 · 2026-10-13</div>
+    <div class="meta">v1.114 · 产品经理：陈嘉豪 · 2026-10-19</div>
     <a href="#info">一、项目信息</a>
     <a href="#background">二、需求背景</a>
     <a href="#scope">三、需求功能清单</a>
@@ -90,15 +90,15 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       <span class="sub">
         <a href="#feature-agent">4.1 智能体管理</a>
         <a href="#feature-workflow">4.2 工作流管理</a>
-        <a href="#feature-1">4.3 供应商管理</a>
-        <a href="#feature-3">4.4 AI托管账号</a>
-        <a href="#feature-h5">4.5 会话接待插件H5</a>
-        <a href="#feature-5">4.6 客户会话管理</a>
-        <a href="#feature-4">4.7 会话消息管理</a>
-        <a href="#feature-6">4.8 AI响应明细</a>
-        <a href="#feature-config">4.9 AI客服配置</a>
-        <a href="#feature-role">4.10 角色管理（数据权限）</a>
-        <a href="#feature-intent">4.11 意图管理</a>
+        <a href="#feature-intent">4.3 意图管理</a>
+        <a href="#feature-1">4.4 供应商管理</a>
+        <a href="#feature-3">4.5 AI托管账号</a>
+        <a href="#feature-h5">4.6 会话接待插件H5</a>
+        <a href="#feature-5">4.7 客户会话管理</a>
+        <a href="#feature-4">4.8 会话消息管理</a>
+        <a href="#feature-6">4.9 AI响应明细</a>
+        <a href="#feature-config">4.10 AI客服配置</a>
+        <a href="#feature-role">4.11 角色管理（数据权限）</a>
       </span>
     </div>
     <a href="#appendix">五、附录</a>
@@ -115,16 +115,18 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th style="width:160px">字段</th><th>内容</th></tr>
         <tr><td>产品/系统</td><td>消费者业务中台（租户端）</td></tr>
         <tr><td>需求名称</td><td>AI客服</td></tr>
-        <tr><td>版本</td><td>v1.112</td></tr>
+        <tr><td>版本</td><td>v1.114</td></tr>
         <tr><td>文档负责人</td><td>陈嘉豪</td></tr>
         <tr><td>核心目标</td><td>建立三方账号、AI会话及智能体配置能力：账号的单聊 / 群聊AI接管可独立配置，会话接管状态可配置，客户消息逐条可查，转人工归因、AI决策与回复耗时可追溯，并支持维护智能体应用凭证与工作流信息，支持在租户基础配置中按工作日 / 非工作日定时自动启用单聊AI接管及按用途维护飞书多维表格配置。</td></tr>
         <tr><td>涉及三方</td><td>艾客客服系统（前期）；京东、天猫等仅预留供应商维度扩展</td></tr>
-        <tr><td>更新时间</td><td>2026-10-13</td></tr>
+        <tr><td>更新时间</td><td>2026-10-19</td></tr>
       </table>
       <div style="display:none" aria-hidden="true">
       <h3>版本记录</h3>
       <table>
         <tr><th>日期</th><th>版本号</th><th>修改内容</th><th>修改人</th></tr>
+<tr><td>2026-10-19</td><td>v1.114</td><td>按需求方调整：AI托管账号的【转人工预警】由行内操作移至【同步】按钮旁，统一维护推送应用配置；意图管理移至工作流管理下方（4.3），目录、功能清单、正文及当前引用同步顺延；客户会话管理、会话消息管理、AI响应明细原型补齐意图管理菜单与跳转。</td><td>陈嘉豪</td></tr>
+<tr><td>2026-10-19</td><td>v1.113</td><td>按需求方要求，4.4 AI托管账号新增【设置运营人员】与【转人工预警】入口：运营人员按员工工号校验后添加，支持多人并展示姓名（工号）；转人工预警维护推送应用ID，备注为「当会话转人工时，消息将推送到此应用」。同步原型、功能清单及README。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-10-13</td><td>v1.112</td><td>按需求方确认：AI决策追溯不再展示整块空态，每条有效消息保留基础追溯与触发消息；未执行的AI环节单独说明，人工回复与待回复不计为AI输出。同步公共追溯原型、相关入口、会话规则及README，保留已手改的意图逻辑说明。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-10-13</td><td>v1.111</td><td>按需求方要求：①意图管理原型仅在所选工作流为业务API时展示请求接口，保留需求方已修改的4.11逻辑说明；②会话消息列表每条记录补充AI决策追溯入口；③追溯意图识别精简为指定五字段，知识匹配按知识库 / 业务API分别展示且默认三行、支持展开收起；④AI响应详情删除匹配决策、回复生成、回复后处理三个环节。同步相关原型、会话与响应规则及README。</td><td>陈嘉豪</td></tr>
 <tr><td>2026-10-12</td><td>v1.110</td><td>按需求方要求：①4.11 意图管理新增 / 编辑弹窗将请求接口配置项调整到槽位参数上方；②智能体管理、工作流管理原型左侧菜单补充意图管理入口。同步相关原型与README。</td><td>陈嘉豪</td></tr>
@@ -264,15 +266,15 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th>系统</th><th>模块</th><th>功能点</th><th>优先级</th><th>说明</th><th>详细方案</th></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>智能体管理</td><td><span class="tag p0">P0</span></td><td>维护智能体名称、标识、应用密钥等信息（当前为飞书aily-工作流应用），支持新增、编辑。</td><td><a href="#feature-agent">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>工作流管理</td><td><span class="tag p0">P0</span></td><td>维护工作流、Aily应用ID与技能ID配置，支持新增、编辑与导出。</td><td><a href="#feature-workflow">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>意图管理</td><td><span class="tag p0">P0</span></td><td>维护业务类型下的意图分类、二级意图分类标识、意图扩写（经典提问）、请求接口、槽位参数、追问话术与工作流绑定，支持新增、编辑、导出与同步至飞书知识空间。</td><td><a href="#feature-intent">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>供应商管理</td><td><span class="tag p0">P0</span></td><td>维护艾客等供应商的接入配置（服务地址、应用密钥、回调配置等），支持新增、编辑与导出。</td><td><a href="#feature-1">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>AI托管账号</td><td><span class="tag p0">P0</span></td><td>管理艾客托管账号及其单聊 / 群聊AI接管配置，支持同步、编辑与导出。</td><td><a href="#feature-3">查看</a></td></tr>
+        <tr><td>消费者业务中台 / 租户端</td><td>三方账号管理</td><td>AI托管账号</td><td><span class="tag p0">P0</span></td><td>管理托管账号、AI接管、运营人员及转人工预警配置，支持同步、编辑与导出。</td><td><a href="#feature-3">查看</a></td></tr>
         <tr><td>消费者业务中台 / 会话接待插件H5</td><td>AI接管配置（艾客客服端内嵌）</td><td>会话接待插件H5</td><td><span class="tag p0">P0</span></td><td>内嵌艾客客服端，管理当前账号下各单聊会话的AI接管开关（单个 / 全部启停）。</td><td><a href="#feature-h5">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>客户会话管理</td><td><span class="tag p0">P0</span></td><td>按客户 × 成员管理每个会话的AI接管状态、聊天记录与AI决策追溯，支持导出。</td><td><a href="#feature-5">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>会话消息管理</td><td><span class="tag p0">P0</span></td><td>逐条查看客户消息、AI回复与转人工归因，可关联查看AI决策追溯，支持导出。</td><td><a href="#feature-4">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>AI会话管理</td><td>AI响应明细</td><td><span class="tag p0">P0</span></td><td>以AI决策追溯ID为主查看AI响应总时长与各环节耗时，用于分析耗时过长的环节。</td><td><a href="#feature-6">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>租户管理（基础配置）</td><td>AI客服配置</td><td><span class="tag p0">P0</span></td><td>配置AI接管等待时长、自动启用单聊AI托管的定时规则及按用途维护的飞书多维表格。</td><td><a href="#feature-config">查看</a></td></tr>
         <tr><td>消费者业务中台 / 租户端</td><td>租户管理（角色管理）</td><td>角色管理（数据权限）</td><td><span class="tag p0">P0</span></td><td>按数据类型为角色设置可查看的数据范围（当前类型为AI托管账号，按供应商树形分组、分供应商独立全选并支持选择多个账号），中台各AI客服列表按角色授权范围展示数据。</td><td><a href="#feature-role">查看</a></td></tr>
-        <tr><td>消费者业务中台 / 租户端</td><td>智能体管理</td><td>意图管理</td><td><span class="tag p0">P0</span></td><td>维护业务类型下的意图分类、二级意图分类标识、意图扩写（经典提问）、请求接口、槽位参数、追问话术与工作流绑定，支持新增、编辑、导出与同步至飞书知识空间。</td><td><a href="#feature-intent">查看</a></td></tr>
       </table>
     </section>
 
@@ -319,10 +321,35 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         </div>
       </article>
 
+      <article id="feature-intent" class="feature">
+        <div class="feature-head"><h3 class="feature-title">4.3 意图管理</h3><span class="feature-id">消费者业务中台 / 智能体管理</span></div>
+        <div class="feature-content">
+          <h4>前端规则逻辑</h4>
+          <ul class="rules">
+            <li>新增 / 编辑弹窗包含业务类型、一级意图分类、二级意图分类、二级意图分类标识、工作流、意图扩写、请求接口、槽位参数、追问话术；其中业务类型、一级意图分类、二级意图分类、二级意图分类标识、工作流、意图扩写为必填：（<span style="color: rgb(220, 38, 38);">若选择的工作流类型=业务API时，显示请求接口选项，必填</span>）<br>1. 业务类型为下拉选择，选项值取数据字典；<br>2. 一级 / 二级意图分类为输入框，支持自行创建维护，仅一级意图分类输入时联想已有分类（会基于已输入的内容，模糊匹配现有的一级意图分类）；<br>3. 二级意图分类标识为输入框必填（如 product_price），输入的二级意图分类名称命中同一一级分类下已有分类时，自动带入对应的二级意图分类标识且不可编辑；<br>4. 工作流名称为下拉选择，选项为「工作流管理」已维护的工作流（展示「工作流名称（工作流ID）」）；<br>5. 意图扩写为必填，最多填写10条；<br>6. 槽位参数为单选下拉，可不选择；选择槽位参数后追问话术必填，未填写保存时提示「请填写追问话术」并拦截；<br>7. 保存时校验同一一级意图分类下二级意图分类名称与二级意图分类标识唯一：名称重复提示「同一一级意图分类下二级意图分类名称已存在，请修改」，标识重复提示「同一一级意图分类下二级意图分类标识已存在，请修改后重试」；</li>
+            <li>编辑意图时业务类型、一级意图分类只读不可修改，其他可以修改</li>
+          </ul>
+          <h4>交互逻辑</h4>
+          <ul class="rules">
+            <li>无</li>
+          </ul>
+          <h4>后端处理逻辑</h4>
+          <ul class="rules">
+            <li>点击同步按钮，会将现有意图管理的内容，同步至飞书的知识空间。</li>
+            <li>记录保存成功后，也需要触发同步到飞书知识空间的逻辑。</li>
+          </ul>
+          <div class="proto-card">
+            <div class="block-head"><span>原型 · 意图管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 意图管理','原型/意图管理_v1.0.html')">放大查看</button></span></div>
+            <iframe class="proto-frame" src="原型/意图管理_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="意图管理原型"></iframe>
+            <div class="proto-tip">模拟中台「智能体管理 / 意图管理」列表与新增 / 编辑弹窗（意图扩写、请求接口、槽位参数与追问话术在弹窗内维护）；请求接口为单选模拟选项，按「接口名称（请求地址）」展示，原型不发起真实请求。左侧「同步」按钮为同步至飞书知识空间的入口模拟。示例数据中售后服务咨询的二级分类、会员服务的分类与部分工作流为演示补全，以需求方确认为准。</div>
+          </div>
+        </div>
+      </article>
+
 
 
       <article id="feature-1" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.3 供应商管理</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.4 供应商管理</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
@@ -338,14 +365,21 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-3" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.4 AI托管账号</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.5 AI托管账号</h3><span class="feature-id">消费者业务中台 / 三方账号管理</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
             <li class="warn">列表的「群聊AI接管」字段与编辑弹窗的「群聊AI接管」配置，一期无需实现，后续再扩展，但样式上需要兼容。</li>
             <li>点击编辑按钮，弹窗内需展示账号名称和账号ID，支持启用或禁用单聊AI接管，若启用单聊AI接管时，必须选择意图识别工作流，未选择的情况下，保存提示“同步回来的AI托管账号，默认单聊AI接管是禁用状态；”</li>
             <li>账号详情，只有当账号供应商类型为艾客时，才展示艾客供应商扩展信息的模块；</li>
-            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号数据，未授权的账号不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.10）。</li>
+            <li>列表每条账号记录的操作区新增【设置运营人员】按钮，点击打开该账号的设置弹窗。弹窗提供「员工工号」输入框与【添加】按钮，下方展示已添加人员，格式为「姓名（工号）」，例如陈嘉豪（11021267），支持维护多个员工。</li>
+            <li>列表工具栏在【同步】按钮旁展示唯一的【转人工预警】按钮，不在每条账号记录右侧重复展示；点击打开统一配置弹窗，提供「推送飞书应用ID」输入框；输入框下方备注为「当会话转人工时，消息将推送到此应用」。</li>
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号数据，未授权的账号不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.11）。</li>
+          </ul>
+          <h4>交互逻辑</h4>
+          <ul class="rules">
+            <li>设置运营人员：输入员工工号后点击【添加】，按去除首尾空格后的工号触发查询校验；查询中显示校验状态，通过校验且员工有效时自动加入下方列表。工号为空、查询不到或员工不可用时提示原因且不添加，相同工号不可重复添加；支持移除已添加人员。</li>
+            <li>人员增删与推送飞书应用ID修改均在各自弹窗内点击【保存】后生效，重新打开回显；点击【取消】、关闭或Esc不保存本次修改，校验结果不得在弹窗关闭或切换账号后加入其他账号。允许清空人员或推送飞书应用ID后保存，不额外限定工号或应用ID格式。</li>
           </ul>
           <h4>后端处理逻辑</h4>
           <ul class="rules">
@@ -353,10 +387,13 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>艾客接口文档：<a href="https://s.apifox.cn/bbc28efa-ca03-4c46-929f-208fb3aebad8/api-96003535" target="_blank" rel="noopener">https://s.apifox.cn/bbc28efa-ca03-4c46-929f-208fb3aebad8/api-96003535</a>，访问密码：K5XKUot3；</li>
             <li>开启AI接管客户数逻辑：判断账号的单聊AI托管账号是否启用，若启用，则统计当前托管账号下所有开启单聊AI接管的会话数；未启用的话，默认显示0；</li>
             <li>当账号的单聊AI接管启用时，该账号下所有单聊会话都需要改成启用状态。</li>
+            <li>点击添加运营人员时查询员工信息并核实工号对应员工有效，返回姓名和工号；运营人员集合按当前AI托管账号独立保存；转人工预警的推送飞书应用ID由列表顶部统一维护。</li>
+            <li>当会话转人工时，消息推送至统一配置的推送飞书应用ID对应的飞书应用，以下是消息内容<br><br>AI客服转人工提醒<br><br>客户名称：XXXXXXX<br>成员名称：XXXXXXX<br>转人工原因：XXXXXXX（显示转人工归因类型）<br>转人工时间：XXXXXXX</li>
           </ul>
           <div class="proto-card">
             <div class="block-head"><span>原型 · AI托管账号</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · AI托管账号','原型/AI托管账号_v1.0.html')">放大查看</button></span></div>
             <iframe class="proto-frame" src="原型/AI托管账号_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="AI托管账号原型"></iframe>
+            <div class="proto-tip">新增运营人员工号校验、多人员维护与转人工预警应用配置演示；员工目录与异步查询均为模拟数据，运营人员按账号独立保存，转人工预警由列表顶部统一配置，均存于浏览器本地；不接入真实员工系统或执行消息推送。</div>
           </div>
         </div>
       </article>
@@ -364,7 +401,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-h5" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.5 会话接待插件H5</h3><span class="feature-id">消费者业务中台 / 会话接待插件（艾客客服端内嵌）</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.6 会话接待插件H5</h3><span class="feature-id">消费者业务中台 / 会话接待插件（艾客客服端内嵌）</span></div>
         <div class="feature-content">
           <h4>前端规则逻辑</h4>
           <ul class="rules">
@@ -395,7 +432,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-5" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.6 客户会话管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.7 客户会话管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
           <div class="note">客户会话管理：管理每个客户和成员的会话，每个客户和成员只要产生对话，就会有一条会话记录，可进入详情查看完整对话过程、AI决策追溯和AI耗时明细；</div>
           <h4>前端规则逻辑</h4>
@@ -403,7 +440,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>AI接管状态：账号已开启单聊AI接管时才可编辑，不满足前提时启用 / 禁用两项均置灰不可选，弹窗内提示「托管账号AI接管状态已关闭，请先启用。」并提供「去配置」，点击跳转AI托管账号、按账号ID自动搜索出该账号记录。</li>
             <li>涉及AI回复：只读；该会话有实际AI发送记录时显示「是」，否则显示「否」。</li>
             <li>会话明细的成员回复消息，若为AI回复，则颜色需要高亮，并且需要显示AI回复、AI决策追溯、耗时详情按钮，点击AI决策追溯和耗时详情按钮，右侧以抽屉形式展示对应内容；</li>
-            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.10）。</li>
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.11）。</li>
             </ul>
           <h4>交互逻辑</h4>
           <ul class="rules">
@@ -421,7 +458,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-4" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.7 会话消息管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.8 会话消息管理</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
           <div class="note">会话消息管理：当单聊开启AI接管后，会记录客户发送的消息，并且会自动关联AI决策追溯ID。</div>
           <div style="margin:10px 0 4px"><svg viewBox="0 0 900 196" role="img" aria-label="客户消息ID与AI决策追溯ID、AI回复消息的关联关系示意图" style="width:100%;max-width:900px;display:block;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
@@ -457,7 +494,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
             <li>AI决策追溯-知识匹配：意图关联工作流类型为商品知识库或FAQ知识库时，展示检索知识片段、知识匹配度、知识文档名称；类型为业务API时，展示接口请求地址、请求参数、返回参数。</li>
             <li>知识匹配模块默认展示3行内容，超出3行时在模块标题右侧显示「展开」按钮；展开后展示全部内容，点击「收起」恢复3行，内容不足3行时按实际内容展示。</li>
             <li>列表-转人工归因：AI转人工时展示该次转人工的归因枚举（用户主动要求人工、FAQ知识缺失、商品知识缺失、智能体工作流异常、业务API异常、业务规则要求人工），非转人工的记录显示-；筛选条件「转人工归因」可选择上述任一枚举，选定后仅展示该归因的记录。</li>
-            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.10）。</li>
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.11）。</li>
           </ul>
           <h4>交互逻辑</h4>
           <ul class="rules">
@@ -484,7 +521,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-6" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.8 AI响应明细</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.9 AI响应明细</h3><span class="feature-id">消费者业务中台 / AI会话管理</span></div>
         <div class="feature-content">
           <div class="note">AI响应明细：主要是记录每个AI决策追溯的总耗时和各个环节的耗时，用于后期分析用时过长的环节，进行迭代优化。</div>
           <div style="margin:10px 0 4px"><svg viewBox="0 0 900 252" role="img" aria-label="AI响应明细以AI决策追溯ID为主要ID，与会话ID、客户ID、成员ID一对一关联的示意图" style="width:100%;max-width:900px;display:block;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
@@ -511,7 +548,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 </svg><p style="font-size:12.5px;color:#909399;margin:4px 0 0">关联关系示意图：AI响应明细以AI决策追溯ID为主要ID，与会话ID、客户ID、成员ID均为一对一（1 : 1）关联。</p></div>
           <h4>前端规则逻辑</h4>
           <ul class="rules">
-            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.10）。</li>
+            <li>列表数据范围：仅展示当前登录人所属角色已授权的AI托管账号下的数据，未授权的账号数据不展示（权限在「租户管理 / 角色管理」的【数据权限】中维护，见4.11）。</li>
             <li>AI响应详情：删除匹配决策、回复生成、回复后处理三个环节，保留系统接收到问题及意图识别、知识检索、回复发送的时间与耗时信息。</li>
           </ul>
           <div class="proto-card">
@@ -525,7 +562,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
 
       <article id="feature-config" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.9 AI客服配置</h3><span class="feature-id">消费者业务中台 / 租户管理（基础配置）</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.10 AI客服配置</h3><span class="feature-id">消费者业务中台 / 租户管理（基础配置）</span></div>
         <div class="feature-content">
           <div class="note">AI客服配置：租户在「租户管理 / 基础配置」维护的AI客服入口配置，包含执行AI接管等待时长、自动启用单聊AI托管的定时设置与飞书多维表格配置；点击卡片【配置】按钮，以弹窗形式设置。</div>
           <h4>前端规则逻辑</h4>
@@ -557,7 +594,7 @@ th{background:var(--head);color:var(--ink);font-weight:700}
       </article>
 
       <article id="feature-role" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.10 角色管理（数据权限）</h3><span class="feature-id">消费者业务中台 / 租户管理（角色管理）</span></div>
+        <div class="feature-head"><h3 class="feature-title">4.11 角色管理（数据权限）</h3><span class="feature-id">消费者业务中台 / 租户管理（角色管理）</span></div>
         <div class="feature-content">
           <div class="note">角色管理：租户在「租户管理 / 角色管理」按数据类型为每个角色设置可查看的数据范围；系统管理员进入中台后，AI托管账号、客户会话管理、会话消息管理、AI响应明细等界面按当前登录人所属角色的授权范围展示数据。当前数据类型为「AI托管账号」，弹窗结构支持后续扩展更多数据类型。</div>
           <h4>前端规则逻辑</h4>
@@ -589,30 +626,6 @@ th{background:var(--head);color:var(--ink);font-weight:700}
 
     </section>
 
-      <article id="feature-intent" class="feature">
-        <div class="feature-head"><h3 class="feature-title">4.11 意图管理</h3><span class="feature-id">消费者业务中台 / 智能体管理</span></div>
-        <div class="feature-content">
-          <h4>前端规则逻辑</h4>
-          <ul class="rules">
-            <li>新增 / 编辑弹窗包含业务类型、一级意图分类、二级意图分类、二级意图分类标识、工作流、意图扩写、请求接口、槽位参数、追问话术；其中业务类型、一级意图分类、二级意图分类、二级意图分类标识、工作流、意图扩写为必填：（<span style="color: rgb(220, 38, 38);">若选择的工作流类型=业务API时，显示请求接口选项，必填</span>）<br>1. 业务类型为下拉选择，选项值取数据字典；<br>2. 一级 / 二级意图分类为输入框，支持自行创建维护，仅一级意图分类输入时联想已有分类（会基于已输入的内容，模糊匹配现有的一级意图分类）；<br>3. 二级意图分类标识为输入框必填（如 product_price），输入的二级意图分类名称命中同一一级分类下已有分类时，自动带入对应的二级意图分类标识且不可编辑；<br>4. 工作流名称为下拉选择，选项为「工作流管理」已维护的工作流（展示「工作流名称（工作流ID）」）；<br>5. 意图扩写为必填，最多填写10条；<br>6. 槽位参数为单选下拉，可不选择；选择槽位参数后追问话术必填，未填写保存时提示「请填写追问话术」并拦截；<br>7. 保存时校验同一一级意图分类下二级意图分类名称与二级意图分类标识唯一：名称重复提示「同一一级意图分类下二级意图分类名称已存在，请修改」，标识重复提示「同一一级意图分类下二级意图分类标识已存在，请修改后重试」；</li>
-            <li>编辑意图时业务类型、一级意图分类只读不可修改，其他可以修改</li>
-          </ul>
-          <h4>交互逻辑</h4>
-          <ul class="rules">
-            <li>无</li>
-          </ul>
-          <h4>后端处理逻辑</h4>
-          <ul class="rules">
-            <li>点击同步按钮，会将现有意图管理的内容，同步至飞书的知识空间。</li>
-            <li>记录保存成功后，也需要触发同步到飞书知识空间的逻辑。</li>
-          </ul>
-          <div class="proto-card">
-            <div class="block-head"><span>原型 · 意图管理</span><span class="actions"><button type="button" class="open-preview" onclick="openPreview('原型预览 · 意图管理','原型/意图管理_v1.0.html')">放大查看</button></span></div>
-            <iframe class="proto-frame" src="原型/意图管理_v1.0.html?embed=1" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy" title="意图管理原型"></iframe>
-            <div class="proto-tip">模拟中台「智能体管理 / 意图管理」列表与新增 / 编辑弹窗（意图扩写、请求接口、槽位参数与追问话术在弹窗内维护）；请求接口为单选模拟选项，按「接口名称（请求地址）」展示，原型不发起真实请求。左侧「同步」按钮为同步至飞书知识空间的入口模拟。示例数据中售后服务咨询的二级分类、会员服务的分类与部分工作流为演示补全，以需求方确认为准。</div>
-          </div>
-        </div>
-      </article>
 
     <section id="appendix" class="section">
       <h2>五、附录</h2>
@@ -622,10 +635,10 @@ th{background:var(--head);color:var(--ink);font-weight:700}
         <tr><th>功能模块</th><th>字段</th><th>当前字典值</th></tr>
         <tr><td>4.1 智能体管理</td><td>智能体类型</td><td>飞书aily-工作流应用</td></tr>
         <tr><td>4.2 工作流管理</td><td>工作流类型</td><td>意图识别、业务API、商品知识库、FAQ知识库</td></tr>
-        <tr><td>4.3 供应商管理</td><td>供应商类型</td><td>艾客</td></tr>
-        <tr><td>4.9 AI客服配置</td><td>飞书多维表格用途</td><td>同步意图库、拉取AI追溯日志</td></tr>
-        <tr><td>4.10 角色管理（数据权限）</td><td>数据权限类型</td><td>AI托管账号</td></tr>
-        <tr><td>4.11 意图管理</td><td>业务类型</td><td>成品销售、会员服务</td></tr>
+        <tr><td>4.3 意图管理</td><td>业务类型</td><td>成品销售、会员服务</td></tr>
+        <tr><td>4.4 供应商管理</td><td>供应商类型</td><td>艾客</td></tr>
+        <tr><td>4.10 AI客服配置</td><td>飞书多维表格用途</td><td>同步意图库、拉取AI追溯日志</td></tr>
+        <tr><td>4.11 角色管理（数据权限）</td><td>数据权限类型</td><td>AI托管账号</td></tr>
       </table>
     </section>
 

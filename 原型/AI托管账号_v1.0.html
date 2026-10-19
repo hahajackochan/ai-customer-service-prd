@@ -348,6 +348,32 @@ td.strong{color:var(--ink)}
 .op-btn:hover{background:#eceef2}
 .op-btn.danger{color:#c0392b}
 .row-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* Prototype settings: account operators and an independent page-level warning. */
+.account-actions .row-tools{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 10px;width:240px;max-width:100%}
+td.account-actions{padding-top:8px;padding-bottom:8px}
+.account-settings-modal{padding:12px;overflow:auto;overscroll-behavior:contain}
+.account-settings-modal .modal-box{width:min(540px,100%);max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column;min-height:0}
+.account-settings-modal .modal-head,.account-settings-modal .modal-foot{flex-shrink:0}
+.account-settings-modal .modal-body{overflow-y:auto;min-height:0;overscroll-behavior:contain}
+.account-settings-modal .acct-line{color:var(--muted);overflow-wrap:anywhere}
+.account-settings-modal .btn:disabled{opacity:.55;cursor:not-allowed}
+.account-settings-modal input:disabled{background:#f7f8f9;color:var(--weak);cursor:not-allowed}
+.employee-entry-row{display:flex;align-items:center;gap:10px}
+.employee-entry-row input{min-width:0;flex:1}
+.employee-entry-row .btn{flex-shrink:0;min-width:72px}
+.settings-message{min-height:20px;margin-top:5px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.settings-message.error,.settings-save-error{color:var(--danger)}
+.settings-message.success{color:#529b2e}
+.settings-save-error{margin-top:12px;font-size:12px;overflow-wrap:anywhere}
+.settings-save-error[hidden]{display:none}
+.operators-selected-title{margin:16px 0 8px;font-size:13px;font-weight:600}
+.operators-list{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:6px}
+.operators-list li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border-bottom:1px solid var(--line);font-size:13px}
+.operators-list li:last-child{border-bottom:0}
+.operators-list li>span{min-width:0;overflow-wrap:anywhere}
+.operators-list .operators-empty{justify-content:center;padding:20px 12px;color:var(--weak)}
+.operators-list .link-btn{flex-shrink:0}
+.account-settings-modal :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -372,6 +398,7 @@ td.strong{color:var(--ink)}
       <div class="nav-item open" id="nav-agent"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M5 20c1.4-4 3.8-6 7-6s5.6 2 7 6M18.5 4.5l1 1m-15 0 1-1" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">智能体管理</span><span class="chev">▾</span></div>
 <div class="nav-item child agent-child js-nav" data-page="智能体管理"><span class="dot-ic">•</span><span class="lbl">智能体管理</span></div>
 <div class="nav-item child agent-child js-nav" data-page="工作流管理"><span class="dot-ic">•</span><span class="lbl">工作流管理</span></div>
+<div class="nav-item child agent-child js-nav" data-page="意图管理"><span class="dot-ic">•</span><span class="lbl">意图管理</span></div>
       <div class="nav-item open" id="nav-third"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17.6" cy="6.4" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="12" cy="17.6" r="2.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M8.4 7.6l2.6 8M15.6 7.6l-2.6 8M8.8 6.4h6.4" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">三方账号管理</span><span class="chev">▾</span></div>
       <div class="nav-item child js-nav" data-page="供应商管理"><span class="dot-ic">•</span><span class="lbl">供应商管理</span></div>      <div class="nav-item child active js-nav" data-page="AI托管账号"><span class="dot-ic">•</span><span class="lbl">AI托管账号</span></div>
       <div class="nav-item open" id="nav-ai"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5" width="16.4" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M7.5 9.5h9M7.5 12.8h6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg><span class="lbl">AI会话管理</span><span class="chev">▾</span></div>
@@ -407,7 +434,7 @@ td.strong{color:var(--ink)}
     </div>
       <div class="page-body">
       <div class="card list-filter-card">
-        <div class="list-toolbar"><div class="list-toolbar-primary"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步</button></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div>
+        <div class="list-toolbar"><div class="list-toolbar-primary"><button class="btn primary" id="btn-sync" title="重新同步托管账号">同步</button><button type="button" class="btn" id="btn-warning" aria-haspopup="dialog" aria-controls="warning-modal">转人工预警</button></div><div class="list-toolbar-actions"><button type="button" class="btn filter-trigger" id="btn-filter" aria-expanded="false" aria-controls="filter-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.7v-6.9L4 5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>筛选</button><button type="button" class="btn export-trigger" id="btn-export"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.8v10.4m0 0 3.8-3.8m-3.8 3.8L8.2 10.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15.4V18a2.4 2.4 0 0 0 2.4 2.4h10A2.4 2.4 0 0 0 19.4 18v-2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>导出</button></div></div>
         <div class="filter-popover" id="filter-popover" hidden><div class="filter-bar">
           <span class="fitem"><label for="q-name">账号名称</label><input id="q-name" placeholder="请输入账号名称"></span>
           <span class="fitem"><label for="q-uid">账号ID</label><input id="q-uid" placeholder="请输入账号ID"></span>
@@ -421,7 +448,7 @@ td.strong{color:var(--ink)}
       <div class="table-card">
         <table style="min-width:1055px">
           <thead><tr>
-            <th style="min-width:70px">供应商</th><th style="min-width:100px">账号ID</th><th style="min-width:150px">账号名称</th><th style="min-width:60px">头像</th><th style="min-width:105px">手机号</th><th style="min-width:140px">开启AI接管客户数</th><th style="min-width:100px">单聊AI接管</th><th style="min-width:100px">群聊AI接管</th><th style="min-width:130px">更新时间</th><th style="min-width:100px">操作</th>
+            <th style="min-width:70px">供应商</th><th style="min-width:100px">账号ID</th><th style="min-width:150px">账号名称</th><th style="min-width:60px">头像</th><th style="min-width:105px">手机号</th><th style="min-width:140px">开启AI接管客户数</th><th style="min-width:100px">单聊AI接管</th><th style="min-width:100px">群聊AI接管</th><th style="min-width:130px">更新时间</th><th class="account-actions" style="min-width:268px">操作</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -462,6 +489,40 @@ td.strong{color:var(--ink)}
       <div class="modal-head"><span id="detail-title">账号详情</span><button type="button" class="modal-close" id="detail-close" aria-label="关闭">×</button></div>
       <div class="modal-body"><div class="detail-grid" id="detail-grid"></div></div>
       <div class="modal-foot"><button type="button" class="btn primary" id="detail-ok">关闭</button></div>
+    </div>
+  </div>
+  <div class="modal account-settings-modal" id="operators-modal" role="dialog" aria-modal="true" aria-labelledby="operators-title" aria-describedby="operators-demo-note">
+    <div class="modal-box" tabindex="-1">
+      <div class="modal-head"><span id="operators-title">设置运营人员</span><button type="button" class="modal-close" id="operators-close" aria-label="关闭设置运营人员">×</button></div>
+      <div class="modal-body">
+        <form id="operators-add-form" novalidate>
+          <div class="field" style="margin-bottom:0">
+            <label for="operators-employee-no">员工工号</label>
+            <div class="employee-entry-row"><input type="text" id="operators-employee-no" placeholder="请输入员工工号" autocomplete="off" aria-describedby="operators-message operators-demo-note operators-examples"><button type="submit" class="btn" id="operators-add">添加</button></div>
+            <div class="settings-message" id="operators-message" role="status" aria-live="polite"></div>
+            <div class="tip2" id="operators-demo-note">原型演示：工号校验使用模拟员工数据，仅用于演示交互，这几行无需做到系统里</div>
+            <div class="tip2" id="operators-examples">可用示例：陈嘉豪（11021267）、林晓敏（11021268）、王子轩（11021269）。<br>停用示例：赵明（11029999）；目录外工号不会添加。</div>
+          </div>
+        </form>
+        <div class="operators-selected-title">已选运营人员（<span id="operators-count">0</span>）</div>
+        <ul class="operators-list" id="operators-list" aria-label="已选运营人员"></ul>
+        <div class="settings-save-error" id="operators-save-error" role="alert" tabindex="-1" hidden></div>
+      </div>
+      <div class="modal-foot"><button type="button" class="btn" id="operators-cancel">取消</button><button type="button" class="btn primary" id="operators-save">保存</button></div>
+    </div>
+  </div>
+  <div class="modal account-settings-modal" id="warning-modal" role="dialog" aria-modal="true" aria-labelledby="warning-title">
+    <div class="modal-box" tabindex="-1">
+      <div class="modal-head"><span id="warning-title">转人工预警</span><button type="button" class="modal-close" id="warning-close" aria-label="关闭转人工预警">×</button></div>
+      <div class="modal-body">
+        <div class="field" style="margin-bottom:0">
+          <label for="warning-app-id">推送飞书应用ID</label>
+          <input type="text" id="warning-app-id" placeholder="请输入推送飞书应用ID" autocomplete="off" aria-describedby="warning-app-id-tip">
+          <div class="tip2" id="warning-app-id-tip">当会话转人工时，消息将推送到此应用</div>
+        </div>
+        <div class="settings-save-error" id="warning-save-error" role="alert" tabindex="-1" hidden></div>
+      </div>
+      <div class="modal-foot"><button type="button" class="btn" id="warning-cancel">取消</button><button type="button" class="btn primary" id="warning-save">保存</button></div>
     </div>
   </div>
   <div class="toast" id="toast"></div>
@@ -656,7 +717,7 @@ window.AIDemo={REASONS,CODES,ACCOUNTS,STAGES,DEMO_INTENT_CATALOG,sessions,record
 (function(){
 'use strict';const D=window.AIDemo;
 window.showToast=function(msg,cls){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='toast '+(cls||'ok');t.style.display='block';clearTimeout(window.showToast.timer);window.showToast.timer=setTimeout(()=>t.style.display='none',2300);};
-const PAGES={'供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI响应明细':'AI响应明细_v1.0.html','智能体管理':'智能体管理_v1.0.html','工作流管理':'工作流管理_v1.0.html'};
+const PAGES={'供应商管理':'供应商管理_v1.0.html','AI托管账号':'AI托管账号_v1.0.html','客户会话管理':'客户会话管理_v1.0.html','会话消息管理':'会话消息管理_v1.0.html','AI响应明细':'AI响应明细_v1.0.html','智能体管理':'智能体管理_v1.0.html','工作流管理':'工作流管理_v1.0.html','意图管理':'意图管理_v1.0.html'};
 document.querySelectorAll('.js-nav').forEach(el=>{el.tabIndex=0;el.setAttribute('role','link');const go=()=>{const file=PAGES[el.dataset.page];if(file)location.href=D.url(file);};el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go();}});});
 for(const [id,selector]of [['nav-third','.nav-item.child:not(.ai-child):not(.agent-child)'],['nav-ai','.nav-item.ai-child'],['nav-agent','.nav-item.agent-child']]){const el=document.getElementById(id);if(el){el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-expanded','true');const toggle=()=>{const open=el.classList.toggle('open');el.setAttribute('aria-expanded',String(open));document.querySelectorAll(selector).forEach(c=>c.style.display=open?'flex':'none');};el.addEventListener('click',toggle);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});}}
 document.querySelectorAll('.js-nothing').forEach(el=>el.addEventListener('click',()=>showToast('本次原型仅包含三方账号管理、AI会话管理与智能体管理相关页面。','info')));
@@ -721,15 +782,224 @@ document.addEventListener('keydown',e=>{const drawer=document.getElementById('dr
         +'<td>'+esc(r.phone)+'</td><td class="weak">'+r.count+'</td>'
         +'<td>'+modeText(r,'单聊')+'</td><td>'+modeText(r,'群聊')+'</td>'
         +'<td class="weak">'+esc(r.time)+'</td>'
-        +'<td><div class="action-links row-actions"><button type="button" class="op-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="op-btn lnk-edit" data-i="'+idx+'">编辑</button></div></td>'
+        +'<td class="account-actions"><div class="action-links row-actions row-tools"><button type="button" class="op-btn lnk-detail" data-i="'+idx+'">详情</button><button type="button" class="op-btn lnk-edit" data-i="'+idx+'">编辑</button><button type="button" class="op-btn" data-operators="'+esc(r.uid)+'">设置运营人员</button></div></td>'
       +'</tr>';
     }).join('');
     pager.textContent='共 '+list.length+' 条';
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-detail'),function(a){a.addEventListener('click',function(){openDetail(parseInt(a.getAttribute('data-i'),10))});});
     Array.prototype.forEach.call(tbody.querySelectorAll('.lnk-edit'),function(a){a.addEventListener('click',function(){openConfig(parseInt(a.getAttribute('data-i'),10))});});
+    Array.prototype.forEach.call(tbody.querySelectorAll('[data-operators]'),function(a){a.addEventListener('click',function(){openAccountSettings('operators',a.getAttribute('data-operators'),a);});});
   }
   var modeModal=document.getElementById('mode-modal');
   var detailModal=document.getElementById('detail-modal');
+  /* Prototype-only employee directory and isolated account settings. No production API. */
+  var SETTINGS_KEY='dsh_proto_ai_account_settings_v1';
+  // Keep legacy per-account pushAppId values untouched; do not migrate or use them as defaults.
+  var WARNING_KEY='dsh_proto_ai_transfer_warning_v1';
+  var DEMO_EMPLOYEES=[
+    {name:'陈嘉豪',employeeNo:'11021267',status:'active'},
+    {name:'林晓敏',employeeNo:'11021268',status:'active'},
+    {name:'王子轩',employeeNo:'11021269',status:'active'},
+    {name:'赵明',employeeNo:'11029999',status:'inactive'}
+  ];
+  var operatorsModal=document.getElementById('operators-modal');
+  var warningModal=document.getElementById('warning-modal');
+  var employeeInput=document.getElementById('operators-employee-no');
+  var employeeAdd=document.getElementById('operators-add');
+  var operatorsList=document.getElementById('operators-list');
+  var settingsSession=null;
+  function isSettingsRecord(value){return value!==null&&typeof value==='object'&&!Array.isArray(value);}
+  function readSettingsStore(){
+    var raw;
+    try{raw=localStorage.getItem(SETTINGS_KEY);}catch(_){return {data:{},error:'无法读取本机原型设置，请检查浏览器存储权限后重试。'};}
+    if(raw===null)return {data:{},error:''};
+    try{
+      var data=JSON.parse(raw);
+      if(!isSettingsRecord(data))throw new Error('invalid settings');
+      return {data:data,error:''};
+    }catch(_){return {data:{},error:'本机原型设置数据损坏，未覆盖原数据；请清理此原型设置后重试。'};}
+  }
+  function normalizedOperators(value){
+    var result=[],seen=Object.create(null);
+    if(!Array.isArray(value))return result;
+    value.forEach(function(item){
+      if(!isSettingsRecord(item)||typeof item.name!=='string'||typeof item.employeeNo!=='string')return;
+      var name=item.name.trim(),employeeNo=item.employeeNo.trim();
+      if(!name||!employeeNo||seen[employeeNo])return;
+      seen[employeeNo]=true;result.push({name:name,employeeNo:employeeNo});
+    });
+    return result;
+  }
+  function writeAccountSetting(uid,key,value){
+    // Re-read for every save: preserve the other field and all other accounts.
+    var loaded=readSettingsStore();
+    if(loaded.error)return {ok:false,error:'保存失败：'+loaded.error};
+    var all=Object.assign(Object.create(null),loaded.data);
+    var previous=isSettingsRecord(all[uid])?all[uid]:{};
+    var next=Object.assign(Object.create(null),{operators:[],pushAppId:''},previous);
+    next[key]=key==='operators'?normalizedOperators(value):value;
+    all[uid]=next;
+    try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(all));return {ok:true};}
+    catch(_){return {ok:false,error:'保存失败：无法写入本机原型设置，请检查浏览器存储权限或空间后重试。'};}
+  }
+  function readWarningSettings(){
+    var raw;
+    try{raw=localStorage.getItem(WARNING_KEY);}catch(_){return {data:{},error:'无法读取页面级转人工预警设置，请检查浏览器存储权限后重新打开弹窗。'};}
+    if(raw===null)return {data:{pushAppId:''},error:''};
+    try{
+      var data=JSON.parse(raw);
+      if(!isSettingsRecord(data)||typeof data.pushAppId!=='string')throw new Error('invalid warning settings');
+      return {data:data,error:''};
+    }catch(_){return {data:{},error:'页面级转人工预警设置数据损坏，未覆盖原数据；请修复此原型设置后重新打开弹窗。'};}
+  }
+  function writeWarningSetting(value){
+    // This separate store has no account UID and never writes modes or operators.
+    var loaded=readWarningSettings();
+    if(loaded.error)return {ok:false,error:'保存失败：'+loaded.error};
+    var next=Object.assign(Object.create(null),loaded.data,{pushAppId:value});
+    try{localStorage.setItem(WARNING_KEY,JSON.stringify(next));return {ok:true};}
+    catch(_){return {ok:false,error:'保存失败：无法写入页面级转人工预警设置，草稿已保留，请检查浏览器存储权限或空间后重试。'};}
+  }
+  function settingsError(type,message){
+    var el=document.getElementById(type+'-save-error');
+    el.textContent=message||'';el.hidden=!message;
+  }
+  function employeeMessage(message,tone){
+    var el=document.getElementById('operators-message');
+    el.className='settings-message'+(tone?' '+tone:'');el.textContent=message||'';
+  }
+  function settingsFocusable(modal){
+    return Array.prototype.filter.call(modal.querySelectorAll('button,input,select,textarea,a[href],[tabindex]'),function(el){return !el.disabled&&el.tabIndex>=0&&el.getClientRects().length>0;});
+  }
+  function setEmployeeBusy(session,busy){
+    var queryHadFocus=document.activeElement===employeeInput||document.activeElement===employeeAdd;
+    session.busy=busy;
+    employeeInput.disabled=busy;employeeAdd.disabled=busy;
+    employeeAdd.textContent=busy?'查询中…':'添加';
+    document.getElementById('operators-add-form').setAttribute('aria-busy',String(busy));
+    document.getElementById('operators-save').disabled=busy;
+    // Disabling the focused input/button must not leave focus behind the dialog.
+    if(busy&&queryHadFocus)document.getElementById('operators-cancel').focus();
+  }
+  function renderOperators(session){
+    document.getElementById('operators-count').textContent=String(session.draft.length);
+    operatorsList.innerHTML=session.draft.length?session.draft.map(function(item){return '<li><span>'+esc(item.name)+'（'+esc(item.employeeNo)+'）</span><button type="button" class="link-btn" data-operator-remove="'+esc(item.employeeNo)+'" aria-label="移除'+esc(item.name)+'（'+esc(item.employeeNo)+'）">移除</button></li>';}).join(''):'<li class="operators-empty">暂未设置运营人员，可添加多人，也可清空保存</li>';
+  }
+  function closeAccountSettings(restoreFocus){
+    var session=settingsSession;
+    if(!session)return;
+    settingsSession=null;session.queryVersion++;
+    session.modal.classList.remove('active');
+    if(session.type==='operators'){setEmployeeBusy(session,false);employeeInput.value='';employeeMessage('');}
+    if(restoreFocus===false)return;
+    var trigger=session.opener;
+    if(!trigger||!trigger.isConnected||!trigger.getClientRects().length)trigger=session.type==='warning'?document.getElementById('btn-warning'):tbody.querySelector('[data-operators="'+session.uid+'"]');
+    if(!trigger||!trigger.getClientRects().length)trigger=document.getElementById('btn-filter');
+    if(trigger)trigger.focus();
+  }
+  function openAccountSettings(type,uid,opener){
+    var row=type==='operators'?rows.find(function(item){return item.uid===uid;}):null;
+    if(type==='operators'&&!row)return;
+    // Switching account/type discards the old draft and invalidates its async lookup.
+    closeAccountSettings(false);
+    modeModal.classList.remove('active');detailModal.classList.remove('active');
+    setFilterOpen(false);
+    var loaded=type==='operators'?readSettingsStore():readWarningSettings();
+    var stored=type==='operators'?(isSettingsRecord(loaded.data[uid])?loaded.data[uid]:{}):loaded.data;
+    var session={type:type,uid:type==='operators'?uid:null,opener:opener,modal:type==='operators'?operatorsModal:warningModal,draft:[],busy:false,queryVersion:0,readError:loaded.error};
+    settingsSession=session;
+    settingsError(type,loaded.error);
+    if(type==='operators'){
+      session.draft=normalizedOperators(stored.operators);
+      employeeInput.value='';employeeInput.removeAttribute('aria-invalid');employeeMessage('');setEmployeeBusy(session,false);renderOperators(session);
+    }else if(!loaded.error)document.getElementById('warning-app-id').value=stored.pushAppId;
+    session.modal.classList.add('active');session.modal.querySelector('.modal-body').scrollTop=0;
+    (type==='operators'?employeeInput:document.getElementById('warning-app-id')).focus();
+  }
+  document.getElementById('btn-warning').addEventListener('click',function(){openAccountSettings('warning',null,this);});
+  function queryDemoEmployee(employeeNo){
+    return new Promise(function(resolve){
+      setTimeout(function(){
+        var employee=DEMO_EMPLOYEES.find(function(item){return item.employeeNo===employeeNo;});
+        resolve(employee?{name:employee.name,employeeNo:employee.employeeNo,status:employee.status}:null);
+      },500);
+    });
+  }
+  function addOperator(){
+    var session=settingsSession;
+    if(!session||session.type!=='operators'||session.busy)return;
+    var employeeNo=employeeInput.value.trim();
+    if(!employeeNo){employeeInput.setAttribute('aria-invalid','true');employeeMessage('请输入员工工号','error');employeeInput.focus();return;}
+    employeeInput.removeAttribute('aria-invalid');
+    var version=++session.queryVersion;
+    setEmployeeBusy(session,true);employeeMessage('正在查询模拟员工目录…');
+    queryDemoEmployee(employeeNo).then(function(employee){
+      if(settingsSession!==session||session.queryVersion!==version||!session.modal.classList.contains('active'))return;
+      if(!employee){employeeInput.setAttribute('aria-invalid','true');employeeMessage('未找到该工号的员工，未添加','error');}
+      else if(employee.status!=='active'){employeeInput.setAttribute('aria-invalid','true');employeeMessage('该员工已停用，未添加','error');}
+      else if(session.draft.some(function(item){return item.employeeNo===employee.employeeNo;}))employeeMessage('该员工已在已选列表中，请勿重复添加','error');
+      else{
+        session.draft.push({name:employee.name,employeeNo:employee.employeeNo});
+        renderOperators(session);employeeInput.value='';employeeMessage('已添加 '+employee.name+'（'+employee.employeeNo+'），可继续添加','success');
+      }
+      setEmployeeBusy(session,false);employeeInput.focus();
+    }).catch(function(){
+      if(settingsSession!==session||session.queryVersion!==version)return;
+      setEmployeeBusy(session,false);employeeMessage('模拟员工查询失败，请重试','error');employeeInput.focus();
+    });
+  }
+  // Use one native form submit path for input Enter and the Add button; no duplicate click/keydown add.
+  document.getElementById('operators-add-form').addEventListener('submit',function(e){e.preventDefault();e.stopPropagation();addOperator();});
+  employeeInput.addEventListener('input',function(){employeeInput.removeAttribute('aria-invalid');employeeMessage('');});
+  operatorsList.addEventListener('click',function(e){
+    var button=e.target.closest('[data-operator-remove]'),session=settingsSession;
+    if(!button||!session||session.type!=='operators')return;
+    var employeeNo=button.getAttribute('data-operator-remove');
+    session.draft=session.draft.filter(function(item){return item.employeeNo!==employeeNo;});
+    renderOperators(session);
+    employeeMessage(session.busy?'正在查询模拟员工目录…':'已移除该员工，保存后生效');
+    var next=operatorsList.querySelector('[data-operator-remove]');
+    (next||(session.busy?document.getElementById('operators-cancel'):employeeInput)).focus();
+  });
+  ['operators','warning'].forEach(function(type){
+    ['close','cancel'].forEach(function(action){document.getElementById(type+'-'+action).addEventListener('click',function(){closeAccountSettings();});});
+    document.getElementById(type+'-save').addEventListener('click',function(){
+      var session=settingsSession;
+      if(!session||session.type!==type||session.busy)return;
+      if(type==='warning'&&session.readError){settingsError(type,'保存失败：'+session.readError+' 当前输入未保存。');document.getElementById('warning-save-error').focus();return;}
+      var result=type==='operators'?writeAccountSetting(session.uid,'operators',session.draft):writeWarningSetting(document.getElementById('warning-app-id').value);
+      if(!result.ok){settingsError(type,result.error);document.getElementById(type+'-save-error').focus();return;}
+      closeAccountSettings();showToast((type==='operators'?'运营人员设置':'转人工预警')+'已保存（仅本机原型）','ok');
+    });
+    var modal=document.getElementById(type+'-modal');
+    // Backdrop is intentionally inert: never save or discard by mask click.
+    modal.addEventListener('click',function(e){e.stopPropagation();});
+    modal.addEventListener('keydown',function(e){
+      if(e.key!=='Enter')return;
+      e.stopPropagation();
+      if(e.isComposing||e.keyCode===229||e.repeat||e.target===document.getElementById('warning-app-id'))e.preventDefault();
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    var session=settingsSession;
+    if(!session)return;
+    if(e.key==='Escape'){
+      e.preventDefault();e.stopImmediatePropagation();closeAccountSettings();return;
+    }
+    if(e.key==='Tab'){
+      e.preventDefault();e.stopImmediatePropagation();
+      var items=settingsFocusable(session.modal),index=items.indexOf(document.activeElement);
+      if(!items.length){session.modal.querySelector('.modal-box').focus();return;}
+      var next=index<0?(e.shiftKey?items.length-1:0):(index+(e.shiftKey?-1:1)+items.length)%items.length;
+      items[next].focus();
+    }
+  },true);
+  document.addEventListener('focusin',function(e){
+    var session=settingsSession;
+    if(!session||session.modal.contains(e.target))return;
+    var items=settingsFocusable(session.modal);
+    (items[0]||session.modal.querySelector('.modal-box')).focus();
+  });
   function wfOptions(selected){
     return '<option value="">请选择意图识别工作流</option>'+INTENT_WORKFLOWS.map(function(w){return '<option value="'+w.id+'"'+(w.id===selected?' selected':'')+'>'+esc(w.name)+'（'+w.id+'）</option>';}).join('');
   }
